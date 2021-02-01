@@ -1,4 +1,4 @@
-# unyapp TFG :school_satchel:
+# Uny: App movil proyecto TFG :school_satchel:
 ## IMPORTANTE
 
 ***Este documento irá actualizándose a medida que avancemos con el desarrollo de la aplicación.***
