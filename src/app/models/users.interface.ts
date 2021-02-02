@@ -1,13 +1,13 @@
-
 export interface UsuariosI{
     id?:string;
-    name: string;
-    lastName: string;
-    birthDate: Date;   
-    email: any;
+    nick:string;
+    name:string;
+    lastName:string;
+    birthDate:Date;   
+    email:string;
 }
 
 export interface CredencialesI{
-    email: any;
-    password: string;
+    email:string;
+    password:string;
 }

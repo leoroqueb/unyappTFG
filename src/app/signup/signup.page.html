@@ -8,40 +8,47 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div [formGroup]="signUpForm">
-  <ion-list>
+  <form [formGroup]="signUpForm" (ngSubmit)="userDetalles(signUpForm)">
     <ion-item>
-      <ion-icon name="person" item-start></ion-icon>
-      <ion-label >Nick:</ion-label>
-      <ion-input type="text" formControlName="nick" placeholder="Nombre"></ion-input>
+      <ion-label position="floating">E-Mail<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input formControlName="email" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nick<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" formControlName="nick"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-icon name="person" item-start></ion-icon>
-        <ion-label >Nombre:</ion-label>
-        <ion-input type="text" formControlName="name" placeholder="Nombre"></ion-input>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-icon name="person" item-start></ion-icon>
-        <ion-label >Apellidos:</ion-label>
-        <ion-input type="text" formControlName="lastName" placeholder="Apellidos"></ion-input>
+      <ion-label position="floating">Apellidos</ion-label>
+      <ion-input type="text" formControlName="lastName"></ion-input>
     </ion-item>
 
     <ion-item>
-        <ion-icon name="mail" item-start></ion-icon>
-        <ion-label >Correo electronico:</ion-label>
-        <ion-input type="text" formControlName="email"placeholder="Email"></ion-input>
+      <ion-label position="floating">Fecha de nacimiento<ion-text color="danger">*</ion-text></ion-label>
+      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthday"></ion-datetime>
     </ion-item>
+    <ion-button block color="primary" type="submit" [disabled]="signUpForm.invalid">
+      Crear cuenta
+    </ion-button>
+  </form>
 
-    <ion-item>
-      <ion-icon name="calendar" item-start></ion-icon>
-      <ion-label >Fecha de nacimiento:</ion-label>
-      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthday"  placeholder="DD-MM-YYYY"></ion-datetime>
-    </ion-item>
-  </ion-list>
+  <!-- FORM DE EMAIL Y CONTRASEÑA PARA POSTERIORES VERSIONES
   <div [formGroup]="matching_passwords_group">
   <ion-list>
+    <ion-item>
+      <ion-icon name="mail" item-start></ion-icon>
+      <ion-label >Correo electronico:</ion-label>
+      <ion-input type="email" formControlName="email"placeholder="Email"></ion-input>
+    </ion-item>
     <ion-item>
       <ion-icon name="eye-off-outline"></ion-icon>
       <ion-label >Contraseña:</ion-label>
@@ -53,10 +60,6 @@
       <ion-input type="password" formControlName="confirm_password"  placeholder=" Confirmar contraseña"></ion-input>
     </ion-item>
   </ion-list>
-  </div>
-</div>
-  <div padding>
-    <button ion-button block type="submit" [disabled]="!signUpForm.valid">Regístrate</button>
-  </div>
+  </div>-->
 
 </ion-content>

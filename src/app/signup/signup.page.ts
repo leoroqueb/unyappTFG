@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../providers/auth.service';
 import { NavController} from '@ionic/angular';
 import { PasswordValidator, UsernamePage } from '../refactors/username/username.validator.page'
@@ -10,29 +10,37 @@ import { PasswordValidator, UsernamePage } from '../refactors/username/username.
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-
   constructor(
     public authService: AuthService,
     public navCtrl: NavController,
     
+    
   ) { }
-
+    signUpForm = new FormGroup({
+      nick: new FormControl('', Validators.compose([
+        //UsernamePage.validUsername,
+        //Validators.pattern('^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$'),
+        Validators.required
+      ])),
+      name: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.compose([
+        Validators.minLength(5),
+        Validators.required,
+        //Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+      ])),
+      lastName: new FormControl('', Validators.required),
+      birthday: new FormControl('', Validators.required),
+      email: new FormControl('',Validators.compose([
+        Validators.required,
+        //Validators.email
+      ])),  
+    })
   ngOnInit(){}
 
-  signUpForm = new FormGroup({
-    nick: new FormControl('', Validators.compose([
-      UsernamePage.validUsername,
-      Validators.pattern('^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$'),
-      Validators.required
-    ])),
-    name: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    birthday: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.compose([
-      Validators.required,
-      Validators.email
-    ])),  
-  });
+  userDetails: any;
+
+  //METODO DE COMPROBACION DE CONTRASEÑA PARA POSTERIORES VERSIONES
+  /** 
   matching_passwords_group = new FormGroup({
     password: new FormControl('', Validators.compose([
        Validators.minLength(5),
@@ -42,23 +50,32 @@ export class SignupPage implements OnInit {
     confirm_password: new FormControl('', Validators.required)
   }, (formGroup: FormGroup) => {
      return PasswordValidator.areEqual(formGroup);
-  });
+  });*/
 
-  /**userDetails = {
-    nick: this.signUpForm.value.nick,
-    name: this.signUpForm.value.name,
-    lastName: this.signUpForm.value.lastName,
-    email: this.signUpForm.value.email,
-    birthDate: this.signUpForm.value.dateBirth,
-    password: this.matching_passwords_group.value.password
-  }
+  
   ionViewDidLoad(){ }
-  signup() {
+  signup(user) {
     try {
-      this.authService.registerUser(this.userDetails);
+      //PASAR A PROMISE PARA QUE PASE AL HOME SI ES CORRECTO O DEVUELVA LOS ERRORES
+      
+      this.authService.registerUser(user);
       this.navCtrl.navigateForward("home");
     } catch (error) {  }
-  }**/
+  }
+  userDetalles(form) {
+    
+    this.userDetails = {
+      email: form.value.email,
+      nick: form.value.nick,
+      name: form.value.name,
+      lastName: form.value.lastName,
+      birthday: form.value.birthday,
+      password: form.value.password
+    }
+    this.signup(this.userDetails);
+    console.log(this.userDetails);
+    
+  }
   
 
 }

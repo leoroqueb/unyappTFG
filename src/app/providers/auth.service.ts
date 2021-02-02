@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { UsuariosI } from '../models/users.interface';
@@ -24,16 +24,18 @@ export class AuthService {
           user.password
         );
 
-      const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
+      /**const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
 
       await userProfileDocument.set({
         id: credentials.user.uid,
+        nick: user.nick,
         email: user.email,
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate
-      });
+      });*/
     } catch (error) {
+      console.log(error);
     }
   }
 
