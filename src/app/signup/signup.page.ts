@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { AuthService } from '../providers/auth.service';
 import { NavController} from '@ionic/angular';
 import { PasswordValidator, UsernamePage } from '../refactors/username/username.validator.page'
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class SignupPage implements OnInit {
   constructor(
     public authService: AuthService,
     public navCtrl: NavController,
-    
+    public router: Router
     
   ) { }
     signUpForm = new FormGroup({
@@ -61,6 +62,7 @@ export class SignupPage implements OnInit {
         res => resolve(res),
         err => reject(err)
       )
+      this.router.navigate(['/home']);
     })
   }
   userDetalles(form) {
