@@ -23,10 +23,7 @@ const routes: Routes = [
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
   },
-  {
-    path: 'refactor',
-    loadChildren: () => import('./refactors/refactor/refactor.module').then( m => m.RefactorPageModule)
-  },
+ 
 ];
 
 @NgModule({

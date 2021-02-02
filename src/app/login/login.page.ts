@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import firebase from "firebase";
+
 
 
 
@@ -13,9 +13,10 @@ export class LoginPage implements OnInit {
 
   constructor(private router: Router) {}
 
-  goBack() {
-    this.router.navigate(['/home'])
+  goToSignUp(){
+    this.router.navigate(['/signup'])
   }
+
   ngOnInit() {
     
   }

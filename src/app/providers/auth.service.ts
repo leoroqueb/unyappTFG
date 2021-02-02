@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 import firebase from 'firebase';
-import { UsuariosI } from '../models/users.interface'
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFireAuth } from '@angular/fire/auth'
+import { UsuariosI } from '../models/users.interface';
 
 
 @Injectable({
@@ -10,28 +11,29 @@ import { UsuariosI } from '../models/users.interface'
 export class AuthService {
 
   constructor(
-    public afireauth: any, 
-    public afs: any,
+    public afireauth: AngularFireAuth, 
+    public afs: AngularFirestore,
     
   ) { }
 
   async registerUser(user): Promise<any> {
     try {
-      const credentials: firebase.auth.UserCredential = await this.afireauth.auth
+      const credentials: firebase.auth.UserCredential = await this.afireauth
         .createUserWithEmailAndPassword(
           user.email,
           user.password
         );
-      const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`userProfile/${credentials.user.uid}`);
+
+      const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
+
       await userProfileDocument.set({
-        userID: credentials.user.uid,
+        id: credentials.user.uid,
         email: user.email,
         name: user.name,
         lastName: user.lastName,
-        birthDate: user.birthDate,
+        birthDate: user.birthDate
       });
     } catch (error) {
-      return error;
     }
   }
 
@@ -45,6 +47,6 @@ export class AuthService {
     })
   }
   doLogout(){
-    this.afireauth.auth.signOut().then(() => { })
+    this.afireauth.signOut().then(() => { })
   }
 }

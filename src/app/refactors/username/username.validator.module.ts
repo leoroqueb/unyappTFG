@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RefactorPageRoutingModule } from './refactor-routing.module';
+import { UsernamePageRoutingModule } from './username.validator-routing.module';
 
-import { RefactorPage } from './refactor.page';
+import { UsernamePage } from './username.validator.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RefactorPageRoutingModule
+    UsernamePageRoutingModule
   ],
-  declarations: [RefactorPage]
+  declarations: [UsernamePage]
 })
-export class RefactorPageModule {}
+export class UsernamePageModule {}
