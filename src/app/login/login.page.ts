@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import firebase from "firebase";
+
+
 
 @Component({
   selector: 'app-login',
@@ -14,6 +17,6 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/home'])
   }
   ngOnInit() {
+    
   }
-
 }

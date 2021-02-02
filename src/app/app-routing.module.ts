@@ -19,6 +19,14 @@ const routes: Routes = [
     path: 'perfil',
     loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
   },
+  {
+    path: 'signup',
+    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'refactor',
+    loadChildren: () => import('./refactors/refactor/refactor.module').then( m => m.RefactorPageModule)
+  },
 ];
 
 @NgModule({
