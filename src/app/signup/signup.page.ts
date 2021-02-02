@@ -4,6 +4,7 @@ import { AuthService } from '../providers/auth.service';
 import { NavController} from '@ionic/angular';
 import { PasswordValidator, UsernamePage } from '../refactors/username/username.validator.page'
 
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -55,12 +56,12 @@ export class SignupPage implements OnInit {
   
   ionViewDidLoad(){ }
   signup(user) {
-    try {
-      //PASAR A PROMISE PARA QUE PASE AL HOME SI ES CORRECTO O DEVUELVA LOS ERRORES
-      
-      this.authService.registerUser(user);
-      this.navCtrl.navigateForward("home");
-    } catch (error) {  }
+    return new Promise<any>((resolve, reject) =>{
+      this.authService.registerUser(user).then(
+        res => resolve(res),
+        err => reject(err)
+      )
+    })
   }
   userDetalles(form) {
     

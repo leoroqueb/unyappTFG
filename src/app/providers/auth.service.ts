@@ -24,7 +24,7 @@ export class AuthService {
           user.password
         );
 
-      /**const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
+      const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
 
       await userProfileDocument.set({
         id: credentials.user.uid,
@@ -32,8 +32,8 @@ export class AuthService {
         email: user.email,
         name: user.name,
         lastName: user.lastName,
-        birthDate: user.birthDate
-      });*/
+        birthDate: user.birthday
+      });
     } catch (error) {
       console.log(error);
     }
