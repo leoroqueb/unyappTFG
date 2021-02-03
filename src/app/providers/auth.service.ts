@@ -41,18 +41,10 @@ export class AuthService {
     }
   }
 
-  doLogin(value){
-      return new Promise<firebase.auth.UserCredential>((resolve, reject) => {
-        firebase.auth().signInWithEmailAndPassword(value.email, 
-        value.password)
-        .then( 
-          res => resolve(res),
-        )  
-        .catch(err => reject(this.alertController.alertaErrores(err)))
-      })
-    
+  async loginUser(Login): Promise<firebase.auth.UserCredential> {
+    return this.afireauth.signInWithEmailAndPassword(Login.email, Login.password);
   }
-  
+
 
     
   doLogout(){

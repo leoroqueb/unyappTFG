@@ -1,17 +1,21 @@
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosProvider {
   private usersCollection: AngularFirestoreCollection<UsuariosI>;
+  private todos: Observable<UsuariosI[]>;
 
   constructor(
-    public http: HttpClient,
+    //public http: HttpClient,
+    
     db: AngularFirestore,
     private afAuth: AngularFireAuth) {
     this.usersCollection = db.collection<UsuariosI>('users');
@@ -30,6 +34,7 @@ export class UsuariosProvider {
       return ""
     }
   }
+
   async getActualUser() {
     return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
   }

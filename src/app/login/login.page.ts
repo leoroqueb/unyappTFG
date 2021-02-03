@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI, UsuariosI } from '../models/users.interface'
 import { NavController } from '@ionic/angular';
-import { HomePage } from '../home/home.page';
-
+import { UsuariosProvider } from '../providers/usuarios'
+import { take } from 'rxjs/operators'
 
 @Component({
   selector: 'app-login',
@@ -18,9 +18,10 @@ export class LoginPage implements OnInit {
     public navCtrl: NavController,
     private router: Router,
     public auth: AuthService,
+    public userProvider: UsuariosProvider,
     private authService: AuthService
     ) {}
-    user: UsuariosI = {
+    usuario: UsuariosI = {
       nick: "",
       name: "",
       lastName: "",
@@ -33,20 +34,20 @@ export class LoginPage implements OnInit {
     password: new FormControl('', Validators.required)
   })
 
-  onSubmit(user){
+  async onSubmit(user){
     this.userDetail = {
       email: user.value.email,
       password: user.value.password,
     }
     try{
-    this.authService.doLogin(this.userDetail)
-    .then(usuario =>{
-      user = usuario;
-      this.router.navigate(['/home']); 
-    });    
-    }catch(error){
-      alert(error);
-    }
+    await this.auth.loginUser(this.userDetail);
+    (await this.userProvider.getActualUser()).pipe(take(1)).toPromise()
+    .then(usuario => {
+      this.usuario = usuario;
+      this.navCtrl.navigateRoot('/home');
+    });
+    
+  } catch (error) {  }
   }
 
   ngOnInit() {

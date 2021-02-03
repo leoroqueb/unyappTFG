@@ -1,7 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NavController} from '@ionic/angular';
-import { UsernamePage } from '../refactors/username/username.validator.page';
 import { Router } from '@angular/router';
 import { RegistroRefactor, AlertasRefactor } from '../refactors/username/refactor';
 

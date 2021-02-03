@@ -32,6 +32,7 @@ export class RegistroRefactor{
     detallesImportantes: Array<string>;
     detallesSecundarios: Array<string>;
     detallesFinal: any;
+    fechaModificada: string;
     constructor(){}
 
     obtenerFormFinal(){
@@ -52,6 +53,7 @@ export class RegistroRefactor{
     }
 
     recibirDatosSecundarios(form){
-        this.detallesSecundarios = [form.value.nick, form.value.name, form.value.lastName, form.value.birthday];
+        this.fechaModificada = form.value.birthday.substring(0,10);
+        this.detallesSecundarios = [form.value.nick, form.value.name, form.value.lastName, this.fechaModificada];
     }
 }
