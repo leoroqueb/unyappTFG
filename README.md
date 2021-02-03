@@ -21,8 +21,8 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
 3. Implementación de firebase como método de autenticación y database.
 4. Sistema de registro.
 5. Sistema de autenticación mediante email y contraseña.
-6. Log Out.
-7. Redirección a página principal única para cada usuario.
+6. Redirección a página principal única para cada usuario.
+7. Log Out.
 8. Creación de páginas necesarias con datos únicos para cada usuario.
 
 ## Objetivos cumplidos
@@ -31,6 +31,6 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
 - [x] Implementación de firebase como método de autenticación y database.
 - [x] Sistema de registro.
 - [x] Sistema de autenticación mediante email y contraseña.
-- [ ] Log Out.
 - [ ] Redirección a página principal única para cada usuario.
+- [ ] Log Out.
 - [ ] Creación de páginas necesarias con datos únicos para cada usuario.
