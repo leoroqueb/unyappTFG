@@ -7,14 +7,27 @@
 
 <ion-content>
   <div>
-    <ion-button routerLink="/home" expand="block" fill="clear" shape="round">
-      Iniciar sesionsita
-    </ion-button>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
+      <ion-item>
+        <ion-label position="floating">E-Mail <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required formControlName="email" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required formControlName="password" type="password"></ion-input>
+      </ion-item>
+      <ion-button block color="primary" type="submit" [disabled]="loginForm.invalid">
+        Iniciar sesión
+      </ion-button>
+    </form>
+  </div>
+  <div>
     <h2>¿Eres nuevo?</h2>
     <ion-button routerLink="/signup" expand="block" color="danger" shape="round">
       ¡Regístrate!
     </ion-button>
   </div>
+  
   
   
 

@@ -3,6 +3,7 @@ import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { UsuariosI } from '../models/users.interface';
+import { AlertasRefactor } from '../refactors/username/refactor'
 
 
 @Injectable({
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
+    public alertController: AlertasRefactor,
     
   ) { }
 
@@ -40,14 +42,19 @@ export class AuthService {
   }
 
   doLogin(value){
-    return new Promise<firebase.auth.UserCredential>((resolve, reject) => {
-      firebase.auth().signInWithEmailAndPassword(value.email, 
-      value.password)
-      .then( 
-        res => resolve(res),
-        err => reject(err))
-    })
+      return new Promise<firebase.auth.UserCredential>((resolve, reject) => {
+        firebase.auth().signInWithEmailAndPassword(value.email, 
+        value.password)
+        .then( 
+          res => resolve(res),
+        )  
+        .catch(err => reject(this.alertController.alertaErrores(err)))
+      })
+    
   }
+  
+
+    
   doLogout(){
     this.afireauth.signOut().then(() => { })
   }

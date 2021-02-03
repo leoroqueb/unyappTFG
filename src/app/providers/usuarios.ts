@@ -21,6 +21,16 @@ export class UsuariosProvider {
   addUsuario(usuario: UsuariosI) {
     return this.usersCollection.add(usuario);
   }
+  async getActualUserUID(): Promise<string> {
+    if (this.afAuth.currentUser) {
+      return (await this.afAuth.currentUser).uid;
+    } else {
+      return ""
+    }
+  }
+  async getActualUser() {
+    return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
+  }
   removeUsuario(id: string) {
     return this.usersCollection.doc(id).delete();
   }
