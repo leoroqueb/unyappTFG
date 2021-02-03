@@ -18,12 +18,40 @@ export class AlertasRefactor {
             buttons: [
                  {
                 text: 'Cerrar',
-                handler: () => {
-                    console.log('Confirm Okay');
-                }
                 }
             ]
         });
         await alert.present();
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+  })
+export class RegistroRefactor{
+    detallesImportantes: Array<string>;
+    detallesSecundarios: Array<string>;
+    detallesFinal: any;
+    constructor(){}
+
+    obtenerFormFinal(){
+        this.detallesFinal = {
+            email: this.detallesImportantes[0],
+            password: this.detallesImportantes[1],
+            nick: this.detallesSecundarios[0],
+            name: this.detallesSecundarios[1],
+            lastName: this.detallesSecundarios[2],
+            birthday: this.detallesSecundarios[3],
+        }
+        
+        return this.detallesFinal;
+    }
+
+    recibirDatosImportantes(form){
+        this.detallesImportantes = [form.value.email, form.value.password];
+    }
+
+    recibirDatosSecundarios(form){
+        this.detallesSecundarios = [form.value.nick, form.value.name, form.value.lastName, form.value.birthday];
     }
 }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>signup</ion-title>
+    <ion-title>Primeros</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/login"></ion-back-button>
     </ion-buttons>
@@ -8,58 +8,30 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form [formGroup]="signUpForm" (ngSubmit)="userDetalles(signUpForm)">
-    <ion-item>
-      <ion-label position="floating">E-Mail<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input formControlName="email" type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Password<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input formControlName="password" type="password"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Nick<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input type="text" formControlName="nick"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" formControlName="name"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Apellidos</ion-label>
-      <ion-input type="text" formControlName="lastName"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Fecha de nacimiento<ion-text color="danger">*</ion-text></ion-label>
-      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthday"></ion-datetime>
-    </ion-item>
-    <ion-button block color="primary" type="submit" [disabled]="signUpForm.invalid">
-      Crear cuenta
-    </ion-button>
-  </form>
-
-  <!-- FORM DE EMAIL Y CONTRASEÑA PARA POSTERIORES VERSIONES
-  <div [formGroup]="matching_passwords_group">
-  <ion-list>
+  <!-- FORM DE EMAIL Y CONTRASEÑA PARA POSTERIORES VERSIONES-->
+  <p>Primero, dinos tu email y la contraseña que quieras usar</p>
+  <p>La contraseña ha de ser una mezcla de minúsculas, mayúsculas y números</p>
+  <p>La contraseña ha de ser mayor a 6 caracteres</p>
+  <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
+  <form [formGroup]="matching_passwords_group" (ngSubmit)="userDetallesImportantes(matching_passwords_group)">
     <ion-item>
       <ion-icon name="mail" item-start></ion-icon>
-      <ion-label >Correo electronico:</ion-label>
-      <ion-input type="email" formControlName="email"placeholder="Email"></ion-input>
+      <ion-label >Correo electronico:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" formControlName="email"placeholder="Email"></ion-input>
     </ion-item>
     <ion-item>
       <ion-icon name="eye-off-outline"></ion-icon>
-      <ion-label >Contraseña:</ion-label>
+      <ion-label >Contraseña:<ion-text color="danger">*</ion-text></ion-label>
       <ion-input type="password" formControlName="password" placeholder="Contraseña"></ion-input>
     </ion-item>
     <ion-item>
       <ion-icon name="eye-off-outline"></ion-icon>
-      <ion-label> Confirmar contraseña:</ion-label>
+      <ion-label> Confirmar contraseña:<ion-text color="danger">*</ion-text></ion-label>
       <ion-input type="password" formControlName="confirm_password"  placeholder=" Confirmar contraseña"></ion-input>
     </ion-item>
-  </ion-list>
-  </div>-->
+    <ion-button block color="primary" type="submit" [disabled]="matching_passwords_group.invalid">
+      Siguiente
+    </ion-button>
+  </form>
 
 </ion-content>

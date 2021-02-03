@@ -4,7 +4,9 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UsuariosProvider {
   private usersCollection: AngularFirestoreCollection<UsuariosI>;
 

@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: SignupPage
+  },
+  {
+    path: 'signup-otros-datos',
+    loadChildren: () => import('./signup-otros-datos/signup-otros-datos.module').then( m => m.SignupOtrosDatosPageModule)
   }
 ];
 
