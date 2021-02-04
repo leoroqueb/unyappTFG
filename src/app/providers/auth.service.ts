@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { UsuariosProvider } from '../providers/usuarios'
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { auth } from 'firebaseui';
 
 
 
@@ -38,6 +37,7 @@ export class AuthService {
       })
       
     )
+    this.getCredentialData();
   }
 
   getCredentialData(){
@@ -56,7 +56,7 @@ export class AuthService {
     try {
        const credentials = await this.afireauth
         .createUserWithEmailAndPassword(email, password);
-        //await this.sendVerificationEmail();
+        await this.sendVerificationEmail();
         const userRef: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
         this.updateData(user, userRef, credentials);
     } catch (error) {
@@ -64,6 +64,7 @@ export class AuthService {
     }
   }
 
+  //Actualiza las credenciales del usuario
   async updateCredencialData(user: CredencialesI){
     const userRef: AngularFirestoreDocument<CredencialesI> = this.afs.doc(`credencialesUsers/${user.email}`);
     const userProfileDocument: CredencialesI = {
@@ -74,6 +75,7 @@ export class AuthService {
     return userRef.set(userProfileDocument, {merge: true});
   }
 
+  //Actualiza datos del usuario
   async updateData(user: UsuariosI, userRef: AngularFirestoreDocument<UsuariosI>, credential){
     
     const userProfileDocument: UsuariosI = {
@@ -83,8 +85,6 @@ export class AuthService {
       name: user.name,
       lastName: user.lastName,
       birthDate: user.birthDate,
-      //Valor opcional
-      emailVerified: user.emailVerified
     };
     return userRef.set(userProfileDocument, {merge: true});
   }
@@ -95,7 +95,7 @@ export class AuthService {
       const {user} = await this.afireauth.signInWithEmailAndPassword(email, password);
       if(user){
         this.isLogged = true;
-        console.log(this.getCredentialData())
+        this.updateCredencialData(user);
         return user;
       }
     } catch (error) {
@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   //Comprueba que el email esta verificado
-  async isEmailVerified(user: CredencialesI){
+  isEmailVerified(user: CredencialesI){
     return user.emailVerified === true ? true : false;
   }
 
@@ -135,6 +135,8 @@ export class AuthService {
   async googleLogIn(): Promise<any>{
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      this.isLogged = true;
+      this.updateCredencialData(user);
       return user;
     } catch (error) {
       

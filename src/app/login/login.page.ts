@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI, UsuariosI } from '../models/users.interface'
 import { NavController } from '@ionic/angular';
 import { UsuariosProvider } from '../providers/usuarios'
 import { AlertasRefactor } from '../refactors/username/refactor'
-import { take } from 'rxjs/operators'
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +13,7 @@ import { take } from 'rxjs/operators'
   styleUrls: ['./login.page.scss'],
 })
 
-export class LoginPage implements OnInit {
+export class LoginPage {
   userDetail: CredencialesI;
   constructor(
     public navCtrl: NavController,
@@ -24,20 +23,25 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private alerta: AlertasRefactor
     ) {}
+
+    //PENDIENTE DE REVISION PARA ELIMINAR
     usuario: UsuariosI = {
       displayName: "",
       name: "",
       lastName: "",
       email: "",
       birthDate: null,
-      //valor opcional
-      emailVerified: false,
     };
 
-  loginForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
-  })
+    loginForm = new FormGroup({
+      email: new FormControl('',Validators.compose([
+        Validators.required,
+      ])),
+      password: new FormControl('', Validators.compose([
+         Validators.minLength(6),
+         Validators.required,
+      ]))
+    })
 
   async onSubmit(email, password){
     try{
@@ -46,7 +50,8 @@ export class LoginPage implements OnInit {
       const logged = await this.auth.loginUser(email.value, password.value);
       if(logged){
         const isVerified = this.authService.isEmailVerified(logged);
-        this.router.navigate(['/home']);
+        this.redirectUser(isVerified)
+        
       }
     } catch (error) {  
       console.log(error)
@@ -56,11 +61,18 @@ export class LoginPage implements OnInit {
   async googleLogIn(email, password){
     const logged = await this.auth.googleLogIn()
     if(logged){
+      const isVerified = this.authService.isEmailVerified(logged);
+      this.redirectUser(isVerified)
       console.log("Sesion iniciada correctamente con Google", logged);
     }
   }
 
-  ngOnInit() {
-    
+  redirectUser(isVerified: boolean){
+    if(isVerified){
+      this.router.navigate(['/home']);
+    }else{
+      this.router.navigate(['/nonverify']);
+    }
+
   }
 }

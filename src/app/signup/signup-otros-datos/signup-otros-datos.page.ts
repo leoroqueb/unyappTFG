@@ -57,13 +57,12 @@ export class SignupOtrosDatosPage implements OnInit {
       displayName: user.displayName,
       email: user.email,
       birthDate: user.birthDate,
-      emailVerified: false
     }
 
     //Creamos el CredentialI con datos de ambos form
     const credencial: CredencialesI = {
       email: user.email,
-      emailVerified: datosSecun.emailVerified,
+      emailVerified: false,
       displayName: user.displayName
     }
 

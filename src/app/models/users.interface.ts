@@ -17,8 +17,6 @@ export interface UsuariosI{
     lastName:string;
     birthDate:Date;   
     email:string;
-    //Valor opcional
-    emailVerified:boolean;
 }
 
 export interface CredencialesI{
