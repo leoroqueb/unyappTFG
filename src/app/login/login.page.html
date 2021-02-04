@@ -6,14 +6,14 @@
 
 <ion-content [fullscreen]="true">
   <ion-item-divider> 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(email, password)">
       <ion-item>
         <ion-label position="floating">E-Mail </ion-label>
-        <ion-input required formControlName="email" type="text"></ion-input>
+        <ion-input required formControlName="email" #email type="text" autofocus="true"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input required formControlName="password" type="password"></ion-input>
+        <ion-input required formControlName="password" #password type="password"></ion-input>
       </ion-item>
       <ion-button block color="primary" type="submit" [disabled]="loginForm.invalid">
         Iniciar sesión
@@ -24,6 +24,10 @@
     <h2>¿Eres nuevo?</h2>
     <ion-button routerLink="/signup" expand="block" color="danger" shape="round">
       ¡Regístrate!
+    </ion-button>
+    <span expand="block">or</span>
+    <ion-button (click)="googleLogIn(email,password)" expand="block" color="danger" shape="round">
+      Inicia sesión con Google
     </ion-button>
   </ion-item-divider>
 </ion-content>

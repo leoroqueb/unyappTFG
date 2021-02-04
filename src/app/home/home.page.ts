@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
@@ -10,8 +10,8 @@ import { NavController } from '@ionic/angular'
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  usuarios: UsuariosI;
+export class HomePage implements OnInit{
+  usuarios: UsuariosI[];
   observer: Subscription
   constructor(
     private userService: UsuariosProvider,
@@ -19,14 +19,15 @@ export class HomePage {
     private navCtrl: NavController
   ) {}
 
+  
   ionViewCanLeave(){
     this.observer.unsubscribe();
   }
   
-  async ngOnInit(){
-    this.observer = (await this.userService.getActualUser()).subscribe(res =>{
-      this.usuarios = res;
-    });
+  ngOnInit(){
+    this.userService.getUsers().subscribe(res =>{
+      console.log('usuarios', res);
+    })
   }
 
   cerrarSesion(){

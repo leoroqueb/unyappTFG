@@ -4,6 +4,7 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -11,18 +12,27 @@ import { Observable } from 'rxjs';
 })
 export class UsuariosProvider {
   private usersCollection: AngularFirestoreCollection<UsuariosI>;
-  private todos: Observable<UsuariosI[]>;
+  private todosUsuarios: Observable<UsuariosI[]>;
 
   constructor(
     //public http: HttpClient,
     
     db: AngularFirestore,
     private afAuth: AngularFireAuth) {
-    this.usersCollection = db.collection<UsuariosI>('users');
+    this.usersCollection = db.collection<UsuariosI>(`users`);
+    this.todosUsuarios = this.usersCollection.snapshotChanges().pipe(map(
+      actions =>{
+        return actions.map( a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+      }
+    ));
   }
 
   updateUsuario(usuario: UsuariosI) {
-    return this.usersCollection.doc(usuario.id).update(usuario);
+    return this.usersCollection.doc(usuario.uid).update(usuario);
   }
   addUsuario(usuario: UsuariosI) {
     return this.usersCollection.add(usuario);
@@ -37,6 +47,14 @@ export class UsuariosProvider {
 
   async getActualUser() {
     return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
+  }
+
+  getUserById(id: string){
+    return this.usersCollection.doc<UsuariosI>(id).valueChanges();
+  }
+
+  getUsers(){
+    return this.todosUsuarios;
   }
   removeUsuario(id: string) {
     return this.usersCollection.doc(id).delete();

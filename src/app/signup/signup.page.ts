@@ -54,7 +54,7 @@ export class SignupPage implements OnInit {
       this.refactor.recibirDatosImportantes(form);
       this.router.navigate(['/signup/signup-otros-datos']);
     }else{
-      this.alerta.alertaErrores("Las contraseñas no coinciden.");
+      this.alerta.alerta("Las contraseñas no coinciden.", "ERROR");
     }
     
   }

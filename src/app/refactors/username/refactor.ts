@@ -10,10 +10,10 @@ export class AlertasRefactor {
         public alertController: AlertController,
     ){}
 
-    async alertaErrores(msg: string) {
+    async alerta(msg: string, header: string) {
         const alert = await this.alertController.create({
         
-            header: 'Error',
+            header: header,
             message: msg,
             buttons: [
                  {
@@ -39,10 +39,11 @@ export class RegistroRefactor{
         this.detallesFinal = {
             email: this.detallesImportantes[0],
             password: this.detallesImportantes[1],
-            nick: this.detallesSecundarios[0],
+            displayName: this.detallesSecundarios[0],
             name: this.detallesSecundarios[1],
             lastName: this.detallesSecundarios[2],
-            birthday: this.detallesSecundarios[3],
+            birthDate: this.detallesSecundarios[3],
+            emailVerified: false
         }
         
         return this.detallesFinal;
@@ -53,7 +54,7 @@ export class RegistroRefactor{
     }
 
     recibirDatosSecundarios(form){
-        this.fechaModificada = form.value.birthday.substring(0,10);
-        this.detallesSecundarios = [form.value.nick, form.value.name, form.value.lastName, this.fechaModificada];
+        this.fechaModificada = form.value.birthDate.substring(0,10);
+        this.detallesSecundarios = [form.value.displayName, form.value.name, form.value.lastName, this.fechaModificada];
     }
 }

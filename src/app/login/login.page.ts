@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI, UsuariosI } from '../models/users.interface'
 import { NavController } from '@ionic/angular';
 import { UsuariosProvider } from '../providers/usuarios'
+import { AlertasRefactor } from '../refactors/username/refactor'
 import { take } from 'rxjs/operators'
 
 @Component({
@@ -12,6 +13,7 @@ import { take } from 'rxjs/operators'
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+
 export class LoginPage implements OnInit {
   userDetail: CredencialesI;
   constructor(
@@ -19,14 +21,17 @@ export class LoginPage implements OnInit {
     private router: Router,
     public auth: AuthService,
     public userProvider: UsuariosProvider,
-    private authService: AuthService
+    private authService: AuthService,
+    private alerta: AlertasRefactor
     ) {}
     usuario: UsuariosI = {
-      nick: "",
+      displayName: "",
       name: "",
       lastName: "",
       email: "",
       birthDate: null,
+      //valor opcional
+      emailVerified: false,
     };
 
   loginForm = new FormGroup({
@@ -34,20 +39,25 @@ export class LoginPage implements OnInit {
     password: new FormControl('', Validators.required)
   })
 
-  async onSubmit(user){
-    this.userDetail = {
-      email: user.value.email,
-      password: user.value.password,
-    }
+  async onSubmit(email, password){
     try{
-    await this.auth.loginUser(this.userDetail);
-    (await this.userProvider.getActualUser()).pipe(take(1)).toPromise()
-    .then(usuario => {
-      this.usuario = usuario;
-      this.navCtrl.navigateRoot('/home');
-    });
-    
-  } catch (error) {  }
+      
+      //Iniciamos sesion en firebase
+      const logged = await this.auth.loginUser(email.value, password.value);
+      if(logged){
+        const isVerified = this.authService.isEmailVerified(logged);
+        this.router.navigate(['/home']);
+      }
+    } catch (error) {  
+      console.log(error)
+    }
+  }
+
+  async googleLogIn(email, password){
+    const logged = await this.auth.googleLogIn()
+    if(logged){
+      console.log("Sesion iniciada correctamente con Google", logged);
+    }
   }
 
   ngOnInit() {

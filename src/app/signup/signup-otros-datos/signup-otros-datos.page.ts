@@ -4,6 +4,8 @@ import { RegistroRefactor } from './../../refactors/username/refactor';
 import { AuthService } from './../../providers/auth.service';
 import { UsernamePage } from './../../refactors/username/username.validator.page';
 import { Router } from '@angular/router';
+import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
+import { AlertasRefactor } from './../../../app/refactors/username/refactor'
 
 @Component({
   selector: 'app-signup-otros-datos',
@@ -14,38 +16,68 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class SignupOtrosDatosPage implements OnInit {
-  detalles: any;
+  
   constructor(
     public refactor: RegistroRefactor,
     public authService: AuthService,
     public router: Router,
+    public alerta: AlertasRefactor
   ) { }
 
   ngOnInit() {
   }
+
   signUpForm = new FormGroup({
-    nick: new FormControl('', Validators.compose([
+    displayName: new FormControl('', Validators.compose([
       UsernamePage.validUsername,
       Validators.required
     ])),
     name: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    birthday: new FormControl('', Validators.required), 
+    birthDate: new FormControl('', Validators.required), 
   })
 
+  /**
+   * Aqui podemos obtener de manera separada los datos del primer paso
+   * del signup y los del segundo, y podemos unirlos en un solo dato
+   */
   recibirDatosForm(form){
     this.refactor.recibirDatosSecundarios(form);
-    this.detalles = this.refactor.obtenerFormFinal();
-    this.signup(this.detalles);
+    const detalles = this.refactor.obtenerFormFinal();
+    this.signup(detalles);
     
   }
+  
   signup(user) {
-    return new Promise<any>((resolve, reject) =>{
-      this.authService.registerUser(user).then(
-        res => resolve(res),
-        err => reject(err)
-      )
-      
-    })
+
+    //Sacamos todos los datos secundarios
+    const datosSecun: UsuariosI = {
+      name: user.name,
+      lastName: user.lastName,
+      displayName: user.displayName,
+      email: user.email,
+      birthDate: user.birthDate,
+      emailVerified: false
+    }
+
+    //Creamos el CredentialI con datos de ambos form
+    const credencial: CredencialesI = {
+      email: user.email,
+      emailVerified: datosSecun.emailVerified,
+      displayName: user.displayName
+    }
+
+    //Intentamos el registro
+    const registered = this.authService.registerUser(datosSecun, user.email, user.password);
+    
+    //Si no es null (por lo tanto, esta bien hecho)
+    if(registered){
+
+      //Actualizamos las BD y vamos al login para que el usuario se loguee
+      // MAS ADELANTE PODREMOS IR DIRECTAMENTE AL HOME CON EL USUARIO LOGUEADO
+      this.authService.updateCredencialData(credencial)
+      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+      this.router.navigateByUrl('/')
+    }
   }
 }

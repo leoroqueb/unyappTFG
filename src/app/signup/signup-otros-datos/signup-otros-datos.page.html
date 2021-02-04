@@ -12,7 +12,7 @@
   <form [formGroup]="signUpForm" (ngSubmit)="recibirDatosForm(signUpForm)">
     <ion-item>
       <ion-label position="floating">Nick<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input type="text" formControlName="nick"></ion-input>
+      <ion-input type="text" formControlName="displayName"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -27,7 +27,7 @@
 
     <ion-item>
       <ion-label position="floating">Fecha de nacimiento<ion-text color="danger">*</ion-text></ion-label>
-      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthday"></ion-datetime>
+      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthDate"></ion-datetime>
     </ion-item>
     <ion-button block color="primary" type="submit" [disabled]="signUpForm.invalid">
       Crear cuenta
