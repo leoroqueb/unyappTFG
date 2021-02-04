@@ -16,6 +16,7 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
 
 ## Objetivos 
 #### _Nota: Se actualizarán periódicamente._
+- **Log In y registro**
 1. Correcta creación del proyecto en Ionic.
 2. Instalación de librerías necesarias para crear un prototipo base.
 3. Implementación de firebase como método de autenticación y database.
@@ -24,13 +25,18 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
 6. Redirección a página principal única para cada usuario.
 7. Log Out.
 8. Creación de páginas necesarias con datos únicos para cada usuario.
+9. Sistema de autenticación mediante Google.
+10. Estructura de ficheros para recuperar contraseña y que el usuario reciba de nuevo el email de confirmación.
 
 ## Objetivos cumplidos
-- [x] Correcta creación del proyecto en Ionic.
-- [x] Instalación de librerías necesarias para crear un prototipo base.
-- [x] Implementación de firebase como método de autenticación y database.
-- [x] Sistema de registro.
-- [x] Sistema de autenticación mediante email y contraseña.
-- [ ] Redirección a página principal única para cada usuario.
-- [ ] Log Out.
-- [ ] Creación de páginas necesarias con datos únicos para cada usuario.
+- **Log In y Registro**
+    - [x] Correcta creación del proyecto en Ionic.
+    - [x] Instalación de librerías necesarias para crear un prototipo base.
+    - [x] Implementación de firebase como método de autenticación y database.
+    - [x] Sistema de registro.
+    - [x] Sistema de autenticación mediante email y contraseña.
+    - [ ] Redirección a página principal única para cada usuario.
+    - [x] Log Out.
+    - [ ] Creación de páginas necesarias con datos únicos para cada usuario.
+    - [x] Sistema de autenticación mediante Google.
+    - [x] Estructura de ficheros para recuperar contraseña y que el usuario reciba de nuevo el email de confirmación.
