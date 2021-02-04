@@ -58,13 +58,8 @@ export class LoginPage {
     }
   }
 
-  async googleLogIn(email, password){
-    const logged = await this.auth.googleLogIn()
-    if(logged){
-      const isVerified = this.authService.isEmailVerified(logged);
-      this.redirectUser(isVerified)
-      console.log("Sesion iniciada correctamente con Google", logged);
-    }
+  async googleLogIn(){
+    await this.auth.googleLogIn();
   }
 
   redirectUser(isVerified: boolean){

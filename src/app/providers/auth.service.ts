@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { CredencialesI, UsuariosI } from '../models/users.interface';
 import { AlertasRefactor } from '../refactors/username/refactor'
 import { Router } from '@angular/router';
-import { UsuariosProvider } from '../providers/usuarios'
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -15,19 +14,21 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  public isLogged: any = false;
   public user$: Observable<UsuariosI>;
   public credencial$: Observable<CredencialesI>;
-  
+  private usersCollection: AngularFirestoreCollection<UsuariosI>;
   
   constructor(
+    db: AngularFirestore,
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
     public alerta: AlertasRefactor,
-    private router: Router,
-    private userProvider: UsuariosProvider
-       
+    public router: Router
   ) { 
+    this.usersCollection = db.collection<UsuariosI>(`users`);
+
+
+    //Conectamos con la base de datos 'users'
     this.user$ = this.afireauth.authState.pipe(
       switchMap((user)=>{
         if(user) {
@@ -37,31 +38,47 @@ export class AuthService {
       })
       
     )
-    this.getCredentialData();
-  }
 
-  getCredentialData(){
+    //Conectamos con la base de datos 'credencialesUser'
     this.credencial$ = this.afireauth.authState.pipe(
       switchMap((user)=>{
         if(user) {
-          return this.afs.doc<CredencialesI>(`credencialesUsers/${user.uid}`).valueChanges();
+          return this.afs.doc<CredencialesI>(`credencialesUsers/${user.email}`).valueChanges();
         }
         return of(null);
       })
     )
+    
   }
+
 
   //REGISTRO USUARIO CON EMAIL Y CONTRASEÑA
   async registerUser(user: UsuariosI, email:string, password:string): Promise<any> {
     try {
-       const credentials = await this.afireauth
-        .createUserWithEmailAndPassword(email, password);
+
+        //Intentamos el registro, enviamos email de verificación y actualizamos perfil del usuario 
+        const credentials = await this.afireauth
+          .createUserWithEmailAndPassword(email, password);
         await this.sendVerificationEmail();
-        const userRef: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credentials.user.uid}`);
-        this.updateData(user, userRef, credentials);
+        
+        this.createDataFirstTime(user, credentials);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  //Actualiza datos del usuario
+  async createDataFirstTime(user: UsuariosI, credential){
+      const userRef: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credential.user.uid}`);
+      const userProfileDocument: UsuariosI = {
+        uid: credential.user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        name: user.name,
+        lastName: user.lastName,
+        birthDate: user.birthDate,
+      };
+      return userRef.set(userProfileDocument, {merge: true});
   }
 
   //Actualiza las credenciales del usuario
@@ -75,26 +92,15 @@ export class AuthService {
     return userRef.set(userProfileDocument, {merge: true});
   }
 
-  //Actualiza datos del usuario
-  async updateData(user: UsuariosI, userRef: AngularFirestoreDocument<UsuariosI>, credential){
-    
-    const userProfileDocument: UsuariosI = {
-      uid: credential.user.uid,
-      displayName: user.displayName,
-      email: user.email,
-      name: user.name,
-      lastName: user.lastName,
-      birthDate: user.birthDate,
-    };
-    return userRef.set(userProfileDocument, {merge: true});
-  }
+  
 
   //LOGIN USER CON EMAIL Y CONTRASEÑA
   async loginUser(email, password): Promise<CredencialesI>{
     try {
+      //Obtenemos las credenciales del inicio de sesion
       const {user} = await this.afireauth.signInWithEmailAndPassword(email, password);
       if(user){
-        this.isLogged = true;
+        //Si todo ha ido bien, actualizamos las credenciales   
         this.updateCredencialData(user);
         return user;
       }
@@ -135,8 +141,8 @@ export class AuthService {
   async googleLogIn(): Promise<any>{
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      this.isLogged = true;
       this.updateCredencialData(user);
+      this.router.navigate(['/signup/google-sign-up']);
       return user;
     } catch (error) {
       

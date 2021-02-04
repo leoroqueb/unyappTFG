@@ -29,10 +29,10 @@ export class AlertasRefactor {
     providedIn: 'root'
   })
 export class RegistroRefactor{
-    detallesImportantes: Array<string>;
-    detallesSecundarios: Array<string>;
-    detallesFinal: any;
-    fechaModificada: string;
+    private detallesImportantes: Array<string>;
+    private detallesSecundarios: Array<string>;
+    private detallesFinal: any;
+    private fechaModificada: string;
     constructor(){}
 
     obtenerFormFinal(){
@@ -51,10 +51,18 @@ export class RegistroRefactor{
 
     recibirDatosImportantes(form){
         this.detallesImportantes = [form.value.email, form.value.password];
+        return this.detallesImportantes;
     }
 
     recibirDatosSecundarios(form){
         this.fechaModificada = form.value.birthDate.substring(0,10);
         this.detallesSecundarios = [form.value.displayName, form.value.name, form.value.lastName, this.fechaModificada];
+        return this.detallesSecundarios;
+    }
+
+    recibirDatosGoogle(form){
+        this.fechaModificada = form.value.birthDate.substring(0,10);
+        this.detallesSecundarios = [form.value.name, form.value.lastName, this.fechaModificada];
+        return this.detallesSecundarios;
     }
 }

@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegistroRefactor } from './../../refactors/username/refactor';
-import { AuthService } from './../../providers/auth.service';
+import { AuthService } from '../../providers/auth.service';
 import { UsernamePage } from './../../refactors/username/username.validator.page';
 import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
@@ -29,7 +29,7 @@ export class SignupOtrosDatosPage implements OnInit {
 
   signUpForm = new FormGroup({
     displayName: new FormControl('', Validators.compose([
-      UsernamePage.validUsername,
+      //UsernamePage.validUsername,
       Validators.required
     ])),
     name: new FormControl('', Validators.required),

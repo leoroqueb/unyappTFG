@@ -15,7 +15,7 @@ export interface UsuariosI{
     displayName:string;
     name:string;
     lastName:string;
-    birthDate:Date;   
+    birthDate:string;   
     email:string;
 }
 

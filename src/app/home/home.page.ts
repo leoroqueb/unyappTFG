@@ -21,7 +21,7 @@ export class HomePage implements OnInit{
 
   
   ionViewCanLeave(){
-    this.observer.unsubscribe();
+    
   }
   
   ngOnInit(){

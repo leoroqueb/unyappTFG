@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'signup-otros-datos',
     loadChildren: () => import('./signup-otros-datos/signup-otros-datos.module').then( m => m.SignupOtrosDatosPageModule)
+  },
+  {
+    path: 'google-sign-up',
+    loadChildren: () => import('./google-sign-up/google-sign-up.module').then( m => m.GoogleSignUpPageModule)
   }
 ];
 
