@@ -6,16 +6,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-list>
-      <ion-list-sliding *ngFor="let usuario of usuarios">
-        <ion-item lines="inset">
-          <ion-label>Home</ion-label>
-        </ion-item>
-      </ion-list-sliding>
-    </ion-list>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="user$ | async as user">
+  <h1>Bienvenido, {{user.displayName}}</h1>
   <ion-button routerLink="/perfil" color="danger" shape="round">
     Vamos al perfil
   </ion-button>

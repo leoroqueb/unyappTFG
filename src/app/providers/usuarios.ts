@@ -13,7 +13,7 @@ import { getLocaleTimeFormat } from '@angular/common';
 export class UsuariosProvider implements OnInit {
   private usersCollection: AngularFirestoreCollection<UsuariosI>;
   private todosUsuarios: Observable<UsuariosI[]>;
-  private longitud: boolean = false;
+  private longitud: boolean;
   
 
   constructor(
@@ -61,22 +61,22 @@ export class UsuariosProvider implements OnInit {
   removeUsuario(id: string) {
     return this.usersCollection.doc(id).delete();
   }
+
+  /**
+   * ¡¡¡¡¡¡¡CODIGO A REVISAR!!!!!!!!!
+   */
   
   isUserAlreadyRegistered(email: string): Promise<boolean>{
-    let a: boolean;
     return new Promise((resolve, reject) =>{
         var a = this.aux(email)
         resolve(a)
         reject("Error")
-        //console.log(a); 
-        /**if (a){
-          resolve(true)
-        }else{
-          reject(false)
-        }*/
     })
   }
 
+  /**
+   * ¡¡¡¡¡¡¡CODIGO A REVISAR!!!!!!!!!
+   */
   async aux(email){
     const isRegistered = this.db.collection<UsuariosI>('users', ref => ref.where('email', '==', email)).valueChanges();
     isRegistered.subscribe(
@@ -86,6 +86,9 @@ export class UsuariosProvider implements OnInit {
   }
 
   
+  /**
+   * ¡¡¡¡¡¡¡CODIGO A REVISAR!!!!!!!!!
+   */
   getLength(item){
     if (item == 0){
       this.longitud = false;

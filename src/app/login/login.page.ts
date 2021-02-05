@@ -46,11 +46,11 @@ export class LoginPage {
 
   async onSubmit(email, password){
       //Iniciamos sesion en firebase
-      //try{
+      try{
         
       const logged = await this.auth.loginUser(email.value, password.value);
-      console.log(this.userProvider.isUserAlreadyRegistered("juan@gmail.com"));
-      /*if(logged){
+      
+      if(logged){
         
         //const isVerified = this.authService.isEmailVerified(logged);
         this.redirectUser(true);
@@ -58,7 +58,7 @@ export class LoginPage {
       }
     } catch (error) {  
       console.log(error)
-    }*/
+    }
   }
 
   redirectUser(isVerified: boolean){
@@ -73,6 +73,7 @@ export class LoginPage {
   async googleLogIn(){
     
     await this.auth.googleLogIn();
+    
   }
 
   

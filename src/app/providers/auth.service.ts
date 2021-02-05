@@ -154,12 +154,13 @@ export class AuthService {
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       
-      if(true){//this.userProvider.isUserAlreadyRegistered(user.email)){
+      if(await this.userProvider.isUserAlreadyRegistered(user.email)){
         this.router.navigateByUrl('/home');
         this.updateCredencialData(user);
         return user;
       }else{
         this.router.navigate(['/signup/google-sign-up']);
+        this.updateCredencialData(user);
         return user;
       }      
     } catch (error) {

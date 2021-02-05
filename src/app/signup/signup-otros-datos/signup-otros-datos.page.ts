@@ -63,7 +63,7 @@ export class SignupOtrosDatosPage implements OnInit {
     const credencial: CredencialesI = {
       email: user.email,
       emailVerified: false,
-      displayName: user.displayName
+      displayName: datosSecun.displayName
     }
 
     //Intentamos el registro
@@ -76,7 +76,7 @@ export class SignupOtrosDatosPage implements OnInit {
       // MAS ADELANTE PODREMOS IR DIRECTAMENTE AL HOME CON EL USUARIO LOGUEADO
       this.authService.updateCredencialData(credencial)
       this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
-      this.router.navigateByUrl('/')
+      this.router.navigateByUrl('/home')
     }
   }
 

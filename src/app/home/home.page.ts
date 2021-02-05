@@ -1,9 +1,10 @@
 import { Component,OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { AuthService } from '../providers/auth.service'
 import { NavController } from '@ionic/angular'
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
@@ -11,21 +12,24 @@ import { NavController } from '@ionic/angular'
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit{
-  usuarios: UsuariosI[];
-  observer: Subscription
+  public user$: Observable<UsuariosI>;  
   constructor(
+    public db: AngularFirestore,
     private userService: UsuariosProvider,
     private auth: AuthService,
     private navCtrl: NavController
-  ) {}
+  ) {
+    
+  }
 
   
   ionViewCanLeave(){
     
   }
   
-  ngOnInit(){
-    this.userService.getUsers().subscribe(res =>{
+  async ngOnInit(){
+
+    (this.user$ = await this.userService.getActualUser()).subscribe(res =>{
       //console.log('usuarios', res);
     })
   }

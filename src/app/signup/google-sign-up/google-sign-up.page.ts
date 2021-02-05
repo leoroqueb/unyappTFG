@@ -5,6 +5,7 @@ import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
 import { RegistroRefactor } from '../../refactors/username/refactor'
 import { UsuariosProvider } from '../../providers/usuarios'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-google-sign-up',
@@ -17,7 +18,8 @@ export class GoogleSignUpPage {
   constructor(
     private authService: AuthService,
     private userProv: UsuariosProvider,
-    private refactor: RegistroRefactor
+    private refactor: RegistroRefactor,
+    private router: Router
   ) { }
 
   Form = new FormGroup({
@@ -37,6 +39,7 @@ export class GoogleSignUpPage {
       birthDate: aux[2] 
     }
     this.userProv.addUsuario(usuario);
+    this.router.navigateByUrl('/home');
   }
   
   cancel(){
