@@ -39,7 +39,7 @@ export class GoogleSignUpPage {
       birthDate: aux[2] 
     }
     this.userProv.addUsuario(usuario);
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/login');
   }
   
   cancel(){

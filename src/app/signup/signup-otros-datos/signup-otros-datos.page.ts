@@ -76,7 +76,7 @@ export class SignupOtrosDatosPage implements OnInit {
       // MAS ADELANTE PODREMOS IR DIRECTAMENTE AL HOME CON EL USUARIO LOGUEADO
       this.authService.updateCredencialData(credencial)
       this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
-      this.router.navigateByUrl('/home')
+      this.router.navigateByUrl('/login')
     }
   }
 
