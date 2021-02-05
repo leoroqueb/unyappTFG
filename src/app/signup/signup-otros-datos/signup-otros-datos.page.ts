@@ -79,4 +79,6 @@ export class SignupOtrosDatosPage implements OnInit {
       this.router.navigateByUrl('/')
     }
   }
+
+  
 }

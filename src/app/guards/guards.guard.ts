@@ -21,9 +21,7 @@ export class AuthGuard implements CanActivate {
       return this.authService.credencial$.pipe(
         take(1),
         map((user) =>{
-          console.log(user);
-          if(user){
-            
+          if(user){            
             return true;
           }else{
             this.alert.alerta("¡¡NO PUEDES PASAR!!", "Gandalf dice");

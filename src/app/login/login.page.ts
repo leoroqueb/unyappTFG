@@ -26,10 +26,11 @@ export class LoginPage {
 
     //PENDIENTE DE REVISION PARA ELIMINAR
     usuario: UsuariosI = {
-      displayName: "",
-      name: "",
-      lastName: "",
-      email: "",
+      uid:"DJyxDzfN4SXoDCjGpqOndXaFVVD3",
+      displayName: "paco",
+      name: "prueba",
+      lastName: "prueba2",
+      email: "juan@gmail.com",
       birthDate: null,
     };
 
@@ -44,22 +45,20 @@ export class LoginPage {
     })
 
   async onSubmit(email, password){
-    try{
-      
       //Iniciamos sesion en firebase
+      //try{
+        
       const logged = await this.auth.loginUser(email.value, password.value);
-      if(logged){
-        const isVerified = this.authService.isEmailVerified(logged);
-        this.redirectUser(isVerified)
+      console.log(this.userProvider.isUserAlreadyRegistered("juan@gmail.com"));
+      /*if(logged){
+        
+        //const isVerified = this.authService.isEmailVerified(logged);
+        this.redirectUser(true);
         
       }
     } catch (error) {  
       console.log(error)
-    }
-  }
-
-  async googleLogIn(){
-    await this.auth.googleLogIn();
+    }*/
   }
 
   redirectUser(isVerified: boolean){
@@ -70,4 +69,11 @@ export class LoginPage {
     }
 
   }
+
+  async googleLogIn(){
+    
+    await this.auth.googleLogIn();
+  }
+
+  
 }

@@ -7,6 +7,8 @@ import { AlertasRefactor } from '../refactors/username/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
+import { UsuariosProvider } from './usuarios';
 
 
 
@@ -16,16 +18,16 @@ import { switchMap } from 'rxjs/operators';
 export class AuthService {
   public user$: Observable<UsuariosI>;
   public credencial$: Observable<CredencialesI>;
-  private usersCollection: AngularFirestoreCollection<UsuariosI>;
+  
   
   constructor(
-    db: AngularFirestore,
+    private navCtrl: NavController,
+    private userProvider: UsuariosProvider,
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
     public alerta: AlertasRefactor,
     public router: Router
   ) { 
-    this.usersCollection = db.collection<UsuariosI>(`users`);
 
 
     //Conectamos con la base de datos 'users'
@@ -67,9 +69,19 @@ export class AuthService {
     }
   }
 
-  //Actualiza datos del usuario
+  /**
+   * 
+   * @param user 
+   * @param credential
+   * @description 
+   * Toma los datos introducidos por el usuario para crear un primer perfil.
+   * Se diferencia de UsuariosProvider.add() porque en este
+   * obtenemos las credenciales que nos devuelve createUserWithEmailAndPassword
+   * para unirlas al id del usuario
+   *  
+   */
   async createDataFirstTime(user: UsuariosI, credential){
-      const userRef: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${credential.user.uid}`);
+      const userRef: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`users/${user.email}`);
       const userProfileDocument: UsuariosI = {
         uid: credential.user.uid,
         displayName: user.displayName,
@@ -141,11 +153,17 @@ export class AuthService {
   async googleLogIn(): Promise<any>{
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      this.updateCredencialData(user);
-      this.router.navigate(['/signup/google-sign-up']);
-      return user;
-    } catch (error) {
       
+      if(true){//this.userProvider.isUserAlreadyRegistered(user.email)){
+        this.router.navigateByUrl('/home');
+        this.updateCredencialData(user);
+        return user;
+      }else{
+        this.router.navigate(['/signup/google-sign-up']);
+        return user;
+      }      
+    } catch (error) {
+      this.alerta.alerta("Ha habido un fallo al contactar con los servidores de Google. Inténtalo de nuevo", "Error");
     }
   }
 
@@ -153,6 +171,7 @@ export class AuthService {
   async doLogout(): Promise<void>{
     try {
       await this.afireauth.signOut();
+      this.navCtrl.navigateRoot('/login')
     } catch (error) {
       console.log("Error =>", error)
     }

@@ -26,13 +26,13 @@ export class HomePage implements OnInit{
   
   ngOnInit(){
     this.userService.getUsers().subscribe(res =>{
-      console.log('usuarios', res);
+      //console.log('usuarios', res);
     })
   }
 
   cerrarSesion(){
     this.auth.doLogout();
-    this.navCtrl.navigateRoot('/login');
+    
   }
 
 }

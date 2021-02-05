@@ -39,6 +39,8 @@ export class GoogleSignUpPage {
     this.userProv.addUsuario(usuario);
   }
   
-  
+  cancel(){
+    this.authService.doLogout();
+  }
   
 }
