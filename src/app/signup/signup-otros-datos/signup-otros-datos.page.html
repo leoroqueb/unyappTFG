@@ -8,17 +8,24 @@
 </ion-header>
 
 <ion-content>
-  <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
   <form [formGroup]="signUpForm" (ngSubmit)="recibirDatosForm(signUpForm)">
     <ion-item>
       <ion-label position="floating">Nick<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input type="text" formControlName="displayName"></ion-input>
+      <ion-input type="text" formControlName="displayName" required></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.displayName">
+        <div class="error-message" *ngIf="signUpForm.get('displayName').hasError(validation.type) && (signUpForm.get('displayName').dirty || signUpForm.get('displayName').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
     <ion-item>
       <ion-label position="floating">Nombre<ion-text color="danger">*</ion-text></ion-label>
       <ion-input type="text" formControlName="name"></ion-input>
     </ion-item>
+    
 
     <ion-item>
       <ion-label position="floating">Apellidos</ion-label>

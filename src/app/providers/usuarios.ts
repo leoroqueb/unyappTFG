@@ -71,7 +71,7 @@ export class UsuariosProvider{
           usuarios.push(doc.get(campo));
       });
     });
-    //Solo para nickDuplicado
+    
 
     return usuarios;
   }

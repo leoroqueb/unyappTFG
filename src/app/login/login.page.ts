@@ -4,7 +4,6 @@ import { AuthService } from '../providers/auth.service'
 import { CredencialesI, UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UsernamePage } from '../refactors/refactor/username.validator.page';
 
 @Component({
   selector: 'app-login',
@@ -19,14 +18,13 @@ export class LoginPage implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private a: UsernamePage,
     private router: Router,
     public auth: AuthService,
     public userProvider: UsuariosProvider,
     //private authService: AuthService,
     ) {}
   ngOnInit(): void {
-    this.a.compruebaNick()
+    
   }
 
     //PENDIENTE DE REVISION PARA ELIMINAR

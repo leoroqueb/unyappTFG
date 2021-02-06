@@ -33,6 +33,7 @@ export class SignupPage implements OnInit {
     ])),
     password: new FormControl('', Validators.compose([
        Validators.minLength(6),
+       Validators.maxLength(30),
        Validators.required,
     ])),
     confirm_password: new FormControl('', Validators.required)
@@ -41,7 +42,7 @@ export class SignupPage implements OnInit {
 
   passwordMatchValidator(g: FormGroup) {
     return g.get('password').value === g.get('confirm_password').value
-       ? null : {'mismatch': true};
+       ? true : {'mismatch': true};
   }
 
   
