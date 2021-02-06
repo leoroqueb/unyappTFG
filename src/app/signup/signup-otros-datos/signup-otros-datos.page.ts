@@ -1,11 +1,12 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RegistroRefactor } from './../../refactors/username/refactor';
+import { RegistroRefactor } from '../../refactors/refactor/refactor';
 import { AuthService } from '../../providers/auth.service';
-import { UsernamePage } from './../../refactors/username/username.validator.page';
 import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
-import { AlertasRefactor } from './../../../app/refactors/username/refactor'
+import { AlertasRefactor } from '../../refactors/refactor/refactor'
+import { Observable } from 'rxjs';
+import { UsuariosProvider } from 'src/app/providers/usuarios';
 
 @Component({
   selector: 'app-signup-otros-datos',
@@ -16,24 +17,34 @@ import { AlertasRefactor } from './../../../app/refactors/username/refactor'
   providedIn: 'root'
 })
 export class SignupOtrosDatosPage implements OnInit {
-  
+  public users: Array<string>;
+  static userStatic: Array<string>;
   constructor(
     public refactor: RegistroRefactor,
     public authService: AuthService,
     public router: Router,
-    public alerta: AlertasRefactor
-  ) { }
+    private userProvider: UsuariosProvider,
+    public alerta: AlertasRefactor,
+    
+  ) { 
+    
+  }
 
   ngOnInit() {
+    this.users = this.userProvider.compruebaDatosDeUsuarios("displayName");
+   
+    SignupOtrosDatosPage.userStatic = this.users;
   }
 
   signUpForm = new FormGroup({
     displayName: new FormControl('', Validators.compose([
-      //UsernamePage.validUsername,
-      Validators.required
+      SignupOtrosDatosPage.nickDuplicado,
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(20)
     ])),
     name: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+    lastName: new FormControl(''),
     birthDate: new FormControl('', Validators.required), 
   })
 
@@ -57,6 +68,7 @@ export class SignupOtrosDatosPage implements OnInit {
       displayName: user.displayName,
       email: user.email,
       birthDate: user.birthDate,
+      hasEverLogged: true
     }
 
     //Creamos el CredentialI con datos de ambos form
@@ -80,5 +92,11 @@ export class SignupOtrosDatosPage implements OnInit {
     }
   }
 
-  
+  static nickDuplicado(fc: FormControl){
+    if (SignupOtrosDatosPage.userStatic.includes(fc.value)){
+      return ({nickDuplicado: true});
+    }else{
+      return (null);
+    }
+  }
 }

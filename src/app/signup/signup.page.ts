@@ -2,7 +2,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NavController} from '@ionic/angular';
 import { Router } from '@angular/router';
-import { RegistroRefactor, AlertasRefactor } from '../refactors/username/refactor';
+import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor/refactor';
 
 
 @Component({
@@ -39,18 +39,15 @@ export class SignupPage implements OnInit {
   })
   ionViewDidLoad(){ }
 
-  coincidenContraseñas(form){
-    this.contraseñas = [form.value.password, form.value.confirm_password];
-    if (this.contraseñas[0] == this.contraseñas[1]){
-      return true;
-    }
-    return false;
+  passwordMatchValidator(g: FormGroup) {
+    return g.get('password').value === g.get('confirm_password').value
+       ? null : {'mismatch': true};
   }
 
   
 
   userDetallesImportantes(form){
-    if (this.coincidenContraseñas(form)){
+    if (this.passwordMatchValidator(form)){
       this.refactor.recibirDatosImportantes(form);
       this.router.navigate(['/signup/signup-otros-datos']);
     }else{

@@ -27,6 +27,10 @@ const routes: Routes = [
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
   },
   {
+    path: 'signup/:id',
+    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
     path: 'nonverify',
     loadChildren: () => import('./nonverify/nonverify.module').then( m => m.NonverifyPageModule)
   },

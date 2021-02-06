@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
-import { RegistroRefactor } from '../../refactors/username/refactor'
+import { RegistroRefactor } from '../../refactors/refactor/refactor'
 import { UsuariosProvider } from '../../providers/usuarios'
 import { Router } from '@angular/router';
 
@@ -36,7 +36,8 @@ export class GoogleSignUpPage {
       displayName: displayName.value,
       name: aux[0],
       lastName: aux[1],
-      birthDate: aux[2] 
+      birthDate: aux[2],
+      hasEverLogged: true 
     }
     this.userProv.addUsuario(usuario);
     this.router.navigateByUrl('/login');

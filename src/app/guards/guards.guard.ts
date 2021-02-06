@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AuthService } from '../providers/auth.service'
-import { AlertasRefactor } from '../refactors/username/refactor'
+import { AlertasRefactor } from '../refactors/refactor/refactor'
 
 
 @Injectable({

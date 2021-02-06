@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CredencialesI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
-import { AlertasRefactor } from '../refactors/username/refactor';
+import { AlertasRefactor } from '../refactors/refactor/refactor';
 
 @Component({
   selector: 'app-nonverify',

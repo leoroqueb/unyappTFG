@@ -1,38 +1,43 @@
-import { Component} from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI, UsuariosI } from '../models/users.interface'
-import { NavController } from '@ionic/angular';
 import { UsuariosProvider } from '../providers/usuarios'
-import { AlertasRefactor } from '../refactors/username/refactor'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UsernamePage } from '../refactors/refactor/username.validator.page';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  providers: [ AuthService, UsuariosProvider]
 })
 
-export class LoginPage {
+export class LoginPage implements OnInit{
   userDetail: CredencialesI;
+  
+
   constructor(
-    public navCtrl: NavController,
+    private route: ActivatedRoute,
+    private a: UsernamePage,
     private router: Router,
     public auth: AuthService,
     public userProvider: UsuariosProvider,
-    private authService: AuthService,
-    private alerta: AlertasRefactor
+    //private authService: AuthService,
     ) {}
+  ngOnInit(): void {
+    this.a.compruebaNick()
+  }
 
     //PENDIENTE DE REVISION PARA ELIMINAR
-    usuario: UsuariosI = {
+    /**usuario: UsuariosI = {
       uid:"DJyxDzfN4SXoDCjGpqOndXaFVVD3",
       displayName: "paco",
       name: "prueba",
       lastName: "prueba2",
       email: "juan@gmail.com",
       birthDate: null,
-    };
+    };*/
 
     loginForm = new FormGroup({
       email: new FormControl('',Validators.compose([
@@ -53,7 +58,7 @@ export class LoginPage {
       if(logged){
         
         //const isVerified = this.authService.isEmailVerified(logged);
-        this.redirectUser(true);
+        this.redirectUser(false);
         
       }
     } catch (error) {  
@@ -65,7 +70,8 @@ export class LoginPage {
     if(isVerified){
       this.router.navigate(['/home']);
     }else{
-      this.router.navigate(['/nonverify']);
+      this.router.navigate(['nonverify']);
+      
     }
 
   }

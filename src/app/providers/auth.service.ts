@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { CredencialesI, UsuariosI } from '../models/users.interface';
-import { AlertasRefactor } from '../refactors/username/refactor'
+import { AlertasRefactor } from '../refactors/refactor/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -89,6 +89,7 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
+        hasEverLogged: user.hasEverLogged,
       };
       return userRef.set(userProfileDocument, {merge: true});
   }
@@ -146,23 +147,20 @@ export class AuthService {
     }
   }
 
-
-  async googleLogOut(): Promise<void>{}
-
   //Login con Google
   async googleLogIn(): Promise<any>{
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       
-      if(await this.userProvider.isUserAlreadyRegistered(user.email)){
-        this.router.navigateByUrl('/home');
+      if(true){
+        this.router.navigateByUrl('/login');
         this.updateCredencialData(user);
         return user;
       }else{
         this.router.navigate(['/signup/google-sign-up']);
         this.updateCredencialData(user);
         return user;
-      }      
+      }  
     } catch (error) {
       this.alerta.alerta("Ha habido un fallo al contactar con los servidores de Google. Inténtalo de nuevo", "Error");
     }
