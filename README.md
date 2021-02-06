@@ -16,27 +16,35 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
 
 ## Objetivos 
 #### _Nota: Se actualizarán periódicamente._
+- **Proyecto**
+    - Correcta creación del proyecto en Ionic.
+    - Instalación de librerías necesarias para crear un prototipo base.
+    - Implementación de firebase como método de autenticación y database.
 - **Log In y registro**
-1. Correcta creación del proyecto en Ionic.
-2. Instalación de librerías necesarias para crear un prototipo base.
-3. Implementación de firebase como método de autenticación y database.
-4. Sistema de registro.
-5. Sistema de autenticación mediante email y contraseña.
-6. Redirección a página principal única para cada usuario.
-7. Log Out.
-8. Creación de páginas necesarias con datos únicos para cada usuario.
-9. Sistema de autenticación mediante Google.
-10. Estructura de ficheros para recuperar contraseña y que el usuario reciba de nuevo el email de confirmación.
-
+    - Sistema de registro con datos del usuario.
+    - Registro con datos útiles para la app _(juegos favoritos, tipo de jugador...)_
+    - Sistema de autenticación mediante email y contraseña.
+    - Redirección a página principal única para cada usuario.
+    - Log Out.
+    - Sistema de autenticación mediante Google.
+    - Estructura de ficheros para recuperar contraseña y que el usuario reciba de nuevo el email de confirmación.
+- **Home**
+    - Página Principal donde el usuario pueda navegar entre las pestañas
+    - Creación de páginas necesarias con datos únicos para cada usuario.
 ## Objetivos cumplidos
-- **Log In y Registro**
+- **Proyecto**
     - [x] Correcta creación del proyecto en Ionic.
     - [x] Instalación de librerías necesarias para crear un prototipo base.
     - [x] Implementación de firebase como método de autenticación y database.
+- **Log In y Registro**
     - [x] Sistema de registro.
+    - [ ] Registro con datos útiles para la app _(juegos favoritos, tipo de jugador...)_
     - [x] Sistema de autenticación mediante email y contraseña.
     - [ ] Redirección a página principal única para cada usuario.
     - [x] Log Out.
-    - [ ] Creación de páginas necesarias con datos únicos para cada usuario.
     - [x] Sistema de autenticación mediante Google.
     - [x] Estructura de ficheros para recuperar contraseña y que el usuario reciba de nuevo el email de confirmación.
+    - [x] Creación de Validators que comprueben los datos introducidos y muestren en tiempo real los errores.
+- **Home**
+    - [ ] Página Principal donde el usuario pueda navegar entre las pestañas
+    - [ ] Creación de páginas necesarias con datos únicos para cada usuario.
