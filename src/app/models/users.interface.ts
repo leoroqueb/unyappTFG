@@ -16,7 +16,6 @@ export interface UsuariosI{
     lastName:string;
     birthDate:string;   
     email:string;
-    hasEverLogged:boolean;
 }
 
 /**

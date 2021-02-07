@@ -24,7 +24,7 @@ export class GoogleSignUpPage {
 
   Form = new FormGroup({
     name: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+    lastName: new FormControl(''),
     birthDate: new FormControl('', Validators.required), 
   },{updateOn: 'change'})
 
@@ -37,10 +37,9 @@ export class GoogleSignUpPage {
       name: aux[0],
       lastName: aux[1],
       birthDate: aux[2],
-      hasEverLogged: true 
     }
     this.userProv.addUsuario(usuario);
-    this.router.navigateByUrl('/login');
+    this.router.navigate(['/home']);
   }
   
   cancel(){

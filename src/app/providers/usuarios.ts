@@ -5,6 +5,7 @@ import { UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AlertasRefactor } from '../refactors/refactor/refactor';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,7 @@ export class UsuariosProvider{
 
   constructor(
     public db: AngularFirestore,
-    private afAuth: AngularFireAuth) {
-      
+    private afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       //REVISAR: PUEDE SER QUE NO HAGA FALTA
       this.todosUsuarios = this.usersCollection.snapshotChanges().pipe(map(
@@ -36,7 +36,7 @@ export class UsuariosProvider{
     return this.usersCollection.doc(usuario.email).update(usuario);
   }
   addUsuario(usuario: UsuariosI) {
-    return this.usersCollection.add(usuario);
+    return this.usersCollection.doc(usuario.email).set(usuario,{merge: true});
   }
   async getActualUserUID(): Promise<string> {
     if (this.afAuth.currentUser) {
@@ -46,12 +46,25 @@ export class UsuariosProvider{
     }
   }
 
-  async getActualUser() {
+  async getActualUser(){
     return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
   }
 
-  getUserById(id: string){
-    return this.usersCollection.doc<UsuariosI>(id).valueChanges();
+  async getSpecificUserData(id: string) {
+    //let user: UsuariosI;
+    if( id === "this"){
+      return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges()
+      .toPromise()
+      .catch(
+        error => console.log(error)
+      );
+    }else{
+      return this.usersCollection.doc<UsuariosI>(id).valueChanges()
+      .toPromise()
+      .catch(
+        error => console.log(error)
+      );
+    }
   }
 
   getUsers(){
@@ -62,8 +75,11 @@ export class UsuariosProvider{
    /**
    * ATENCION: 
    * METODO PARA SACAR A TODOS LOS ELEMENTOS DE UNA COLECCION!!!
+   * @param campo 
+   * Se le pasa un string con el nombre del campo de la bd que quieras recibir
+   * @returns Array<string> con los valores de ese campo de todos los documentos
    */
-  compruebaDatosDeUsuarios(campo:string){
+  compruebaDatosDeUsuarios(campo:string): Array<string>{
     const usuarios: Array<string> = [];
     const useri = this.getUsers();
     useri.toPromise().then(function(querySnapshot) {     

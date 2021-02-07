@@ -17,7 +17,6 @@ export class HomePage implements OnInit{
     public db: AngularFirestore,
     private userService: UsuariosProvider,
     private auth: AuthService,
-    private navCtrl: NavController
   ) {
     
   }
@@ -28,10 +27,9 @@ export class HomePage implements OnInit{
   }
   
   async ngOnInit(){
-
-    (this.user$ = await this.userService.getActualUser()).subscribe(res =>{
-      //console.log('usuarios', res);
-    })
+    (this.user$ = await this.userService.getActualUser()).subscribe(
+      //res => console.log(res)
+    )
   }
 
   cerrarSesion(){

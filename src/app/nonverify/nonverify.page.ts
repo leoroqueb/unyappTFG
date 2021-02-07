@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CredencialesI } from '../models/users.interface';
+import { Observable, Subscription } from 'rxjs';
+import { CredencialesI, UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
+import { UsuariosProvider } from '../providers/usuarios';
 import { AlertasRefactor } from '../refactors/refactor/refactor';
 
 @Component({
@@ -10,14 +11,16 @@ import { AlertasRefactor } from '../refactors/refactor/refactor';
   templateUrl: './nonverify.page.html',
   styleUrls: ['./nonverify.page.scss'],
 })
-export class NonverifyPage  {
-  credencial$: Observable<CredencialesI> = this.authService.afireauth.user;
+export class NonverifyPage implements OnInit  {
+  public user$: Observable<UsuariosI>;  
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private alerta: AlertasRefactor
+    private userProvider: UsuariosProvider,
   ) { }
 
+  async ngOnInit(){
+    (this.user$ = await this.userProvider.getActualUser()).subscribe()
+  }
   async onClick(): Promise<void>{
     try {
       await this.authService.sendVerificationEmail();

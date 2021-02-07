@@ -59,13 +59,18 @@ export class AuthService {
     try {
 
         //Intentamos el registro, enviamos email de verificación y actualizamos perfil del usuario 
-        const credentials = await this.afireauth
+      const credentials = await this.afireauth
           .createUserWithEmailAndPassword(email, password);
-        await this.sendVerificationEmail();
+      
+      await this.sendVerificationEmail();
+      
+      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+      this.router.navigateByUrl('/home')
         
-        this.createDataFirstTime(user, credentials);
+      this.createDataFirstTime(user, credentials);
     } catch (error) {
-      console.log(error);
+      this.alerta.alerta(error, "Error");
+      this.router.navigate(['/login']);
     }
   }
 
@@ -89,7 +94,6 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
-        hasEverLogged: user.hasEverLogged,
       };
       return userRef.set(userProfileDocument, {merge: true});
   }
@@ -149,12 +153,14 @@ export class AuthService {
 
   //Login con Google
   async googleLogIn(): Promise<any>{
+    //Sacamos todos los usuarios de la bd users
+    const usuarios: Array<string> = this.userProvider.compruebaDatosDeUsuarios("email");
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      
-      if(true){
-        this.router.navigateByUrl('/login');
+      //Si el usuario ya ha guardado sus datos en la bd users, va al home, si no, al registro.
+      if(usuarios.includes(user.email)){
         this.updateCredencialData(user);
+        this.router.navigate(['/home']);
         return user;
       }else{
         this.router.navigate(['/signup/google-sign-up']);
