@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>google-sign-up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="credencial$ | async as user">
+  <ion-input type="text" #email disabled type="hidden" value={{user.email}}></ion-input>
+  <ion-input type="text" #uid disabled type="hidden" value={{user.uid}}></ion-input>
+  <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
+  <form [formGroup]="Form" (ngSubmit)="recibirDatosForm(Form, email, display, uid)">
+    <ion-item>
+      <ion-label position="floating">Nombre de usuario<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" #display required value={{user.displayName}}></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Nombre<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Apellidos</ion-label>
+      <ion-input type="text" formControlName="lastName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha de nacimiento<ion-text color="danger">*</ion-text></ion-label>
+      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthDate"></ion-datetime>
+    </ion-item>
+    <ion-button block color="primary" type="submit" [disabled]="Form.invalid">
+      Completar registro
+    </ion-button>
+    <ion-button block color="danger" type="button" (click)="cancel()">
+      Cancelar
+    </ion-button>
+  </form>
+</ion-content>

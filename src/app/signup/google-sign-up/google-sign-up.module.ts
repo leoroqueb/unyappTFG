@@ -4,18 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPageRoutingModule } from './login-routing.module';
+import { GoogleSignUpPageRoutingModule } from './google-sign-up-routing.module';
 
-import { LoginPage } from './login.page';
+import { GoogleSignUpPage } from './google-sign-up.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     ReactiveFormsModule,
-    LoginPageRoutingModule
+    IonicModule,
+    GoogleSignUpPageRoutingModule
   ],
-  declarations: [LoginPage]
+  declarations: [GoogleSignUpPage]
 })
-export class LoginPageModule {}
+export class GoogleSignUpPageModule {}

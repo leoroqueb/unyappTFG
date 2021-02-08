@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>nonverify</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="user$ | async as usuario">
+  <ion-row>
+    <ion-col size="12">
+      <h2 >¡Gracias por unirte a nuestra comunidad, <strong>{{usuario.displayName}}</strong>!</h2>
+      <p>Hemos enviado un email de confirmación a <strong>{{usuario.email}}</strong></p>
+      <p>Por favor, comprueba tu correo y pulsa en el link de confirmación para poder acceder a Uny</p>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button (click)="onClick()" expand="block" fill="clear" shape="round">
+        Reenvíame el correo
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

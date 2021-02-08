@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Primeros</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- FORM DE EMAIL Y CONTRASEÑA PARA POSTERIORES VERSIONES-->
+  <p>Primero, dinos tu email y la contraseña que quieras usar</p>
+  <p>La contraseña ha de ser una mezcla de minúsculas, mayúsculas y números</p>
+  <p>La contraseña ha de ser mayor a 6 caracteres</p>
+  <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
+  <form [formGroup]="matching_passwords_group" (ngSubmit)="userDetallesImportantes(matching_passwords_group)">
+    <ion-item>
+      <ion-icon name="mail" item-start></ion-icon>
+      <ion-label >Correo electronico:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" formControlName="email"placeholder="Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="eye-off-outline"></ion-icon>
+      <ion-label >Contraseña:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="password" formControlName="password" placeholder="Contraseña"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="eye-off-outline"></ion-icon>
+      <ion-label> Confirmar contraseña:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="password" formControlName="confirm_password"  placeholder=" Confirmar contraseña"></ion-input>
+    </ion-item>
+    <ion-button block color="primary" type="submit" [disabled]="matching_passwords_group.invalid">
+      Siguiente
+    </ion-button>
+  </form>
+
+</ion-content>

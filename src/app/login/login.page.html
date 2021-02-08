@@ -1,12 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>login</ion-title>    
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-button (click)="goBack()" expand="block" fill="clear" shape="round">
-    Atras
-  </ion-button>
-
+<ion-content [fullscreen]="true">
+  <ion-item-divider> 
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(email, password)" autocomplete="on">
+      <ion-item>
+        <ion-label position="floating">E-Mail </ion-label>
+        <ion-input required formControlName="email" #email type="text" autofocus="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input required formControlName="password" #password type="password"></ion-input>
+      </ion-item>
+      <ion-button block color="primary" type="submit" [disabled]="loginForm.invalid">
+        Iniciar sesión
+      </ion-button>
+    </form>
+  </ion-item-divider>
+  <ion-item-divider>
+    <h2>¿Eres nuevo?</h2>
+    <ion-button routerLink="/signup" expand="block" color="danger" shape="round">
+      ¡Regístrate!
+    </ion-button>
+    <span expand="block">or</span>
+    <ion-button (click)="googleLogIn()" expand="block" color="danger" shape="round">
+      Inicia sesión con Google
+    </ion-button>
+    <ion-col size="12">
+      <p><a routerLink="/forgot-password">¿Olvidaste la contraseña?</a></p>
+    </ion-col>
+  </ion-item-divider>
 </ion-content>
