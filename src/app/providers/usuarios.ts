@@ -46,6 +46,16 @@ export class UsuariosProvider{
     }
   }
 
+  async eliminaUsuario(){
+    var user = this.afAuth.currentUser;
+    (await user).delete().then(function(){
+      console.log("Usuario eliminado correctamente");
+    })
+    .catch(function(error){
+      console.log("Error =>", error);
+    })
+  }
+
   async getActualUser(){
     return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
   }
@@ -80,15 +90,13 @@ export class UsuariosProvider{
    * @returns Array<string> con los valores de ese campo de todos los documentos
    */
   compruebaDatosDeUsuarios(campo:string): Array<string>{
-    const usuarios: Array<string> = [];
+    const usuarios: string[] = [];
     const useri = this.getUsers();
     useri.toPromise().then(function(querySnapshot) {     
       querySnapshot.forEach(function(doc) {
           usuarios.push(doc.get(campo));
       });
     });
-    
-
     return usuarios;
   }
 

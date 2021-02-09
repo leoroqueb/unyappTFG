@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { NavController} from '@ionic/angular';
 import { Router } from '@angular/router';
+import { UsuariosProvider } from '../providers/usuarios';
 import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor/refactor';
 
 
@@ -17,7 +17,7 @@ export class SignupPage implements OnInit {
   contraseñas: Array<string>;
   constructor(
     public alerta: AlertasRefactor,
-    public navCtrl: NavController,
+    public userProvider: UsuariosProvider,
     public router: Router,
     public refactor: RegistroRefactor
     
@@ -45,11 +45,9 @@ export class SignupPage implements OnInit {
        ? true : {'mismatch': true};
   }
 
-  
-
-  userDetallesImportantes(form){
+  importantDetailsUser(form: FormGroup){
     if (this.passwordMatchValidator(form)){
-      this.refactor.recibirDatosImportantes(form);
+      this.refactor.receiveImportantData(form);
       this.router.navigate(['/signup/signup-otros-datos']);
     }else{
       this.alerta.alerta("Las contraseñas no coinciden.", "ERROR");

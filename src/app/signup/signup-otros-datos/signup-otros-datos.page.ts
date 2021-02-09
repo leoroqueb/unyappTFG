@@ -30,7 +30,7 @@ export class SignupOtrosDatosPage implements OnInit {
   }
 
   ngOnInit() {
-    this.users = this.userProvider.compruebaDatosDeUsuarios("displayName");
+    
     //console.log(this.users)
     SignupOtrosDatosPage.userStatic = this.users;
     //console.log(SignupOtrosDatosPage.userStatic);
@@ -80,6 +80,23 @@ export class SignupOtrosDatosPage implements OnInit {
     this.signup(detalles);
     
   }
+
+  
+  async duplicatedNickName(fc: FormControl){
+    
+    const displayName: string = "juan";
+    //displayName.trim();
+    const usersNickName: Array<string> = this.userProvider.compruebaDatosDeUsuarios("displayName");
+    console.log(usersNickName)
+    var a = [];
+    usersNickName.forEach((x) =>{
+      
+        a.push(x.indexOf(fc.value));
+      
+    });
+    console.log(a);
+    
+  }
   
   signup(user) {
 
@@ -101,9 +118,9 @@ export class SignupOtrosDatosPage implements OnInit {
     }
 
     //Intentamos el registro
-    this.authService.registerUser(datosSecun, user.email, user.password);
+    this.authService.registerUser(datosSecun, user.email, user.password, credencial);
     
-    this.authService.updateCredencialData(credencial)
+    
   }
 
   static noValido = /\s/
@@ -115,11 +132,16 @@ export class SignupOtrosDatosPage implements OnInit {
    */
   static nickDuplicado(fc: FormControl){
     if (SignupOtrosDatosPage.userStatic.includes(fc.value)){
-      return (null);
+      return ({nickDuplicado: false});
     }else{
       return ({nickDuplicado: true});
     }
   }
+  /**
+   * 
+   * @param fc 
+   * @todo REVISAR CODIGO, LA PAGINA NO LEE EL INCLUDES
+   */
   static espaciosEnBlanco(fc: FormControl){
     if (SignupOtrosDatosPage.noValido.test(fc.value)){
       return ({nickDuplicado: true});

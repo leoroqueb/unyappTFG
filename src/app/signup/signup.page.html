@@ -8,12 +8,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- FORM DE EMAIL Y CONTRASEÑA PARA POSTERIORES VERSIONES-->
   <p>Primero, dinos tu email y la contraseña que quieras usar</p>
   <p>La contraseña ha de ser una mezcla de minúsculas, mayúsculas y números</p>
   <p>La contraseña ha de ser mayor a 6 caracteres</p>
   <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
-  <form [formGroup]="matching_passwords_group" (ngSubmit)="userDetallesImportantes(matching_passwords_group)">
+  <form [formGroup]="matching_passwords_group" (ngSubmit)="importantDetailsUser(matching_passwords_group)">
     <ion-item>
       <ion-icon name="mail" item-start></ion-icon>
       <ion-label >Correo electronico:<ion-text color="danger">*</ion-text></ion-label>

@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { UsuariosProvider } from './usuarios';
+import { auth } from 'firebaseui';
 
 
 
@@ -22,6 +23,7 @@ export class AuthService {
   
   constructor(
     private navCtrl: NavController,
+    
     private userProvider: UsuariosProvider,
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
@@ -55,19 +57,21 @@ export class AuthService {
 
 
   //REGISTRO USUARIO CON EMAIL Y CONTRASEÑA
-  async registerUser(user: UsuariosI, email:string, password:string): Promise<any> {
+  async registerUser(user: UsuariosI, email:string, password:string, credencial: CredencialesI): Promise<any> {
     try {
-
+      
         //Intentamos el registro, enviamos email de verificación y actualizamos perfil del usuario 
       const credentials = await this.afireauth
           .createUserWithEmailAndPassword(email, password);
+          
       
       await this.sendVerificationEmail();
-      
-      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
-      this.router.navigateByUrl('/home')
-        
+      this.updateCredencialData(credencial);
       this.createDataFirstTime(user, credentials);
+      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+      
+      this.router.navigateByUrl('/nonverify')
+      
     } catch (error) {
       this.alerta.alerta(error, "Error");
       this.router.navigate(['/login']);
@@ -95,6 +99,7 @@ export class AuthService {
         lastName: user.lastName,
         birthDate: user.birthDate,
       };
+      
       return userRef.set(userProfileDocument, {merge: true});
   }
 

@@ -5,6 +5,7 @@ import { CredencialesI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -36,8 +37,9 @@ export class LoginPage implements OnInit{
 
   //Iniciamos sesion en firebase
   async onSubmit(email, password){
-      try{      
-      const logged = await this.auth.loginUser(email.value, password.value);    
+      try{   
+      
+      const logged = await this.auth.loginUser(email.value, password.value);   
       if(logged){       
         const isVerified = this.auth.isEmailVerified(logged);
         this.redirectUser(isVerified);      

@@ -49,7 +49,7 @@ export class RegistroRefactor{
         return this.detallesFinal;
     }
 
-    recibirDatosImportantes(form){
+    receiveImportantData(form){
         this.detallesImportantes = [form.value.email, form.value.password];
         return this.detallesImportantes;
     }
