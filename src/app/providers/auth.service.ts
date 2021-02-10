@@ -159,19 +159,21 @@ export class AuthService {
   //Login con Google
   async googleLogIn(): Promise<any>{
     //Sacamos todos los usuarios de la bd users
-    const usuarios: Array<string> = this.userProvider.compruebaDatosDeUsuarios("email");
+    var usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       //Si el usuario ya ha guardado sus datos en la bd users, va al home, si no, al registro.
-      if(usuarios.includes(user.email)){
-        this.updateCredencialData(user);
-        this.router.navigate(['/home']);
-        return user;
-      }else{
-        this.router.navigate(['/signup/google-sign-up']);
-        this.updateCredencialData(user);
-        return user;
-      }  
+      usuarios.then((users) =>{
+        if(users.includes(user.email)){
+          this.updateCredencialData(user);
+          this.router.navigate(['/home']);
+          return user;
+        }else{
+          this.router.navigate(['/signup/google-sign-up']);
+          this.updateCredencialData(user);
+          return user;
+        } 
+      })
     } catch (error) {
       this.alerta.alerta("Ha habido un fallo al contactar con los servidores de Google. Inténtalo de nuevo", "Error");
     }

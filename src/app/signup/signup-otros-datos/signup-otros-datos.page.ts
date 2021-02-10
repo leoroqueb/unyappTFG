@@ -82,20 +82,22 @@ export class SignupOtrosDatosPage implements OnInit {
   }
 
   
-  async duplicatedNickName(fc: FormControl){
-    
-    const displayName: string = "juan";
-    //displayName.trim();
-    const usersNickName: Array<string> = this.userProvider.compruebaDatosDeUsuarios("displayName");
-    console.log(usersNickName)
-    var a = [];
-    usersNickName.forEach((x) =>{
-      
-        a.push(x.indexOf(fc.value));
-      
+  /**
+   * Método que comprueba si el displayName que elige el usuario ya está cogido
+   * @param fc 
+   */
+  duplicatedNickName(fc: FormControl){  
+    var a = this.userProvider.compruebaDatosDeUsuarios("displayName");
+    a.then((users) =>{
+      var b;
+      if (users.includes(fc.value)){
+        b = true;
+        console.log(b);
+      }else{
+        b = false;
+        console.log(b);
+      }
     });
-    console.log(a);
-    
   }
   
   signup(user) {

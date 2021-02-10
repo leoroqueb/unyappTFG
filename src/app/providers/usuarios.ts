@@ -89,15 +89,20 @@ export class UsuariosProvider{
    * Se le pasa un string con el nombre del campo de la bd que quieras recibir
    * @returns Array<string> con los valores de ese campo de todos los documentos
    */
-  compruebaDatosDeUsuarios(campo:string): Array<string>{
-    const usuarios: string[] = [];
-    const useri = this.getUsers();
-    useri.toPromise().then(function(querySnapshot) {     
-      querySnapshot.forEach(function(doc) {
+  compruebaDatosDeUsuarios(campo:string): Promise<Array<string>>{
+    return new Promise((resolve, reject) =>{
+      const usuarios: Array<string> = [];
+      const useri = this.getUsers();
+      useri.toPromise().then(function(querySnapshot) {     
+        querySnapshot.forEach(function(doc) {
           usuarios.push(doc.get(campo));
-      });
+        });
+        resolve(usuarios);
+      }) 
+      .catch(
+        reject
+      )
     });
-    return usuarios;
   }
 
   
