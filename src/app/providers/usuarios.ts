@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertasRefactor } from '../refactors/refactor/refactor';
+import { rejects } from 'assert';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,6 @@ export class UsuariosProvider{
         }
       ));
   }
-  
   
   updateUsuario(usuario: UsuariosI) {
     return this.usersCollection.doc(usuario.email).update(usuario);
@@ -99,12 +99,32 @@ export class UsuariosProvider{
         });
         resolve(usuarios);
       }) 
-      .catch(
-        reject
+      .catch((error) =>
+        reject(console.log(error))
       )
     });
   }
 
+   /**
+   * Método que comprueba si el displayName que elige el usuario ya está cogido
+   * @param fc 
+   */
+  duplicatedData(data: string, field: string): Promise<boolean>{  
+    let usuarios = this.compruebaDatosDeUsuarios(field);
+    let result:boolean;
+    return new Promise<boolean>((resolve,reject) =>{
+      usuarios.then((users) =>{
+        if (users.includes(data)){
+          result = true;
+        }else{
+          result = false;
+        }
+          
+        resolve(result);
+      }).catch((error) => reject(error))
+    })
+    
+  }
   
   removeUsuario(id: string) {
     return this.usersCollection.doc(id).delete();

@@ -19,6 +19,7 @@ import { auth } from 'firebaseui';
 export class AuthService {
   public user$: Observable<UsuariosI>;
   public credencial$: Observable<CredencialesI>;
+  public credentials;
   
   
   constructor(
@@ -57,25 +58,28 @@ export class AuthService {
 
 
   //REGISTRO USUARIO CON EMAIL Y CONTRASEÑA
-  async registerUser(user: UsuariosI, email:string, password:string, credencial: CredencialesI): Promise<any> {
-    try {
-      
+  async registerUser(email:string, password:string): Promise<firebase.auth.UserCredential>{
+    try {    
         //Intentamos el registro, enviamos email de verificación y actualizamos perfil del usuario 
-      const credentials = await this.afireauth
-          .createUserWithEmailAndPassword(email, password);
-          
-      
-      await this.sendVerificationEmail();
-      this.updateCredencialData(credencial);
-      this.createDataFirstTime(user, credentials);
-      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
-      
-      this.router.navigateByUrl('/nonverify')
-      
+      this.credentials = await this.afireauth
+        .createUserWithEmailAndPassword(email, password);  
+      return this.credentials;
     } catch (error) {
-      this.alerta.alerta(error, "Error");
-      this.router.navigate(['/login']);
+      this.alerta.alerta(error, "Error");      
     }
+  }
+
+  async registerDataForFirstTime(user:UsuariosI, credential: CredencialesI) {
+    try {
+      await this.sendVerificationEmail();
+      this.updateCredencialData(credential);
+      this.createDataFirstTime(user, this.credentials);
+      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+      this.router.navigateByUrl('/nonverify')
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 
   /**

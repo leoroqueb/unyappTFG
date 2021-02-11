@@ -1,5 +1,6 @@
 import { AlertController } from '@ionic/angular'
 import { Injectable } from '@angular/core';
+import { Form, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,10 @@ export class AlertasRefactor {
         
             header: header,
             message: msg,
+            keyboardClose: true,
             buttons: [
-                 {
-                text: 'Cerrar',
+                { 
+                    text: 'Cerrar',
                 }
             ]
         });
@@ -35,7 +37,7 @@ export class RegistroRefactor{
     private fechaModificada: string;
     constructor(){}
 
-    obtenerFormFinal(){
+    obtenerFormFinal():string[]{
         this.detallesFinal = {
             email: this.detallesImportantes[0],
             password: this.detallesImportantes[1],
@@ -49,18 +51,18 @@ export class RegistroRefactor{
         return this.detallesFinal;
     }
 
-    receiveImportantData(form){
+    receiveImportantData(form: FormGroup):string[]{
         this.detallesImportantes = [form.value.email, form.value.password];
         return this.detallesImportantes;
     }
 
-    recibirDatosSecundarios(form){
+    recibirDatosSecundarios(form: FormGroup):string[]{
         this.fechaModificada = form.value.birthDate.substring(0,10);
         this.detallesSecundarios = [form.value.displayName, form.value.name, form.value.lastName, this.fechaModificada];
         return this.detallesSecundarios;
     }
 
-    recibirDatosGoogle(form){
+    recibirDatosGoogle(form: FormGroup):string[]{
         this.fechaModificada = form.value.birthDate.substring(0,10);
         this.detallesSecundarios = [form.value.name, form.value.lastName, this.fechaModificada];
         return this.detallesSecundarios;

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AlertasRefactor } from '../../refactors/refactor/refactor'
 import { UsuariosProvider } from 'src/app/providers/usuarios';
+import { App } from '@capacitor/core';
 
 @Component({
   selector: 'app-signup-otros-datos',
@@ -80,65 +81,48 @@ export class SignupOtrosDatosPage implements OnInit {
     this.signup(detalles);
     
   }
-
-  
-  /**
-   * Método que comprueba si el displayName que elige el usuario ya está cogido
-   * @param fc 
-   */
-  duplicatedNickName(fc: FormControl){  
-    var a = this.userProvider.compruebaDatosDeUsuarios("displayName");
-    a.then((users) =>{
-      var b;
-      if (users.includes(fc.value)){
-        b = true;
-        console.log(b);
-      }else{
-        b = false;
-        console.log(b);
-      }
-    });
-  }
   
   signup(user) {
-
+    try {
     //Sacamos todos los datos secundarios
-    const datosSecun: UsuariosI = {
-      name: user.name,
-      lastName: user.lastName,
-      displayName: user.displayName,
-      email: user.email,
-      birthDate: user.birthDate,
+      const datosSecun: UsuariosI = {
+        name: user.name,
+        lastName: user.lastName,
+        displayName: user.displayName,
+        email: user.email,
+        birthDate: user.birthDate,
+        
+      }
+
+      //Creamos el CredentialI con datos de ambos form
+      const credencial: CredencialesI = {
+        email: user.email,
+        emailVerified: false,
+        displayName: datosSecun.displayName
+      }
+
+      let promiseDuplicated = this.userProvider.duplicatedData(datosSecun.displayName, "displayName");
+      promiseDuplicated.then((isDuplicated) =>{
+        if(isDuplicated == true){
+          this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
+        }else{
+          this.authService.registerUser(user.email, user.password)
+            .then((completed) => {
+              if(completed){
+                this.authService.registerDataForFirstTime(datosSecun,credencial);
+              }
+            }) 
+        }
+      })
+      .catch((error) => console.log(error))
       
+    } catch (error) {
+      console.log(error)
     }
-
-    //Creamos el CredentialI con datos de ambos form
-    const credencial: CredencialesI = {
-      email: user.email,
-      emailVerified: false,
-      displayName: datosSecun.displayName
-    }
-
-    //Intentamos el registro
-    this.authService.registerUser(datosSecun, user.email, user.password, credencial);
-    
-    
   }
 
   static noValido = /\s/
 
-  /**
-   * 
-   * @param fc 
-   * @todo REVISAR CODIGO, LA PAGINA NO LEE EL INCLUDES
-   */
-  static nickDuplicado(fc: FormControl){
-    if (SignupOtrosDatosPage.userStatic.includes(fc.value)){
-      return ({nickDuplicado: false});
-    }else{
-      return ({nickDuplicado: true});
-    }
-  }
   /**
    * 
    * @param fc 
