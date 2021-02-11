@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
-import { RegistroRefactor } from '../../refactors/refactor/refactor'
+import { RegistroRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from '../../providers/usuarios'
 import { Router } from '@angular/router';
 

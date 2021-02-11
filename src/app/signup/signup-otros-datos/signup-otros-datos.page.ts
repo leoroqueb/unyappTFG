@@ -1,10 +1,10 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RegistroRefactor } from '../../refactors/refactor/refactor';
+import { RegistroRefactor } from '../../refactors/refactor';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
-import { AlertasRefactor } from '../../refactors/refactor/refactor'
+import { AlertasRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from 'src/app/providers/usuarios';
 import { App } from '@capacitor/core';
 

@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CredencialesI, UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
 import { UsuariosProvider } from '../providers/usuarios';
-import { AlertasRefactor } from '../refactors/refactor/refactor';
+import { AlertasRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-nonverify',

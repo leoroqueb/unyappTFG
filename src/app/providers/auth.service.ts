@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { CredencialesI, UsuariosI } from '../models/users.interface';
-import { AlertasRefactor } from '../refactors/refactor/refactor'
+import { AlertasRefactor } from '../refactors/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

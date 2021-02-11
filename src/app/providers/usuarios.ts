@@ -5,7 +5,7 @@ import { UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AlertasRefactor } from '../refactors/refactor/refactor';
+import { AlertasRefactor } from '../refactors/refactor';
 import { rejects } from 'assert';
 
 @Injectable({

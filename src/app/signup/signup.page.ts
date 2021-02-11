@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
 import { UsuariosProvider } from '../providers/usuarios';
-import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor/refactor';
+import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor';
 
 
 @Component({
