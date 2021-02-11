@@ -1,5 +1,7 @@
 <ion-header>
   <ion-toolbar>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <ion-title>nonverify</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/login"></ion-back-button>
@@ -16,6 +18,13 @@
     </ion-col>
   </ion-row>
   <ion-row>
+    <button ngbPopover="El equipo de Uny se toma muy enserio que no se introduzcan en el sistema
+    droides del Imperio que puedan robarnos información o ejecutar la orden 66 sin nuestro permiso.
+    Por esto, mediante el sistema de verificación del email nos aseguramos que solo entren a nuestra página 
+    simpatizantes de la república." triggers="mouseenter:mouseleave" popoverTitle="Protección contra bots" placement="bottom-left"
+    container="body" [openDelay]="300" [closeDelay]="1000">
+      <ion-icon name="help-circle-outline"></ion-icon>¿Por qué hacemos esto?
+    </button>
     <ion-col size="12">
       <ion-button (click)="onClick()" expand="block" fill="clear" shape="round">
         Reenvíame el correo
