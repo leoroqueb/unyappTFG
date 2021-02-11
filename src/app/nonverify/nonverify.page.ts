@@ -1,5 +1,8 @@
+import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PopoverController } from '@ionic/angular';
+import { $ } from 'protractor';
 import { Observable, Subscription } from 'rxjs';
 import { CredencialesI, UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
@@ -16,6 +19,7 @@ export class NonverifyPage implements OnInit  {
   constructor(
     private authService: AuthService,
     private userProvider: UsuariosProvider,
+    private popOver: PopoverController
   ) { }
 
   async ngOnInit(){
@@ -28,7 +32,8 @@ export class NonverifyPage implements OnInit  {
       console.log(error)
     }
   }
-  
+
+ 
   ngOnDestroy(): void {
     this.authService.doLogout();
   }

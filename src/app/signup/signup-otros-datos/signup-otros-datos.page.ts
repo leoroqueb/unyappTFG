@@ -41,14 +41,17 @@ export class SignupOtrosDatosPage implements OnInit {
   signUpForm = new FormGroup({
     displayName: new FormControl('', {
       validators: Validators.compose([
-      //SignupOtrosDatosPage.nickDuplicado,
-      //SignupOtrosDatosPage.espaciosEnBlanco,
       Validators.required,
+      Validators.pattern("[A-Za-z0-9]+"),
       Validators.minLength(4),
-      Validators.maxLength(20),])
+      Validators.maxLength(15),])
         
     }),
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.compose([
+      Validators.required,
+      Validators.minLength(3),
+      Validators.pattern("[A-Za-z]+")
+    ])),
     lastName: new FormControl(''),
     birthDate: new FormControl('', Validators.required), 
   })
@@ -60,11 +63,11 @@ export class SignupOtrosDatosPage implements OnInit {
         { type: 'required', message: 'Necesitamos un nombre de usuario. El único Hombre Sin Nombre es Clint Eastwood.' },
         { type: 'minlength', message: 'Venga va, cúrrate algo un poquito más largo.' },
         { type: 'maxlength', message: '¡Pero sin pasarse! ¡Quita algunas letras!' },
-        //{ type: 'espaciosEnBlanco', message: '¿Cuándo has visto un nombre de usuario con espacios?' },
-        //{ type: 'nickDuplicado', message: 'Ese nombre me suena... ¡Te lo han robado! Vas a tener que probar con otro.' }
+        { type: 'pattern', message: 'Mi código fuente no es capaz de interpretar espacios' },
       ],
       'name': [
-        { type: 'required', message: 'Necesito también tu nombre verdadero... ¡No sólo voy a llamarte por tu "alter ego"!' }
+        { type: 'required', message: 'Necesito también tu nombre verdadero... ¡No sólo voy a llamarte por tu "alter ego"!' },
+        { type: 'pattern', message: 'Dudo que tu nombre tenga números o caracteres raros (a no ser que seas un robot)' }
       ],
       'birthDate':[
         { type: 'required', message: '¿No quieres que te felicite por tu cumple?' }
@@ -78,11 +81,11 @@ export class SignupOtrosDatosPage implements OnInit {
   recibirDatosForm(form){
     this.refactor.recibirDatosSecundarios(form);
     const detalles = this.refactor.obtenerFormFinal();
-    this.signup(detalles);
+    this.signUp(detalles);
     
   }
   
-  signup(user) {
+  signUp(user) {
     try {
     //Sacamos todos los datos secundarios
       const datosSecun: UsuariosI = {
@@ -118,21 +121,6 @@ export class SignupOtrosDatosPage implements OnInit {
       
     } catch (error) {
       console.log(error)
-    }
-  }
-
-  static noValido = /\s/
-
-  /**
-   * 
-   * @param fc 
-   * @todo REVISAR CODIGO, LA PAGINA NO LEE EL INCLUDES
-   */
-  static espaciosEnBlanco(fc: FormControl){
-    if (SignupOtrosDatosPage.noValido.test(fc.value)){
-      return ({nickDuplicado: true});
-    }else{
-      return ({nickDuplicado: false});
     }
   }
 }

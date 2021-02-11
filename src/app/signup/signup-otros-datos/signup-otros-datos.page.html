@@ -49,7 +49,7 @@
         </div>
       </ng-container>
     </div> 
-    <ion-button block color="primary" type="submit" >
+    <ion-button block color="primary" type="submit" [disabled]="signUpForm.invalid">
       Crear cuenta
     </ion-button>
   </form>
