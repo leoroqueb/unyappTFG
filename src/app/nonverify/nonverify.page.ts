@@ -1,13 +1,9 @@
-import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
-import { $ } from 'protractor';
-import { Observable, Subscription } from 'rxjs';
-import { CredencialesI, UsuariosI } from '../models/users.interface';
+import { Observable } from 'rxjs';
+import { UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
 import { UsuariosProvider } from '../providers/usuarios';
-import { AlertasRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-nonverify',
@@ -32,8 +28,6 @@ export class NonverifyPage implements OnInit  {
       console.log(error)
     }
   }
-
- 
   ngOnDestroy(): void {
     this.authService.doLogout();
   }
