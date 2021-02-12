@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
@@ -15,13 +14,12 @@ export class NonverifyPage implements OnInit  {
   constructor(
     private authService: AuthService,
     private userProvider: UsuariosProvider,
-    private popOver: PopoverController
   ) { }
 
   async ngOnInit(){
     (this.user$ = await this.userProvider.getActualUser()).subscribe()
   }
-  async onClick(): Promise<void>{
+  async resendVerificationEmail(): Promise<void>{
     try {
       await this.authService.sendVerificationEmail();
     } catch (error) {

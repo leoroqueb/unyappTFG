@@ -32,6 +32,10 @@ export class HomePage implements OnInit{
     )
   }
 
+  ngOnDestroy(){
+    this.auth.doLogout();
+  }
+
   cerrarSesion(){
     this.auth.doLogout();
     

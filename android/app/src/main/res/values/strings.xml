@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">unyappB</string>
     <string name="title_activity_main">unyappB</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="package_name">com.unygames.unyapp</string>
+    <string name="custom_url_scheme">com.unygames.unyapp</string>
+    <string name="server_client_id">947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com</string>
 </resources>

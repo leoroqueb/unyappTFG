@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "947506461654",
+    "firebase_url": "https://unyapp-leoroqueb-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "unyapp-leoroqueb",
+    "storage_bucket": "unyapp-leoroqueb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947506461654:android:1cfdd4d96b602bd04d4277",
+        "android_client_info": {
+          "package_name": "com.unygames.unyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947506461654-lf629tv58flem46obak35rmbohpngmen.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unygames.unyapp",
+            "certificate_hash": "9da2939fbe57135801a5a6759748831ca07c4a62"
+          }
+        },
+        {
+          "client_id": "947506461654-qk8393a2kd4t19ng9ullaft72sb2iiq9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unygames.unyapp",
+            "certificate_hash": "3f9d8bb05ac52d99eefc1272f842fdb00ec268c6"
+          }
+        },
+        {
+          "client_id": "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6bVPe8pNkqb07A9Esv2-NeplkYDyI4mM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

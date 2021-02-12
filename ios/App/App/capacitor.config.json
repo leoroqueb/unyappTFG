@@ -1,1 +1,39 @@
-{}
+{
+  "appId": "com.unygames.unyapp",
+  "appName": "unyappB",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "CapacitorFirebaseAuth": {
+      "providers": [
+        "google.com",
+        "twitter.com",
+        "facebook.com",
+        "phone"
+      ],
+      "languageCode": "en",
+      "nativeAuth": false,
+      "properties": {
+        "google": {
+          "hostedDomain": "my-custom-domain.com"
+        }
+      },
+      "permissions": {
+        "google": [
+          "profile",
+          "https://www.googleapis.com/auth/drive"
+        ]
+      },
+      "GoogleAuth": {
+        "scopes": ["profile", "email"],
+        "serverClientId": "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com",
+        "forceCodeForRefreshToken" : true
+      }
+    }
+  },
+  "cordova": {}
+}

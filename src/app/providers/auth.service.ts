@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
-import { AngularFireAuth } from '@angular/fire/auth'
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFireAuth,  } from '@angular/fire/auth'
 import { CredencialesI, UsuariosI } from '../models/users.interface';
 import { AlertasRefactor } from '../refactors/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { UsuariosProvider } from './usuarios';
-import { auth } from 'firebaseui';
+import { GooglePlus } from '@ionic-native/google-plus/ngx'
+import "@codetrix-studio/capacitor-google-auth";
+
 
 
 
@@ -23,11 +25,11 @@ export class AuthService {
   
   
   constructor(
-    private navCtrl: NavController,
-    
     private userProvider: UsuariosProvider,
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
+    private platform: Platform,
+    private googlePlus: GooglePlus,
     public alerta: AlertasRefactor,
     public router: Router
   ) { 
@@ -162,8 +164,56 @@ export class AuthService {
 
   //Login con Google
   async googleLogIn(): Promise<any>{
+    if(this.platform.is('android')){
+      this.loginGoogleAndroid();
+    }else{
+      this.loginGoogleWeb();
+    }
+    
+  }
+
+  async loginGoogleAndroid(){
+    try {
+      
+      const res = await this.googlePlus.login({
+        'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
+        'offline': true
+      }).then( async result => {
+        this.googleRedirect(result);
+      })
+      .catch(err => {
+        if(err != `${JSON.stringify(12501)}`){
+          this.alerta.alerta(`${JSON.stringify(err)}`, "Error") 
+        }
+        
+      });
+    } catch (error) {
+      this.alerta.alerta(error, "Error");
+    }
+    
+  }
+  
+  async googleRedirect(credencial){
+    let usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
+    const {user} = await this.afireauth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(credencial));
+    
+    usuarios.then((users) =>{
+      
+      if(users.includes(user.email)){
+        this.updateCredencialData(user);
+        this.router.navigate(['/home']);
+        return user;
+      }else{
+        this.router.navigate(['/signup/google-sign-up']);
+        this.updateCredencialData(user);
+        return user;
+      } 
+    });
+  }
+
+  async loginGoogleWeb(){
     //Sacamos todos los usuarios de la bd users
-    var usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
+    let usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
     try {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       //Si el usuario ya ha guardado sus datos en la bd users, va al home, si no, al registro.
@@ -186,12 +236,24 @@ export class AuthService {
   //CIERRE SESION CON EMAIL Y CONTRASEÑA
   async doLogout(): Promise<void>{
     try {
-      await this.afireauth.signOut();
-      this.navCtrl.navigateRoot('/login')
+      if(this.platform.is('android')){
+        await this.afireauth.signOut();
+        await this.googlePlus.logout();
+        this.redirectUserAfterLogOut();
+        
+      }else{
+        await this.afireauth.signOut();
+        this.redirectUserAfterLogOut();
+      }
     } catch (error) {
       console.log("Error =>", error)
     }
     
+  }
+  redirectUserAfterLogOut(){
+    if(this.router.url != '/login'){
+      this.router.navigateByUrl('/login');
+    }
   }
 
   
