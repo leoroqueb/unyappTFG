@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI } from '../models/users.interface'
@@ -6,6 +6,7 @@ import { UsuariosProvider } from '../providers/usuarios'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { AlertasRefactor } from '../refactors/refactor';
+import { AlertController, Platform } from '@ionic/angular';
 
 
 @Component({
@@ -15,13 +16,15 @@ import { AlertasRefactor } from '../refactors/refactor';
   providers: [ AuthService, UsuariosProvider]
 })
 
-export class LoginPage implements OnInit{
+export class LoginPage implements OnInit,AfterViewInit,OnDestroy{
   userDetail: CredencialesI;
+  backButtonSubscription;
   constructor(
     private router: Router,
     public auth: AuthService,
-    private alerta: AlertasRefactor,
     private googlePlus: GooglePlus,
+    private alertController: AlertController,
+    private platform: Platform,
     public userProvider: UsuariosProvider,
     
     ) {}
@@ -33,6 +36,35 @@ export class LoginPage implements OnInit{
     .then((result) =>{
       this.auth.googleRedirect(result);
     })
+    
+  }
+  ngOnDestroy(){
+    this.backButtonSubscription.unsubscribe();
+  }
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Salir de Uny',
+        subHeader: '¿En serio?',
+        message: '¿Ya me abandonas? :(',
+        buttons: [
+          {
+            text: 'Nunca',
+            role: 'cancel',
+            cssClass: 'primary'
+          },
+          {
+            text:'No me queda otra...',
+            cssClass:'secundary',
+            handler: () =>{
+              navigator['app'].exitApp();
+            }
+          }
+        ]
+      });
+      await alert.present();
+    });
     
   }
 

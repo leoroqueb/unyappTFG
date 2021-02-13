@@ -175,7 +175,8 @@ export class AuthService {
   async loginGoogleAndroid(){
     try {
       
-      const res = await this.googlePlus.login({
+      
+      await this.googlePlus.login({
         'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
         'offline': true
       }).then( async result => {
