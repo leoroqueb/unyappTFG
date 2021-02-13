@@ -4,7 +4,8 @@ import { UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { AuthService } from '../providers/auth.service'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, IonRouterOutlet, Platform } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home',
@@ -14,18 +15,17 @@ import { AlertController, Platform } from '@ionic/angular';
 export class HomePage implements OnInit,AfterViewInit,OnDestroy{
   public user$: Observable<UsuariosI>;  
   backButtonSubscription;
+  
   constructor(
+    
     public db: AngularFirestore,
     private userService: UsuariosProvider,
     private alertController: AlertController,
     private auth: AuthService,
     private platform: Platform,
-  ) {
     
-  }
-
-  
-  ionViewCanLeave(){
+    private routerOutlet: IonRouterOutlet,
+  ) {
     
   }
   
@@ -39,7 +39,9 @@ export class HomePage implements OnInit,AfterViewInit,OnDestroy{
     this.backButtonSubscription.unsubscribe();
   }
   ngAfterViewInit() {
-    this.backButtonSubscription = this.platform.backButton.subscribe(async () => {     
+    
+    this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
+      
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Salir de Uny',
@@ -61,9 +63,11 @@ export class HomePage implements OnInit,AfterViewInit,OnDestroy{
           
           
         ]
-      });
-      await alert.present();
-    });
+        });
+        await alert.present();
+    });   
+      
+        
   }
   cerrarSesion(){
     this.auth.doLogout();  

@@ -43,27 +43,29 @@ export class LoginPage implements OnInit,AfterViewInit,OnDestroy{
   }
   ngAfterViewInit() {
     this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
-      const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Salir de Uny',
-        subHeader: '¿En serio?',
-        message: '¿Ya me abandonas? :(',
-        buttons: [
-          {
-            text: 'Nunca',
-            role: 'cancel',
-            cssClass: 'primary'
-          },
-          {
-            text:'No me queda otra...',
-            cssClass:'secundary',
-            handler: () =>{
-              navigator['app'].exitApp();
+      
+        const alert = await this.alertController.create({
+          header: 'Salir de Uny',
+          subHeader: '¿En serio?',
+          message: '¿Ya me abandonas? :(',
+          buttons: [
+            {
+              text: 'Nunca',
+              role: 'cancel',
+              cssClass: 'primary'
+            },
+            {
+              text:'No me queda otra...',
+              cssClass:'secundary',
+              handler: () =>{
+                navigator['app'].exitApp();
+              }
             }
-          }
-        ]
-      });
-      await alert.present();
+          ]
+        });
+        
+        await alert.present();
+      
     });
     
   }
@@ -94,7 +96,7 @@ export class LoginPage implements OnInit,AfterViewInit,OnDestroy{
 
   redirectUser(isVerified: boolean){
     if(isVerified){
-      this.router.navigate(['/home']);
+      this.router.navigate(['home']);
     }else{
       this.router.navigate(['nonverify']);    
     }
