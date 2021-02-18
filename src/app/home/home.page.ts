@@ -4,7 +4,7 @@ import { UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { AuthService } from '../providers/auth.service'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AlertController, IonRouterOutlet, Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { AlertController, IonRouterOutlet, Platform } from '@ionic/angular';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit,AfterViewInit,OnDestroy{
+export class HomePage implements OnInit {
   public user$: Observable<UsuariosI>;  
   backButtonSubscription;
   
@@ -24,7 +24,6 @@ export class HomePage implements OnInit,AfterViewInit,OnDestroy{
     private auth: AuthService,
     private platform: Platform,
     
-    private routerOutlet: IonRouterOutlet,
   ) {
     
   }
@@ -35,14 +34,14 @@ export class HomePage implements OnInit,AfterViewInit,OnDestroy{
     )
   }
 
-  ngOnDestroy(){
+  ionViewWillLeave(){
     this.backButtonSubscription.unsubscribe();
   }
-  ngAfterViewInit() {
+  ionViewDidEnter() {
     
     this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
       
-      const alert = await this.alertController.create({
+      await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Salir de Uny',
         subHeader: '¿En serio?',
@@ -59,12 +58,10 @@ export class HomePage implements OnInit,AfterViewInit,OnDestroy{
             handler: () =>{
               navigator['app'].exitApp();
             }
-          }
-          
-          
+          } 
         ]
-        });
-        await alert.present();
+      }).then((alerta) => alerta.present());
+        
     });   
       
         

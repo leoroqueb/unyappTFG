@@ -196,7 +196,7 @@ export class AuthService {
   
   async googleRedirect(credencial){
     let usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
-    const {user} = await this.afireauth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(credencial));
+    const {user} = await this.afireauth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(credencial.idToken, credencial.accessToken));
     
     usuarios.then((users) =>{
       
@@ -239,22 +239,21 @@ export class AuthService {
     try {
       if(this.platform.is('android')){
         await this.afireauth.signOut();
-        await this.googlePlus.logout();
-        this.redirectUserAfterLogOut();
-        
+        await this.googlePlus.disconnect();
+        await this.redirectUserAfterLogOut();
+      
       }else{
-        await this.afireauth.signOut();
-        this.redirectUserAfterLogOut();
+        await this.afireauth.signOut().then(() =>
+          this.redirectUserAfterLogOut()
+        );
       }
     } catch (error) {
       console.log("Error =>", error)
     }
     
   }
-  redirectUserAfterLogOut(){
-    if(this.router.url != '/login'){
-      this.router.navigateByUrl('/login');
-    }
+  async redirectUserAfterLogOut(){
+    await this.router.navigate(['login']);  
   }
 
   
