@@ -21,7 +21,7 @@ import "@codetrix-studio/capacitor-google-auth";
 export class AuthService {
   public user$: Observable<UsuariosI>;
   public credencial$: Observable<CredencialesI>;
-  public credentials;
+  public credentials: firebase.auth.UserCredential | PromiseLike<firebase.auth.UserCredential>;
   
   
   constructor(
@@ -123,7 +123,7 @@ export class AuthService {
   
 
   //LOGIN USER CON EMAIL Y CONTRASEÑA
-  async loginUser(email, password): Promise<CredencialesI>{
+  async loginUser(email: string, password: string): Promise<CredencialesI>{
     try {
       //Obtenemos las credenciales del inicio de sesion
       const {user} = await this.afireauth.signInWithEmailAndPassword(email, password);

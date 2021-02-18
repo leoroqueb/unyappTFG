@@ -5,8 +5,6 @@ import { UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AlertasRefactor } from '../refactors/refactor';
-import { rejects } from 'assert';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +28,7 @@ export class UsuariosProvider{
           });
         }
       ));
+      
   }
   
   updateUsuario(usuario: UsuariosI) {
@@ -44,6 +43,7 @@ export class UsuariosProvider{
     } else {
       return ""
     }
+    
   }
 
   async eliminaUsuario(){
@@ -60,6 +60,7 @@ export class UsuariosProvider{
     return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
   }
 
+  //PENDIENTE DE REVISION, CREO QUE NO LO USO
   async getSpecificUserData(id: string) {
     //let user: UsuariosI;
     if( id === "this"){
@@ -76,6 +77,8 @@ export class UsuariosProvider{
       );
     }
   }
+
+  
 
   getUsers(){
     return this.db.collection(`users`).get();
@@ -106,7 +109,8 @@ export class UsuariosProvider{
   }
 
    /**
-   * Método que comprueba si el displayName que elige el usuario ya está cogido
+   * Método que previene al usuario de elegir ciertos nombres y/o elementos
+   * que ya están usados en la BD
    * @param fc 
    */
   duplicatedData(data: string, field: string): Promise<boolean>{  

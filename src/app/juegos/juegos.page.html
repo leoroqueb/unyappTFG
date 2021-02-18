@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">juegos</ion-title>
+    <ion-button block color="primary" type="submit" form="gameForm" disabled="gameSelection.invalid" slot="end">
+      Siguiente
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar id="searchToolbar">
+    <ion-searchbar
+      placeholder="Buscar juegos" 
+      (ionChange)="onSearchChange($event)" 
+      [debounce]="250" 
+      inputmode="text"
+      animated
+      clearIcon="trash-outline">
+    </ion-searchbar>  
+    <ion-button id="popover-button" (click)="filterResult($event)" fill="clear" slot="end">
+      <ion-icon name="filter-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+
+  <ion-list-header class="ion-text-center">
+    <b>Elige un máximo de 13 juegos</b>
+  </ion-list-header>
+  <form (ngSubmit)="userChoseGames()" id="gameForm">
+    <ion-list lines="inset" *ngFor="let game of game$ | searchFilter: searchText">
+      <ion-item>
+        <ion-label>{{game.name}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </form>
+  
+</ion-content>

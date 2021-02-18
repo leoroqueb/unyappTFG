@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import { AfterViewInit, Component, Injectable, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI } from '../models/users.interface'
@@ -7,6 +7,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { AlertasRefactor } from '../refactors/refactor';
 import { AlertController, Platform } from '@ionic/angular';
+import { Game } from '../models/games.interface';
+import { GamesService } from '../providers/games.service';
+import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
+
 
 
 @Component({
@@ -15,29 +19,31 @@ import { AlertController, Platform } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
   providers: [ AuthService, UsuariosProvider]
 })
-
+@Injectable({
+  providedIn: 'root'
+})
 export class LoginPage implements OnInit,AfterViewInit,OnDestroy{
   userDetail: CredencialesI;
   backButtonSubscription;
+  
   constructor(
     private router: Router,
     public auth: AuthService,
     private googlePlus: GooglePlus,
     private alertController: AlertController,
     private platform: Platform,
+    
     public userProvider: UsuariosProvider,
     
     ) {}
+
   ngOnInit(): void {
     this.googlePlus.trySilentLogin({
       'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
-      'offline': false,
+      'offline': false
     })
-    .then((result) =>{
-      this.auth.googleRedirect(result);
-    })
-    
   }
+  
   ngOnDestroy(){
     this.backButtonSubscription.unsubscribe();
   }

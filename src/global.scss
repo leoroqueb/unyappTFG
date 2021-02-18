@@ -26,3 +26,11 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 @import "~bootstrap/scss/bootstrap";
+
+ion-searchbar{
+    .searchbar-input-container{
+        .searchbar-input{
+            border-radius: 30px !important;
+        }
+    }
+}
