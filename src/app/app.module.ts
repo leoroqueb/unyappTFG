@@ -13,8 +13,11 @@ import { PipesModule } from './pipes/pipes.module';
 
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [
+    AppComponent,
+    
+  ],
+
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig), 

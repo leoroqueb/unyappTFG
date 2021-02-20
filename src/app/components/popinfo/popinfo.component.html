@@ -1,9 +1,29 @@
 <ion-list>
   <ion-list-header>Filtrar por:</ion-list-header>
-  <ion-item button (click)="pulsado('cat')">
+  <ion-item>
     <ion-label>Categoria</ion-label>
+    <ion-select multiple="true" (ionChange)="selectCategoryFilter($event)">
+      <ion-select-option value="Multijugador">Multijugador</ion-select-option>
+      <ion-select-option value="Battle Royale">Battle Royale</ion-select-option>
+    </ion-select>
   </ion-item>
-  <ion-item button (click)="pulsado('plat')">
+  <ion-item>
     <ion-label>Plataforma</ion-label>
+    <ion-select multiple="true" (ionChange)="selectPlatformFilter($event)" >
+      <ion-select-option value="PS5">Playstation 5</ion-select-option>
+      <ion-select-option value="PS4">Playstation 4</ion-select-option>
+      <ion-select-option value="PS3">Playstation 3</ion-select-option>
+      <ion-select-option value="Xbox Series X">Xbox Series X</ion-select-option>
+      <ion-select-option value="Xbox Series S">Xbox Series S</ion-select-option>
+      <ion-select-option value="Xbox One">Xbox One</ion-select-option>
+      <ion-select-option value="Xbox 360">Xbox 360</ion-select-option>
+      <ion-select-option value="Nintendo Switch">Nintendo Switch</ion-select-option>
+      <ion-select-option value="PC">PC</ion-select-option>
+      <ion-select-option value="Android">Android</ion-select-option>
+      <ion-select-option value="iOS">iOS</ion-select-option>
+    </ion-select>
   </ion-item>
+  <ion-button (click)="sendFilters()" expand="block" fill="clear" shape="round">
+    OK
+  </ion-button>
 </ion-list>
