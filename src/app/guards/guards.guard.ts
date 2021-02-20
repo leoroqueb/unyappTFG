@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       return this.authService.afireauth.authState.pipe(
         map((user) =>{
-          if(user !== null || user !== undefined){            
+          if(user !== null || user !== undefined){           
             return true;
           }else{
             this.alert.alerta("¡¡NO PUEDES PASAR!!", "Gandalf dice");

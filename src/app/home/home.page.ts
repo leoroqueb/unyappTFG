@@ -1,10 +1,11 @@
 import { Component,OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UsuariosI } from '../models/users.interface'
+import { Observable, Subject, Subscription } from 'rxjs';
+import { UserElements, UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { AuthService } from '../providers/auth.service'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AlertController, Platform } from '@ionic/angular';
+import { Game } from '../models/games.interface';
 
 
 @Component({
@@ -27,8 +28,10 @@ export class HomePage implements OnInit {
   ) {
     
   }
+
   
   async ngOnInit(){
+
     (this.user$ = await this.userService.getActualUser()).subscribe(
       //res => console.log(res)
     )
@@ -38,6 +41,8 @@ export class HomePage implements OnInit {
     this.backButtonSubscription.unsubscribe();
   }
   ionViewDidEnter() {
+    
+    
     
     this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
       

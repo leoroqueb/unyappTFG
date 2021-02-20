@@ -104,6 +104,7 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
+        
       };
       
       return userRef.set(userProfileDocument, {merge: true});
@@ -199,8 +200,8 @@ export class AuthService {
     const {user} = await this.afireauth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(credencial.idToken, credencial.accessToken));
     
     usuarios.then((users) =>{
-      
-      if(users.includes(user.email)){
+      let userField = users.find(userFind => userFind.id === user.email);
+      if(userField !== undefined){
         this.updateCredencialData(user);
         this.router.navigate(['/home']);
         return user;
@@ -219,7 +220,8 @@ export class AuthService {
       const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       //Si el usuario ya ha guardado sus datos en la bd users, va al home, si no, al registro.
       usuarios.then((users) =>{
-        if(users.includes(user.email)){
+        let userField = users.find(userFind => userFind.id === user.email);
+        if(userField !== undefined){
           this.updateCredencialData(user);
           this.router.navigate(['/home']);
           return user;

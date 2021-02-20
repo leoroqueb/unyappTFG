@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { GamesSelectionGuard } from './guards/games-selection.guard';
 import { AuthGuard } from './guards/guards.guard'
 import { LoggedUserGuard } from './guards/logged-user.guard';
 
@@ -7,7 +8,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [AuthGuard]
+    canActivate: [GamesSelectionGuard]
   },
   {
     path: '',
@@ -34,7 +35,8 @@ const routes: Routes = [
   },
   {
     path: 'nonverify',
-    loadChildren: () => import('./nonverify/nonverify.module').then( m => m.NonverifyPageModule)
+    loadChildren: () => import('./nonverify/nonverify.module').then( m => m.NonverifyPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'forgot-password',
@@ -42,7 +44,8 @@ const routes: Routes = [
   },
   {
     path: 'juegos',
-    loadChildren: () => import('./juegos/juegos.module').then( m => m.JuegosPageModule)
+    loadChildren: () => import('./juegos/juegos.module').then( m => m.JuegosPageModule),
+    canActivate: [AuthGuard]
   },
 
  

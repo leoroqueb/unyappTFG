@@ -9,6 +9,8 @@
  * registro o modifica el perfil
  */
 
+import { Game } from "./games.interface";
+
 export interface UsuariosI{
     uid?:string;
     displayName:string;
@@ -16,6 +18,8 @@ export interface UsuariosI{
     lastName:string;
     birthDate:string;   
     email:string;
+    favGames?: Game[];
+    otherGames?: Game[];
 }
 
 /**
@@ -35,6 +39,7 @@ export interface PrivacyData{
     //TODO
 }
 
-export interface Videogames{
-    //TODO
+export interface UserElements{
+    id: string;
+    campo: string;
 }

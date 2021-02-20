@@ -1,9 +1,9 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { UsuariosI } from '../models/users.interface';
+import { UserElements, UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -61,22 +61,15 @@ export class UsuariosProvider{
   }
 
   //PENDIENTE DE REVISION, CREO QUE NO LO USO
-  async getSpecificUserData(id: string) {
+  getSpecificUserData(id: string): Observable<UsuariosI> {
     //let user: UsuariosI;
-    if( id === "this"){
-      return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges()
-      .toPromise()
-      .catch(
-        error => console.log(error)
-      );
-    }else{
-      return this.usersCollection.doc<UsuariosI>(id).valueChanges()
-      .toPromise()
-      .catch(
-        error => console.log(error)
-      );
+    var subject = new Subject<UsuariosI>();
+    
+      this.usersCollection.doc<UsuariosI>(id).valueChanges().subscribe(user => {
+        subject.next(user);
+      });
+      return subject.asObservable();
     }
-  }
 
   
 
@@ -92,13 +85,17 @@ export class UsuariosProvider{
    * Se le pasa un string con el nombre del campo de la bd que quieras recibir
    * @returns Array<string> con los valores de ese campo de todos los documentos
    */
-  compruebaDatosDeUsuarios(campo:string): Promise<Array<string>>{
+  compruebaDatosDeUsuarios(campo:string): Promise<UserElements[]>{
     return new Promise((resolve, reject) =>{
-      const usuarios: Array<string> = [];
+      const usuarios: UserElements[] = [];
       const useri = this.getUsers();
       useri.toPromise().then(function(querySnapshot) {     
         querySnapshot.forEach(function(doc) {
-          usuarios.push(doc.get(campo));
+          let aux: UserElements = {
+            id: doc.id,
+            campo: doc.get(campo)
+          }
+          usuarios.push(aux);
         });
         resolve(usuarios);
       }) 
@@ -118,7 +115,8 @@ export class UsuariosProvider{
     let result:boolean;
     return new Promise<boolean>((resolve,reject) =>{
       usuarios.then((users) =>{
-        if (users.includes(data)){
+        let aux = users.find(user => user.campo === data);
+        if (aux !== undefined){
           result = true;
         }else{
           result = false;
