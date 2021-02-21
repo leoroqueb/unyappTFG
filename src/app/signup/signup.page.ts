@@ -66,7 +66,7 @@ export class SignupPage implements OnInit {
             if(isDuplicated){
               this.alerta.alerta("Todavía no existe un multiverso Uny para que puedas tener dos cuentas con el mismo correo", "Fatality");
             }else{
-              this.refactor.receiveImportantData(form);
+              this.refactor.transformImportantData(form);
               this.router.navigate(['/signup/signup-otros-datos'])
             }
           })   

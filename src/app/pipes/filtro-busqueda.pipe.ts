@@ -6,12 +6,12 @@ import { Game } from '../models/games.interface';
 })
 export class FiltroBusquedaPipe implements PipeTransform {
   
-  transform(text: Game[], filterText: string): Game[] {
+  transform(game: Game[], filterText: string): Game[] {
     if (filterText === ''){
-      return text;
+      return game;
     }
     filterText = filterText.toLowerCase();
-    return text.filter(item => {
+    return game.filter(item => {
       return item.name.toLowerCase().includes(filterText);
     });
     

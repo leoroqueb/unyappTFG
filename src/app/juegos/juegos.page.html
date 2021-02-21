@@ -16,7 +16,7 @@
             </ion-searchbar>
             </ion-item>
            <ion-item>
-            <ion-button disabled id="submitButton" color="primary" type="submit" slot="end">
+            <ion-button disabled id="submitButton" color="primary" type="submit" (click)="getChosenGamesByUser()" slot="end">
               Siguiente
             </ion-button>
            </ion-item>
@@ -48,18 +48,17 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid id="gameList">
-    <!-- Lista los juegos de la BD -->
-    <ion-row >
-      <ion-col>
-        <ion-list lines="full" *ngFor="let game of game$ | searchFilter: searchText">
-          <ion-item button (click)="selectGamesFromList(game)" id={{game.name}}>
-            {{game.name}}
-          </ion-item>
-        </ion-list>
-        
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+  <ion-list *ngFor="let chosenGame of chosenGamesByUser " class="ion-padding">
+    <ion-item button (click)="deleteGamesFromList(chosenGame)">
+      <ion-label>{{chosenGame.name}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list-header>
+    <ion-label><h2><b>Juegos a elegir:</b></h2></ion-label>
+  </ion-list-header>
+  <ion-list lines="inset" *ngFor="let game of game$ | searchFilter: searchText | listFilter: platFilters:catFilters">
+    <ion-item button (click)="selectGamesFromList(game)" id={{game.name}}>
+      {{game.name}}
+    </ion-item>
+  </ion-list>
 </ion-content>

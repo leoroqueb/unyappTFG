@@ -78,9 +78,9 @@ export class SignupOtrosDatosPage implements OnInit {
    * Aqui podemos obtener de manera separada los datos del primer paso
    * del signup y los del segundo, y podemos unirlos en un solo dato
    */
-  recibirDatosForm(form){
-    this.refactor.recibirDatosSecundarios(form);
-    const detalles = this.refactor.obtenerFormFinal();
+  getDataFromForm(form){
+    this.refactor.transformSecondaryData(form);
+    const detalles = this.refactor.getFinalForm();
     this.signUp(detalles);
     
   }

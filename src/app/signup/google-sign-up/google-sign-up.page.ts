@@ -46,8 +46,8 @@ export class GoogleSignUpPage {
       ]   
     }
 
-  recibirDatosForm(form, email, displayName, uid){
-    const aux = this.refactor.recibirDatosGoogle(form);
+  getDataFromForm(form, email, displayName, uid){
+    const aux = this.refactor.transformGoogleData(form);
     const usuario:UsuariosI = {
       uid: uid.value,
       email: email.value,

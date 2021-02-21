@@ -8,6 +8,10 @@ const routes: Routes = [
   {
     path: '',
     component: JuegosPage
+  },
+  {
+    path: 'ordenar-juegos',
+    loadChildren: () => import('./ordenar-juegos/ordenar-juegos.module').then( m => m.OrdenarJuegosPageModule)
   }
 ];
 
