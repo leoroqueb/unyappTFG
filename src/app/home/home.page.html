@@ -6,8 +6,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="user$ | async as user">
-  <h1>Bienvenido, {{user.displayName}}</h1>
+<ion-content [fullscreen]="true" *ngIf="user$ | async as thisUser">
+  <app-user-cards *ngFor="let user of usersCollection">
+    
+  </app-user-cards>
+  <h1>Bienvenido, {{thisUser.displayName}}</h1>
   <ion-button routerLink="/perfil" color="danger" shape="round">
     Vamos al perfil
   </ion-button>

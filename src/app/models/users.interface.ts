@@ -16,7 +16,7 @@ export interface UsuariosI{
     displayName:string;
     name:string;
     lastName:string;
-    birthDate:string;   
+    birthDate?:string;   
     email:string;
     favGames?: Game[];
     otherGames?: Game[];

@@ -121,7 +121,6 @@ export class AuthService {
     return userRef.set(userProfileDocument, {merge: true});
   }
 
-  
 
   //LOGIN USER CON EMAIL Y CONTRASEÑA
   async loginUser(email: string, password: string): Promise<CredencialesI>{

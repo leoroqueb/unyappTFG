@@ -13,8 +13,12 @@ import { Game } from '../models/games.interface';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
-  public user$: Observable<UsuariosI>;  
+export class HomePage implements OnInit, OnDestroy {
+  user$: Observable<UsuariosI>;  
+  users$: Observable<UsuariosI[]>;
+  usersCollection: UsuariosI[];
+  userConnection: Subscription;
+  usersConnection: Subscription;
   backButtonSubscription;
   
   constructor(
@@ -32,17 +36,22 @@ export class HomePage implements OnInit {
   
   async ngOnInit(){
 
-    (this.user$ = await this.userService.getActualUser()).subscribe(
-      //res => console.log(res)
-    )
+    this.userConnection = (this.user$ = await this.userService.getActualUser()).subscribe();
+    this.usersConnection = (this.users$ = this.userService.getAllUsersData()).subscribe( user =>
+      this.usersCollection = user
+    );
+  }
+
+  ngOnDestroy(){
+    
+    this.userConnection.unsubscribe();
+    this.usersConnection.unsubscribe();
   }
 
   ionViewWillLeave(){
     this.backButtonSubscription.unsubscribe();
   }
   ionViewDidEnter() {
-    
-    
     
     this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
       

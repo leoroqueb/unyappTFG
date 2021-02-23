@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { UserElements, UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Game } from '../models/games.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +31,20 @@ export class UsuariosProvider{
       ));
       
   }
+
+  getAllUsersData(): Observable<UsuariosI[]>{
+    return this.todosUsuarios;
+  }
   
   updateUsuario(usuario: UsuariosI) {
+    this.conection.unsubscribe();
     return this.usersCollection.doc(usuario.email).update(usuario);
   }
+
   addUsuario(usuario: UsuariosI) {
     return this.usersCollection.doc(usuario.email).set(usuario,{merge: true});
   }
+
   async getActualUserUID(): Promise<string> {
     if (this.afAuth.currentUser) {
       return (await this.afAuth.currentUser).email;
@@ -69,12 +77,48 @@ export class UsuariosProvider{
         subject.next(user);
       });
       return subject.asObservable();
-    }
+  }
 
-  
+  conection: Subscription;
+  /**
+   * Envia a la base de datos los juegos elegidos por el usuario
+   * @param favoriteGames 
+   * @param otherGames 
+   */
+  async addGamesToUser(favoriteGames: Game[], otherGames?: Game[]){
+    
+    if(otherGames){
+      this.conection = (await this.getActualUser()).subscribe(user =>{
+        const usuario:UsuariosI = {
+          name: user.name,
+          displayName: user.displayName,
+          lastName: user.lastName,
+          email: user.email,
+          favGames: favoriteGames,
+          otherGames: otherGames
+        } 
+        this.updateUsuario(usuario);
+      });
+      
+    }else{
+      this.conection = (await this.getActualUser()).subscribe(user =>{
+        const usuario:UsuariosI = {
+          name: user.name,
+          displayName: user.displayName,
+          lastName: user.lastName,
+          email: user.email,
+          favGames: favoriteGames,
+        } 
+        this.updateUsuario(usuario);
+      });
+      
+      
+    }
+    
+  }
 
   getUsers(){
-    return this.db.collection(`users`).get();
+    return this.db.collection<UsuariosI>(`users`).get();
   }
 
  

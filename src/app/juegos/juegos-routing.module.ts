@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'ordenar-juegos',
-    loadChildren: () => import('./ordenar-juegos/ordenar-juegos.module').then( m => m.OrdenarJuegosPageModule)
+    loadChildren: () => import('./ordenar-juegos/ordenar-juegos.module').then( m => m.OrdenarJuegosPageModule),
   }
 ];
 
