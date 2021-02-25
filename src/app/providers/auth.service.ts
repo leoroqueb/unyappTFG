@@ -10,7 +10,7 @@ import { switchMap } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
 import { UsuariosProvider } from './usuarios';
 import { GooglePlus } from '@ionic-native/google-plus/ngx'
-import "@codetrix-studio/capacitor-google-auth";
+
 
 
 
@@ -168,13 +168,13 @@ export class AuthService {
       this.loginGoogleAndroid();
     }else{
       this.loginGoogleWeb();
-    }
+    } 
     
   }
 
+  userInfo = null;
   async loginGoogleAndroid(){
     try {
-      
       
       await this.googlePlus.login({
         'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
@@ -187,7 +187,7 @@ export class AuthService {
           this.alerta.alerta(`${JSON.stringify(err)}`, "Error") 
         }
         
-      });
+      }); 
     } catch (error) {
       this.alerta.alerta(error, "Error");
     }
@@ -197,7 +197,6 @@ export class AuthService {
   async googleRedirect(credencial){
     let usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
     const {user} = await this.afireauth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(credencial.idToken, credencial.accessToken));
-    
     usuarios.then((users) =>{
       let userField = users.find(userFind => userFind.id === user.email);
       if(userField !== undefined){
@@ -251,10 +250,10 @@ export class AuthService {
     } catch (error) {
       console.log("Error =>", error)
     }
-    
+     
   }
-  async redirectUserAfterLogOut(){
-    await this.router.navigate(['login']);  
+  redirectUserAfterLogOut(){
+    this.router.navigate(['login']);  
   }
 
   

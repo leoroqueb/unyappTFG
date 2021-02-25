@@ -1,11 +1,13 @@
-import { Component,OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component,ElementRef,OnInit, QueryList, ViewChildren} from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { UserElements, UsuariosI } from '../models/users.interface'
+import { UserElements, UserGameProfile, UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios'
 import { AuthService } from '../providers/auth.service'
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AlertController, Platform } from '@ionic/angular';
+import { AngularFirestore,  } from '@angular/fire/firestore';
+import { Gesture, GestureController, IonCard, Platform } from '@ionic/angular';
 import { Game } from '../models/games.interface';
+//import { Animation, AnimationController } from '@ionic/angular';
+import { AlertasRefactor } from '../refactors/refactor';
 
 
 @Component({
@@ -13,75 +15,88 @@ import { Game } from '../models/games.interface';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomePage implements OnInit, AfterViewInit {
   user$: Observable<UsuariosI>;  
   users$: Observable<UsuariosI[]>;
-  usersCollection: UsuariosI[];
+  usersGameProfile: UserGameProfile[] = [];
+  
   userConnection: Subscription;
   usersConnection: Subscription;
-  backButtonSubscription;
-  
+
+  //animation: Animation;
+  @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef>;
   constructor(
     
     public db: AngularFirestore,
     private userService: UsuariosProvider,
-    private alertController: AlertController,
-    private auth: AuthService,
+    private alerta: AlertasRefactor,
+    //private auth: AuthService,
     private platform: Platform,
+    //private animationCtrl: AnimationController,
+    private gestureCtrl: GestureController,
     
   ) {
     
   }
 
-  
+  prueba = {
+    displayName: "Pepitodelafrontera50",
+    favGames: ["Among us", "COD Warzone"]
+  }
+
   async ngOnInit(){
-
     this.userConnection = (this.user$ = await this.userService.getActualUser()).subscribe();
-    this.usersConnection = (this.users$ = this.userService.getAllUsersData()).subscribe( user =>
-      this.usersCollection = user
-    );
+    this.userService.getReformatedUsersData().then(games => {
+      this.usersGameProfile = games;
+    });
   }
 
-  ngOnDestroy(){
+  ngAfterViewInit(){
+    const cardArray = this.cards.toArray();
+    this.swipeGesture(cardArray);
+  }
+
+  swipeGesture(cardArray){
+    for (let index = 0; index < cardArray.length; index++) {
+      const card:ElementRef<any> = cardArray[index];
+      const gesture: Gesture = this.gestureCtrl.create({
+        el: card.nativeElement,
+        gestureName: 'swipe-gesture',
+        onMove: ev => {
+          card.nativeElement.style.transform = `translateX(${ev.deltaX}px) rotate(${ev.deltaX / 10}deg)`;
+
+        },
+        onEnd: ev => {
+          card.nativeElement.style.transition = '.5s ease-out';
+          if(ev.deltaX > 150){
+            card.nativeElement.style.transform = `translateX(${+this.platform.width() * 2}px) rotate(${ev.deltaX / 2}deg)`;
+            this.addToUserLikes();
+          }else if(ev.deltaX < -150){
+            card.nativeElement.style.transform = `translateX(-${+this.platform.width() * 2}px) rotate(${ev.deltaX / 2}deg) opacity: 0 height: '!'`;
+            this.addToUserDislikes(); 
+          }else{
+            card.nativeElement.style.transform = '';
+          }
+        }
+      }); 
+      gesture.enable(true);   
+    }
     
-    this.userConnection.unsubscribe();
-    this.usersConnection.unsubscribe();
   }
 
+  addToUserDislikes(){
+    console.log("Has rechazado a alguien :(")
+  }
+
+  addToUserLikes(){
+    console.log("Has dado like a alguien yeyyyy");
+  }
+
+ 
   ionViewWillLeave(){
-    this.backButtonSubscription.unsubscribe();
+    this.userConnection.unsubscribe();
+    //this.usersConnection.unsubscribe();
   }
-  ionViewDidEnter() {
-    
-    this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
-      
-      await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Salir de Uny',
-        subHeader: '¿En serio?',
-        message: '¿Ya me abandonas? :(',
-        buttons: [
-          {
-            text: 'Nunca',
-            role: 'cancel',
-            cssClass: 'primary'
-          },
-          {
-            text:'No me queda otra...',
-            cssClass:'secundary',
-            handler: () =>{
-              navigator['app'].exitApp();
-            }
-          } 
-        ]
-      }).then((alerta) => alerta.present());
-        
-    });   
-      
-        
-  }
-  cerrarSesion(){
-    this.auth.doLogout();  
-  }
+  
   
 }

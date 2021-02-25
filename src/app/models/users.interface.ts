@@ -43,3 +43,10 @@ export interface UserElements{
     id: string;
     campo: string;
 }
+
+export interface UserGameProfile{
+    name?: string;
+    displayName: string;
+    favGames: string[];
+    otherGames: string[];
+}

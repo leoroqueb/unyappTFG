@@ -47,6 +47,5 @@ export class GamesService {
   startListeningGameCollection(): Observable<Game[]>{
     return this.db.collection<Game>(`games`).valueChanges();
   }
-
   
 }

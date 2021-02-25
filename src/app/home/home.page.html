@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
     <ion-title>
       Home
@@ -6,16 +6,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="user$ | async as thisUser">
-  <app-user-cards *ngFor="let user of usersCollection">
-    
-  </app-user-cards>
-  <h1>Bienvenido, {{thisUser.displayName}}</h1>
-  <ion-button routerLink="/perfil" color="danger" shape="round">
-    Vamos al perfil
-  </ion-button>
-  <ion-button (click)="cerrarSesion()" shape="round">
-    Cerrar sesion
-  </ion-button>
+<ion-content [fullscreen]="true" >
+  <h1 *ngIf="user$ | async as thisUser">Bienvenido, <b>{{thisUser.displayName}}</b></h1>
+  <ion-card class="userCard" *ngFor="let user of usersGameProfile">
+    <ion-card-header>
+      <ion-card-title>{{user.displayName}}</ion-card-title>
+      <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
+      <!-- <span>{{user.favGames[0]}}</span>
+      <span>{{user.favGames[1]}}</span>
+      <span>{{user.favGames[2]}}</span> -->
+    </ion-card-header>
+  </ion-card>
+  <!-- <app-user-cards *ngFor="let user of usersCollection"></app-user-cards> -->
+  
   
 </ion-content>

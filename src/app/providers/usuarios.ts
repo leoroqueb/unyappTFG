@@ -1,7 +1,7 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { UserElements, UsuariosI } from '../models/users.interface';
+import { UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { Game } from '../models/games.interface';
 })
 export class UsuariosProvider{
   private usersCollection: AngularFirestoreCollection<UsuariosI>;
-  private todosUsuarios: Observable<UsuariosI[]>;
+  private allUsersData: Observable<UsuariosI[]>;
   
 
   constructor(
@@ -20,7 +20,7 @@ export class UsuariosProvider{
     private afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       //REVISAR: PUEDE SER QUE NO HAGA FALTA
-      this.todosUsuarios = this.usersCollection.snapshotChanges().pipe(map(
+      this.allUsersData = this.usersCollection.snapshotChanges().pipe(map(
         actions =>{
           return actions.map( a => {
             const data = a.payload.doc.data();
@@ -33,8 +33,9 @@ export class UsuariosProvider{
   }
 
   getAllUsersData(): Observable<UsuariosI[]>{
-    return this.todosUsuarios;
+    return this.allUsersData;
   }
+
   
   updateUsuario(usuario: UsuariosI) {
     this.conection.unsubscribe();
@@ -43,15 +44,6 @@ export class UsuariosProvider{
 
   addUsuario(usuario: UsuariosI) {
     return this.usersCollection.doc(usuario.email).set(usuario,{merge: true});
-  }
-
-  async getActualUserUID(): Promise<string> {
-    if (this.afAuth.currentUser) {
-      return (await this.afAuth.currentUser).email;
-    } else {
-      return ""
-    }
-    
   }
 
   async eliminaUsuario(){
@@ -65,7 +57,7 @@ export class UsuariosProvider{
   }
 
   async getActualUser(){
-    return this.usersCollection.doc<UsuariosI>(await this.getActualUserUID()).valueChanges();
+    return this.usersCollection.doc<UsuariosI>((await this.afAuth.currentUser).email).valueChanges();
   }
 
   //PENDIENTE DE REVISION, CREO QUE NO LO USO
@@ -123,8 +115,7 @@ export class UsuariosProvider{
 
  
    /**
-   * ATENCION: 
-   * METODO PARA SACAR A TODOS LOS ELEMENTOS DE UNA COLECCION!!!
+   * Saca un campo especifico de todos los usuarios
    * @param campo 
    * Se le pasa un string con el nombre del campo de la bd que quieras recibir
    * @returns Array<string> con los valores de ese campo de todos los documentos
@@ -147,6 +138,37 @@ export class UsuariosProvider{
         reject(console.log(error))
       )
     });
+  }
+
+  
+  getReformatedUsersData():Promise<UserGameProfile[]>{
+    return new Promise<UserGameProfile[]>((resolve) => {
+      const reformatedUser: UserGameProfile[] = [];
+      const allUsers = this.getAllUsersData();
+      allUsers.subscribe(users => {
+        users.forEach(user =>{
+          let auxFavGamesReformatedString: string[] = [];
+          let auxOtherGamesReformatedString: string[] = [];
+          user.favGames.forEach(game =>{
+            auxFavGamesReformatedString.push(game.name);
+          })
+          if(user.otherGames !== undefined){
+            user.otherGames.forEach(game => {
+              auxOtherGamesReformatedString.push(game.name);
+            })
+          }
+          let auxUsersGamesArray: UserGameProfile = {
+            name: user.name,
+            displayName: user.displayName,
+            favGames: auxFavGamesReformatedString,
+            otherGames: auxOtherGamesReformatedString
+          }
+          reformatedUser.push(auxUsersGamesArray);
+        })
+        resolve(reformatedUser);
+      })
+    });
+ 
   }
 
    /**

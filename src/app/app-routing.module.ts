@@ -7,8 +7,8 @@ import { LoggedUserGuard } from './guards/logged-user.guard';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [GamesSelectionGuard]
+    redirectTo: 'tabs/home',
+    pathMatch: 'full'
   },
   {
     path: '',
@@ -47,6 +47,21 @@ const routes: Routes = [
     loadChildren: () => import('./juegos/juegos.module').then( m => m.JuegosPageModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'tabs',
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
+    
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
+  },
+
+
 
  
 ];

@@ -23,7 +23,7 @@ export class GamesSelectionGuard implements CanActivate {
       
       return this.authService.afireauth.authState.pipe(
         map((user) =>{
-          if(user !== null || user !== undefined && user.emailVerified == true){
+          if(user !== null || user !== undefined || user.emailVerified !== true){
             let b: UserElements;
             this.userProvider.compruebaDatosDeUsuarios("favGames").then(userData =>{
               b = userData.find( usuario => usuario.id === user.email );
