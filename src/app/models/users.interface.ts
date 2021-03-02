@@ -9,13 +9,17 @@
  * registro o modifica el perfil
  */
 
+import { Game } from "./games.interface";
+
 export interface UsuariosI{
     uid?:string;
     displayName:string;
     name:string;
     lastName:string;
-    birthDate:string;   
+    birthDate?:string;   
     email:string;
+    favGames?: Game[];
+    otherGames?: Game[];
 }
 
 /**
@@ -35,6 +39,20 @@ export interface PrivacyData{
     //TODO
 }
 
-export interface Videogames{
-    //TODO
+export interface UserElements{
+    id: string;
+    campo: string;
+}
+
+export interface UserGameProfile{
+    name?: string;
+    displayName: string;
+    favGames: string[];
+    otherGames: string[];
+}
+
+export interface UserMatches{
+    userName?: string;
+    likes?: string[];
+    dislikes?: string[];
 }

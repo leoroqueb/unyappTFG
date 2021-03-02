@@ -1,0 +1,29 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-title>Ordena los juegos</ion-title>
+    <ion-button (click)="sendGamesToDB()" expand="block" shape="round" slot="end">
+      Terminar
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>Juegos favoritos:</ion-list-header>
+    <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
+      <ion-item *ngFor="let a of favoriteGames" >
+        <ion-label>
+          {{a.name}}
+        </ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+      <ion-list-header>Otros juegos:</ion-list-header>
+      <ion-item *ngFor="let game of otherGames">
+        <ion-label>
+          {{game.name}}
+        </ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+  </ion-list> 
+</ion-content>

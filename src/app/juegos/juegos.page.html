@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-row >
+      <ion-col size="12">
+        <ion-toolbar >
+          <!-- searchbar -->
+          <ion-item-divider>
+            <ion-item>
+              <ion-searchbar
+              placeholder="Buscar juegos" 
+              (ionChange)="onSearchChange($event)" 
+              [debounce]="250" 
+              inputmode="text"
+              clearIcon="trash-outline"
+              slot="start">
+            </ion-searchbar>
+            </ion-item>
+           <ion-item>
+            <ion-button disabled id="submitButton" shape="round" (click)="getChosenGamesByUser()" slot="end">
+              Siguiente
+            </ion-button>
+           </ion-item>
+          </ion-item-divider>
+          <!-- filtros -->
+          <ion-item-divider (ionChange)="applyFilters(platformSelect.value, categorySelect.value)">
+            <ion-item slot="start">
+              <ion-label position="floating">Plataforma</ion-label>
+              <ion-select value="Todas" multiple="false" #platformSelect interface="action-sheet">
+                <ion-select-option *ngFor="let platform of platformFilters">{{platform}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Categorías</ion-label>
+              <ion-select value="Todas" multiple="false" #categorySelect interface="action-sheet">
+                <ion-select-option *ngFor="let category of categoryFilters">{{category}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-item-divider>
+
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+    <ion-item>
+      <ion-label>Elige un mínimo de 3 juegos y un máximo de 13</ion-label>
+    </ion-item>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let chosenGame of chosenGamesByUser " class="ion-padding">
+    <ion-item button (click)="deleteGamesFromList(chosenGame)">
+      <ion-label>{{chosenGame.name}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list-header>
+    <ion-label><h2><b>Juegos a elegir:</b></h2></ion-label>
+  </ion-list-header>
+  <ion-list lines="inset" *ngFor="let game of game$ | searchFilter: searchText | listFilter: platFilters:catFilters">
+    <ion-item button (click)="selectGamesFromList(game)" id={{game.name}}>
+      {{game.name}}
+    </ion-item>
+  </ion-list>
+</ion-content>

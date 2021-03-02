@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
-import { AngularFireAuth } from '@angular/fire/auth'
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
+import { AngularFireAuth,  } from '@angular/fire/auth'
 import { CredencialesI, UsuariosI } from '../models/users.interface';
-import { AlertasRefactor } from '../refactors/refactor/refactor'
+import { AlertasRefactor } from '../refactors/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
-import { UsuariosProvider } from './usuarios';
+import { Platform } from '@ionic/angular';
+import { UsuariosProvider } from './usuarios.service';
+import { GooglePlus } from '@ionic-native/google-plus/ngx'
+
+
 
 
 
@@ -18,13 +21,15 @@ import { UsuariosProvider } from './usuarios';
 export class AuthService {
   public user$: Observable<UsuariosI>;
   public credencial$: Observable<CredencialesI>;
+  public credentials: firebase.auth.UserCredential | PromiseLike<firebase.auth.UserCredential>;
   
   
   constructor(
-    private navCtrl: NavController,
     private userProvider: UsuariosProvider,
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
+    private platform: Platform,
+    private googlePlus: GooglePlus,
     public alerta: AlertasRefactor,
     public router: Router
   ) { 
@@ -55,23 +60,28 @@ export class AuthService {
 
 
   //REGISTRO USUARIO CON EMAIL Y CONTRASEÑA
-  async registerUser(user: UsuariosI, email:string, password:string): Promise<any> {
-    try {
-
+  async registerUser(email:string, password:string): Promise<firebase.auth.UserCredential>{
+    try {    
         //Intentamos el registro, enviamos email de verificación y actualizamos perfil del usuario 
-      const credentials = await this.afireauth
-          .createUserWithEmailAndPassword(email, password);
-      
-      await this.sendVerificationEmail();
-      
-      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
-      this.router.navigateByUrl('/home')
-        
-      this.createDataFirstTime(user, credentials);
+      this.credentials = await this.afireauth
+        .createUserWithEmailAndPassword(email, password);  
+      return this.credentials;
     } catch (error) {
-      this.alerta.alerta(error, "Error");
-      this.router.navigate(['/login']);
+      this.alerta.alerta(error, "Error");      
     }
+  }
+
+  async registerDataForFirstTime(user:UsuariosI, credential: CredencialesI) {
+    try {
+      await this.sendVerificationEmail();
+      this.updateCredencialData(credential);
+      this.createDataFirstTime(user, this.credentials);
+      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+      this.router.navigateByUrl('/nonverify')
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 
   /**
@@ -94,7 +104,9 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
+        
       };
+      
       return userRef.set(userProfileDocument, {merge: true});
   }
 
@@ -109,10 +121,9 @@ export class AuthService {
     return userRef.set(userProfileDocument, {merge: true});
   }
 
-  
 
   //LOGIN USER CON EMAIL Y CONTRASEÑA
-  async loginUser(email, password): Promise<CredencialesI>{
+  async loginUser(email: string, password: string): Promise<CredencialesI>{
     try {
       //Obtenemos las credenciales del inicio de sesion
       const {user} = await this.afireauth.signInWithEmailAndPassword(email, password);
@@ -153,12 +164,42 @@ export class AuthService {
 
   //Login con Google
   async googleLogIn(): Promise<any>{
-    //Sacamos todos los usuarios de la bd users
-    const usuarios: Array<string> = this.userProvider.compruebaDatosDeUsuarios("email");
+    if(this.platform.is('android')){
+      this.loginGoogleAndroid();
+    }else{
+      this.loginGoogleWeb();
+    } 
+    
+  }
+
+  userInfo = null;
+  async loginGoogleAndroid(){
     try {
-      const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      //Si el usuario ya ha guardado sus datos en la bd users, va al home, si no, al registro.
-      if(usuarios.includes(user.email)){
+      
+      await this.googlePlus.login({
+        'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
+        'offline': true
+      }).then( async result => {
+        this.googleRedirect(result);
+      })
+      .catch(err => {
+        if(err != `${JSON.stringify(12501)}`){
+          this.alerta.alerta(`${JSON.stringify(err)}`, "Error") 
+        }
+        
+      }); 
+    } catch (error) {
+      this.alerta.alerta(error, "Error");
+    }
+    
+  }
+  
+  async googleRedirect(credencial){
+    let usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
+    const {user} = await this.afireauth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(credencial.idToken, credencial.accessToken));
+    usuarios.then((users) =>{
+      let userField = users.find(userFind => userFind.id === user.email);
+      if(userField !== undefined){
         this.updateCredencialData(user);
         this.router.navigate(['/home']);
         return user;
@@ -166,7 +207,28 @@ export class AuthService {
         this.router.navigate(['/signup/google-sign-up']);
         this.updateCredencialData(user);
         return user;
-      }  
+      } 
+    });
+  }
+
+  async loginGoogleWeb(){
+    //Sacamos todos los usuarios de la bd users
+    let usuarios = this.userProvider.compruebaDatosDeUsuarios("email");
+    try {
+      const {user} = await this.afireauth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      //Si el usuario ya ha guardado sus datos en la bd users, va al home, si no, al registro.
+      usuarios.then((users) =>{
+        let userField = users.find(userFind => userFind.id === user.email);
+        if(userField !== undefined){
+          this.updateCredencialData(user);
+          this.router.navigate(['/home']);
+          return user;
+        }else{
+          this.router.navigate(['/signup/google-sign-up']);
+          this.updateCredencialData(user);
+          return user;
+        } 
+      })
     } catch (error) {
       this.alerta.alerta("Ha habido un fallo al contactar con los servidores de Google. Inténtalo de nuevo", "Error");
     }
@@ -175,12 +237,23 @@ export class AuthService {
   //CIERRE SESION CON EMAIL Y CONTRASEÑA
   async doLogout(): Promise<void>{
     try {
-      await this.afireauth.signOut();
-      this.navCtrl.navigateRoot('/login')
+      if(this.platform.is('android')){
+        await this.afireauth.signOut();
+        await this.googlePlus.disconnect();
+        await this.redirectUserAfterLogOut();
+      
+      }else{
+        await this.afireauth.signOut().then(() =>
+          this.redirectUserAfterLogOut()
+        );
+      }
     } catch (error) {
       console.log("Error =>", error)
     }
-    
+     
+  }
+  redirectUserAfterLogOut(){
+    this.router.navigate(['login']);  
   }
 
   

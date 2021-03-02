@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
-import { AlertasRefactor } from '../refactors/refactor/refactor';
+import { AlertasRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-forgot-password',

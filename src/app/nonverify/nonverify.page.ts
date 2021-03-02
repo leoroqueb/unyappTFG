@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { CredencialesI, UsuariosI } from '../models/users.interface';
+import { Observable } from 'rxjs';
+import { UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
-import { UsuariosProvider } from '../providers/usuarios';
-import { AlertasRefactor } from '../refactors/refactor/refactor';
+import { UsuariosProvider } from '../providers/usuarios.service';
 
 @Component({
   selector: 'app-nonverify',
@@ -21,14 +19,13 @@ export class NonverifyPage implements OnInit  {
   async ngOnInit(){
     (this.user$ = await this.userProvider.getActualUser()).subscribe()
   }
-  async onClick(): Promise<void>{
+  async resendVerificationEmail(): Promise<void>{
     try {
       await this.authService.sendVerificationEmail();
     } catch (error) {
       console.log(error)
     }
   }
-  
   ngOnDestroy(): void {
     this.authService.doLogout();
   }

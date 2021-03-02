@@ -1,7 +1,7 @@
 {
-  "name": "unyappB",
+  "name": "unyapp",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular" 
 }

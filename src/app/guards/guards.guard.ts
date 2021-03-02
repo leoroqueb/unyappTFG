@@ -1,9 +1,10 @@
+import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../providers/auth.service'
-import { AlertasRefactor } from '../refactors/refactor/refactor'
+import { AlertasRefactor } from '../refactors/refactor'
 
 
 @Injectable({
@@ -18,14 +19,13 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.authService.credencial$.pipe(
-        take(1),
+      return this.authService.afireauth.authState.pipe(
         map((user) =>{
-          if(user){            
+          if(user !== null || user !== undefined){           
             return true;
           }else{
             this.alert.alerta("¡¡NO PUEDES PASAR!!", "Gandalf dice");
-            this.router.navigateByUrl('/login');
+            this.router.navigate(['login']);
             return false;
           }
         })

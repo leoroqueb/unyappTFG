@@ -8,10 +8,10 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="signUpForm" (ngSubmit)="recibirDatosForm(signUpForm)">
+  <form [formGroup]="signUpForm" (ngSubmit)="getDataFromForm(signUpForm)">
     <ion-item>
-      <ion-label position="floating">Nick<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input type="text" formControlName="displayName" required></ion-input>
+      <ion-label position="floating">Nombre de usuario<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" formControlName="displayName" #displayName required></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.displayName">

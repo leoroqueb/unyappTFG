@@ -1,5 +1,7 @@
 import { AlertController } from '@ionic/angular'
 import { Injectable } from '@angular/core';
+import { Form, FormGroup } from '@angular/forms';
+import { Game } from '../models/games.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,10 @@ export class AlertasRefactor {
         
             header: header,
             message: msg,
+            keyboardClose: true,
             buttons: [
-                 {
-                text: 'Cerrar',
+                { 
+                    text: 'Cerrar',
                 }
             ]
         });
@@ -33,9 +36,10 @@ export class RegistroRefactor{
     private detallesSecundarios: Array<string>;
     private detallesFinal: any;
     private fechaModificada: string;
+    private gamesData: Game[];
     constructor(){}
 
-    obtenerFormFinal(){
+    getFinalForm():string[]{
         this.detallesFinal = {
             email: this.detallesImportantes[0],
             password: this.detallesImportantes[1],
@@ -49,20 +53,28 @@ export class RegistroRefactor{
         return this.detallesFinal;
     }
 
-    recibirDatosImportantes(form){
+    transformImportantData(form: FormGroup):string[]{
         this.detallesImportantes = [form.value.email, form.value.password];
         return this.detallesImportantes;
     }
 
-    recibirDatosSecundarios(form){
+    transformSecondaryData(form: FormGroup):string[]{
         this.fechaModificada = form.value.birthDate.substring(0,10);
         this.detallesSecundarios = [form.value.displayName, form.value.name, form.value.lastName, this.fechaModificada];
         return this.detallesSecundarios;
     }
 
-    recibirDatosGoogle(form){
+    transformGoogleData(form: FormGroup):string[]{
         this.fechaModificada = form.value.birthDate.substring(0,10);
         this.detallesSecundarios = [form.value.name, form.value.lastName, this.fechaModificada];
         return this.detallesSecundarios;
+    }
+
+    setGamesData(games: Game[]):void{
+        this.gamesData = games;
+    }
+
+    getGamesData(): Game[]{
+        return this.gamesData;
     }
 }

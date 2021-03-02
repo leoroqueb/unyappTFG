@@ -1,8 +1,9 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { NavController} from '@ionic/angular';
+import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
-import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor/refactor';
+import { AuthService } from '../providers/auth.service';
+import { UsuariosProvider } from '../providers/usuarios.service';
+import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor';
 
 
 @Component({
@@ -17,9 +18,10 @@ export class SignupPage implements OnInit {
   contraseñas: Array<string>;
   constructor(
     public alerta: AlertasRefactor,
-    public navCtrl: NavController,
+    public userProvider: UsuariosProvider,
     public router: Router,
-    public refactor: RegistroRefactor
+    public refactor: RegistroRefactor,
+    private authService: AuthService,
     
   ) { }
     
@@ -40,20 +42,41 @@ export class SignupPage implements OnInit {
   })
   ionViewDidLoad(){ }
 
-  passwordMatchValidator(g: FormGroup) {
-    return g.get('password').value === g.get('confirm_password').value
-       ? true : {'mismatch': true};
+  passwordMatchValidator(fg: FormGroup): boolean {
+    if (fg.value.password === fg.value.confirm_password){
+      return true;
+    }else{
+      return false;
+    }
   }
 
-  
-
-  userDetallesImportantes(form){
-    if (this.passwordMatchValidator(form)){
-      this.refactor.recibirDatosImportantes(form);
-      this.router.navigate(['/signup/signup-otros-datos']);
-    }else{
-      this.alerta.alerta("Las contraseñas no coinciden.", "ERROR");
+  /**
+   * Comprueba varias cosas: Primero, que las contraseñas sean iguales, para
+   * prevenir que el usuario haya tipeado algún caracter erróneo.
+   * Segundo, comprueba que el email no esté ya registrado en la BD, para evitar
+   * duplicidades de cuenta. 
+   * @param form FormGroup
+   * 
+   */
+  async importantDetailsUser(form: FormGroup){
+    try {
+      if (this.passwordMatchValidator(form)){ 
+        this.userProvider.duplicatedData(form.value.email, "email")
+          .then((isDuplicated) =>{
+            if(isDuplicated){
+              this.alerta.alerta("Todavía no existe un multiverso Uny para que puedas tener dos cuentas con el mismo correo", "Fatality");
+            }else{
+              this.refactor.transformImportantData(form);
+              this.router.navigate(['/signup/signup-otros-datos'])
+            }
+          })   
+      }else{
+        this.alerta.alerta("Las contraseñas no coinciden.", "ERROR");    
+      }
+    } catch (error) {
+      
     }
+    
     
   }
   
