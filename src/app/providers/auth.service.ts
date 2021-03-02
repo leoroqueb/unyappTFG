@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
-import { UsuariosProvider } from './usuarios';
+import { UsuariosProvider } from './usuarios.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx'
 
 

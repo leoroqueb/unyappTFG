@@ -50,3 +50,9 @@ export interface UserGameProfile{
     favGames: string[];
     otherGames: string[];
 }
+
+export interface UserMatches{
+    userName?: string;
+    likes?: string[];
+    dislikes?: string[];
+}

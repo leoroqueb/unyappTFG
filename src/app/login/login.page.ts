@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Injectable, OnDestroy, OnInit} from '@angular
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service'
 import { CredencialesI } from '../models/users.interface'
-import { UsuariosProvider } from '../providers/usuarios'
+import { UsuariosProvider } from '../providers/usuarios.service'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { AlertasRefactor } from '../refactors/refactor';

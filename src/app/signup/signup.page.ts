@@ -2,7 +2,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
-import { UsuariosProvider } from '../providers/usuarios';
+import { UsuariosProvider } from '../providers/usuarios.service';
 import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor';
 
 

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
 import { AlertasRefactor, RegistroRefactor } from '../../refactors/refactor'
-import { UsuariosProvider } from '../../providers/usuarios'
+import { UsuariosProvider } from '../../providers/usuarios.service'
 import { Router } from '@angular/router';
 
 @Component({

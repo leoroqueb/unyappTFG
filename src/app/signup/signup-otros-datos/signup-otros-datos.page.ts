@@ -5,7 +5,7 @@ import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AlertasRefactor } from '../../refactors/refactor'
-import { UsuariosProvider } from 'src/app/providers/usuarios';
+import { UsuariosProvider } from 'src/app/providers/usuarios.service';
 import { App } from '@capacitor/core';
 
 @Component({

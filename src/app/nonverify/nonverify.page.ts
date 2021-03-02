@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
-import { UsuariosProvider } from '../providers/usuarios';
+import { UsuariosProvider } from '../providers/usuarios.service';
 
 @Component({
   selector: 'app-nonverify',

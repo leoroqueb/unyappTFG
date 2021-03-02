@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Game } from 'src/app/models/games.interface';
-import { UsuariosProvider } from 'src/app/providers/usuarios';
+import { UsuariosProvider } from 'src/app/providers/usuarios.service';
 import { RegistroRefactor } from 'src/app/refactors/refactor';
 
 @Component({

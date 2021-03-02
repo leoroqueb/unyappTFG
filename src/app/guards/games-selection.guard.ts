@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserElements, UsuariosI } from '../models/users.interface';
 import { AuthService } from '../providers/auth.service';
-import { UsuariosProvider } from '../providers/usuarios';
+import { UsuariosProvider } from '../providers/usuarios.service';
 
 @Injectable({
   providedIn: 'root'
