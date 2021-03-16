@@ -13,7 +13,7 @@ import { Game } from '../models/games.interface';
 export class UsuariosProvider{
   private usersCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsersData: Observable<UsuariosI[]>;
-  
+  private userConnection: Subscription;
 
   constructor(
     public db: AngularFirestore,
@@ -56,19 +56,23 @@ export class UsuariosProvider{
     })
   }
 
-  async getActualUser(){
-    return this.usersCollection.doc<UsuariosI>((await this.afAuth.currentUser).email).valueChanges();
+  async getActualUser(): Promise<Subject<UsuariosI>>{
+    var subject = new Subject<UsuariosI>();
+    this.userConnection = this.usersCollection.doc<UsuariosI>((await this.afAuth.currentUser).email).valueChanges().subscribe(data => {
+      subject.next(data);
+    });
+    return subject;
   }
 
   //PENDIENTE DE REVISION, CREO QUE NO LO USO
-  getSpecificUserData(id: string): Observable<UsuariosI> {
+  getSpecificUserData(id: string): Subject<UsuariosI> {
     //let user: UsuariosI;
     var subject = new Subject<UsuariosI>();
     
       this.usersCollection.doc<UsuariosI>(id).valueChanges().subscribe(user => {
         subject.next(user);
       });
-      return subject.asObservable();
+      return subject;
   }
 
   conection: Subscription;
@@ -90,6 +94,7 @@ export class UsuariosProvider{
           otherGames: otherGames
         } 
         this.updateUsuario(usuario);
+      
       });
       
     }else{
@@ -181,7 +186,7 @@ export class UsuariosProvider{
     let result:boolean;
     return new Promise<boolean>((resolve,reject) =>{
       usuarios.then((users) =>{
-        let aux = users.find(user => user.campo === data);
+        let aux = users.find(user => user.campo.includes(data));
         if (aux !== undefined){
           result = true;
         }else{
@@ -196,5 +201,9 @@ export class UsuariosProvider{
   
   removeUsuario(id: string) {
     return this.usersCollection.doc(id).delete();
+  }
+
+  disconectFromDB():void{
+    this.userConnection.unsubscribe();
   }
 }

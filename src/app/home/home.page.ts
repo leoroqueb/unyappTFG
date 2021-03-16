@@ -1,15 +1,11 @@
 import { AfterViewInit, Component,ElementRef,OnInit, QueryList, ViewChildren} from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { UserElements, UserGameProfile, UserMatches, UsuariosI } from '../models/users.interface'
+import { Observable, Subscription } from 'rxjs';
+import { UserGameProfile, UserMatches, UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios.service'
-import { AuthService } from '../providers/auth.service'
 import { AngularFirestore,  } from '@angular/fire/firestore';
 import { Gesture, GestureController, IonCard, Platform } from '@ionic/angular';
-import { Game } from '../models/games.interface';
-//import { Animation, AnimationController } from '@ionic/angular';
 import { AlertasRefactor } from '../refactors/refactor';
 import { MatchService } from '../providers/match.service';
-
 
 @Component({
   selector: 'app-home',
@@ -21,54 +17,67 @@ export class HomePage implements OnInit, AfterViewInit {
   users$: Observable<UsuariosI[]>;
   
   usersGameProfile: UserGameProfile[] = [];
+  mustBeRemoved = [];
+  aux = [];
+  profileToFilter: string = '';
   
   userConnection: Subscription;
   cardArrayConnection: Subscription;
 
-  //animation: Animation;
-  @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef>;
+  @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef<IonCard>>;
   constructor(
     
     public db: AngularFirestore,
     private userService: UsuariosProvider,
-    //private alerta: AlertasRefactor,
-    private auth: AuthService,
+    private alerta: AlertasRefactor,
     private platform: Platform,
-    //private animationCtrl: AnimationController,
     private gestureCtrl: GestureController,
-    private matchService: MatchService
+    private matchService: MatchService,
     
   ) {
     
   }
 
+  myself: UserMatches = null;
   async ngOnInit(){
-    this.userConnection = (this.user$ = await this.userService.getActualUser()).subscribe(data => {
-      let userMatchData: UserMatches = {
-        userName: data.displayName,
-        likes: [],
-        dislikes: []
-      };
-      this.matchService.addDocToDB(userMatchData);
-    });
+    
+    //VAMOS ENCAMINADOS. EL PROBLEMA ESTÁ EN QUE ESTÁ RECORRIENDO TANTO GAMES COMO MATCH, POR LO QUE SIEMPRE
+    //HAY COINCIDENCIA. HAY QUE CONSEGUIR OBTENER EL USERMATCH EXCLUSIVO DEL USUARIO ACTUAL Y HACER UN FILTER SOBRE ESO.
+    //YA VAMOS CERCANDO EL ERROR!!!!!
+    this.user$ = await this.userService.getActualUser();
     this.userService.getReformatedUsersData().then(games => {
+      games.forEach(async otherUserProfile => {
+        /* await this.matchService.getUsersMatchData().then(users => {
+          users.forEach(userSearch => {
+            if(userSearch.userName == otherUserProfile.displayName){
+              this.myself = userSearch;
+            }
+          })
+        })
+        console.log("myself", this.myself); */
+        this.matchService.getDisplayName("leoroqueb").then(a => console.log(a))
+      })
+      
       this.usersGameProfile = games;
-    });
+      
+    }); 
 
   }
 
   ngAfterViewInit(){
+    
     const cardArray = this.cards.changes;
-    this.cardArrayConnection = cardArray.subscribe(item => {
-      this.swipeGesture(item.toArray());
+
+    this.userConnection = cardArray.subscribe(item => {
+      this.swipeGesture(item.toArray())
     })
     
   }
 
-  swipeGesture(cardArray){
-    for (let index = 0; index < cardArray.length; index++) {
-      const card:ElementRef<any> = cardArray[index];
-      console.log(card.nativeElement)
+  swipeGesture(cards){   
+    for (let index = 0; index < cards.length; index++) {
+      const card:ElementRef<any> = cards[index]//this.itemsArray[this.itemsArray.length-1];
+      //Actualizamos ID de los titulos de las cartas
       const gesture: Gesture = this.gestureCtrl.create({
         el: card.nativeElement,
         gestureName: 'swipe-gesture',
@@ -76,37 +85,55 @@ export class HomePage implements OnInit, AfterViewInit {
           card.nativeElement.style.transform = `translateX(${ev.deltaX}px) rotate(${ev.deltaX / 10}deg)`;
         },
         onEnd: ev => {
+          let user = card.nativeElement.children[0].childNodes[0].textContent;
           card.nativeElement.style.transition = '.5s ease-out';
           if(ev.deltaX > 150){
             card.nativeElement.style.transform = `translateX(${+this.platform.width() * 2}px) rotate(${ev.deltaX / 2}deg)`;
-            
-            this.addToUserLikes();
+            this.addToUserLikes(user);
           }else if(ev.deltaX < -150){
             card.nativeElement.style.transform = `translateX(-${+this.platform.width() * 2}px) rotate(${ev.deltaX / 2}deg)`;
-            this.addToUserDislikes(); 
+            this.addToUserDislikes(user); 
           }else{
             card.nativeElement.style.transform = '';
           }
         }
       }); 
-      gesture.enable(true);   
+      
+      gesture.enable(true); 
     }
+  }
+
+  addToUserDislikes(user:string){
+    this.matchService.addDislikeToUserBD(user);
+  }
+
+  connection: Subscription;
+  addToUserLikes(user: string){
+    this.matchService.addLikeToUserBD(user);
+    var match = this.matchService.checkForMatch(user);
+    
+    match.subscribe(data => {
+      let myDisplayName = this.matchService.getUserDisplayName();
+      
+      this.connection = myDisplayName.subscribe(dN => {
+        
+        if(data.likes.includes(dN)){
+          this.match(user);
+          
+        }
+      });
+     
+    });
     
   }
 
-  addToUserDislikes(){
-    console.log("Has rechazado a alguien :(")
-  }
-
-  addToUserLikes(){
-    console.log("Has dado like a alguien yeyyyy");
-    //this.matchService.addLikeToUserArray()
+  match(dN: string){
+    this.alerta.alerta("Hay match con "+dN+" !!", "MAATCHH!!");
+    this.connection.unsubscribe();
   }
 
  
   ionViewWillLeave(){
-    this.userConnection.unsubscribe();
-    this.cardArrayConnection.unsubscribe();
   }
   
   

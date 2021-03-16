@@ -1,3 +1,4 @@
+import { Game } from "./games.interface";
 
  /** 
   * @interface UsuariosI
@@ -8,9 +9,6 @@
  * para unirlos y meter todo en la base de datos cuando un usuario completa el 
  * registro o modifica el perfil
  */
-
-import { Game } from "./games.interface";
-
 export interface UsuariosI{
     uid?:string;
     displayName:string;
@@ -39,9 +37,14 @@ export interface PrivacyData{
     //TODO
 }
 
+/**
+ * @interface UserElements
+ * @description
+ * Esta interfaz sirve
+ */
 export interface UserElements{
     id: string;
-    campo: string;
+    campo: string[];
 }
 
 export interface UserGameProfile{

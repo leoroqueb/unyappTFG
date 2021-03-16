@@ -38,10 +38,12 @@ export class LoginPage implements OnInit,AfterViewInit,OnDestroy{
     ) {}
 
   ngOnInit(): void {
-    this.googlePlus.trySilentLogin({
-      'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
-      'offline': false
-    })
+    if(this.platform.is('android')){
+      this.googlePlus.trySilentLogin({
+        'webClientId': "947506461654-mrsienuncjouk7qkvgsifirrnsqell68.apps.googleusercontent.com", 
+        'offline': false
+      })
+    }
   }
   
   ngOnDestroy(){

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FiltroBusquedaPipe } from './filtro-busqueda.pipe';
 import { ListFilterPipe } from './list-filter.pipe';
+import { FiltroIoncardsPipe } from './filtro-ioncards.pipe';
 
 
 
@@ -8,11 +9,12 @@ import { ListFilterPipe } from './list-filter.pipe';
 @NgModule({
   declarations: [
     FiltroBusquedaPipe, 
-    ListFilterPipe,
+    ListFilterPipe, FiltroIoncardsPipe,
   ],
   exports:[
     FiltroBusquedaPipe, 
-    ListFilterPipe
+    ListFilterPipe,
+    FiltroIoncardsPipe
   ],
 })
 export class PipesModule { }
