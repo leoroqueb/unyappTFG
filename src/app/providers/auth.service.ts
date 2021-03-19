@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth,  } from '@angular/fire/auth'
-import { CredencialesI, UsuariosI } from '../models/users.interface';
+import { CredencialesI, UserMatches, UsuariosI } from '../models/users.interface';
 import { AlertasRefactor } from '../refactors/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -10,6 +10,7 @@ import { switchMap } from 'rxjs/operators';
 import { Platform } from '@ionic/angular';
 import { UsuariosProvider } from './usuarios.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx'
+import { MatchService } from './match.service';
 
 
 
@@ -23,15 +24,18 @@ export class AuthService {
   public credencial$: Observable<CredencialesI>;
   public credentials: firebase.auth.UserCredential | PromiseLike<firebase.auth.UserCredential>;
   
+  private matchTemplate: UserMatches;
+  
   
   constructor(
     private userProvider: UsuariosProvider,
     public afireauth: AngularFireAuth, 
-    public afs: AngularFirestore,
+    private afs: AngularFirestore,
     private platform: Platform,
     private googlePlus: GooglePlus,
-    public alerta: AlertasRefactor,
-    public router: Router
+    private alerta: AlertasRefactor,
+    private router: Router,
+    private matchService: MatchService
   ) { 
 
 
@@ -76,6 +80,12 @@ export class AuthService {
       await this.sendVerificationEmail();
       this.updateCredencialData(credential);
       this.createDataFirstTime(user, this.credentials);
+      this.matchTemplate = {
+        userName: user.displayName,
+        likes: [],
+        dislikes: []
+      }
+      this.matchService.addDocToDB(this.matchTemplate);
       this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
       this.router.navigateByUrl('/nonverify')
     } catch (error) {
@@ -240,7 +250,7 @@ export class AuthService {
       if(this.platform.is('android')){
         await this.afireauth.signOut();
         await this.googlePlus.disconnect();
-        await this.redirectUserAfterLogOut();
+        this.redirectUserAfterLogOut();
       
       }else{
         await this.afireauth.signOut().then(() =>

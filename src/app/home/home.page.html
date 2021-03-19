@@ -6,10 +6,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" >
-  <h1 *ngIf="user$ | async as thisUser">Bienvenido, <b>{{thisUser.displayName}}</b></h1>
-  <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile">
-    <ion-card-header>
+<ion-content [fullscreen]="true">
+  <h1 *ngIf="user$ | async as thisUser" id='myName'>Bienvenido, <b >{{thisUser.displayName}}</b></h1>
+  <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile" >
+    <ion-card-header id='{{ user.displayName }}'>
       <ion-card-title>{{user.displayName}}</ion-card-title>
       <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
       <div>
@@ -19,7 +19,4 @@
       </div>
     </ion-card-header>
   </ion-card>
-  <!-- <app-user-cards *ngFor="let user of usersCollection"></app-user-cards> -->
-  
-  
 </ion-content>

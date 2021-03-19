@@ -5,6 +5,7 @@ import { ListFilterPipe } from './list-filter.pipe';
 
 
 
+
 @NgModule({
   declarations: [
     FiltroBusquedaPipe, 
@@ -12,7 +13,7 @@ import { ListFilterPipe } from './list-filter.pipe';
   ],
   exports:[
     FiltroBusquedaPipe, 
-    ListFilterPipe
+    ListFilterPipe,
   ],
 })
 export class PipesModule { }

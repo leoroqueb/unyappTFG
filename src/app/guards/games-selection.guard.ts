@@ -23,11 +23,11 @@ export class GamesSelectionGuard implements CanActivate {
       
       return this.authService.afireauth.authState.pipe(
         map((user) =>{
-          if(user !== null || user !== undefined || user.emailVerified !== true){
-            let b: UserElements;
+          if(user != null || user != undefined || user.emailVerified != true || user.email != null){
+            let data: UserElements;
             this.userProvider.compruebaDatosDeUsuarios("favGames").then(userData =>{
-              b = userData.find( usuario => usuario.id === user.email );
-              if(b.campo === undefined){
+              data = userData.find( usuario => usuario.id === user.email );
+              if(data.campo === undefined){
                 this.router.navigate(['juegos']);
                 return true;
               }else{

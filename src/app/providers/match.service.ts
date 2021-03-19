@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
-import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
 import { User } from "@codetrix-studio/capacitor-google-auth/dist/esm/user";
-import { Observable } from "rxjs";
-import { UserMatches } from "../models/users.interface";
-import { AuthService } from "./auth.service";
+import { Observable, Subject, Subscription } from "rxjs";
+import { UserElements, UserMatches, UsuariosI } from "../models/users.interface";
 import { UsuariosProvider } from "./usuarios.service";
 
 @Injectable({
@@ -12,40 +10,116 @@ import { UsuariosProvider } from "./usuarios.service";
 })
 export class MatchService {
     matchCollection: AngularFirestoreCollection<UserMatches>; 
+    matchSubjectConnection: Subscription;
     constructor(
         private db: AngularFirestore,
-        private auth: AuthService,
+        private userService: UsuariosProvider
         
     ){
-        this.matchCollection = db.collection<UserMatches>(`userChoices`);
+        this.matchCollection = db.collection<UserMatches>(`userMatch`);
     }
 
-    getAllUserMatchData(): Promise<UserMatches>{
-        let userData: UserMatches;
-        console.log("entro")
-        return new Promise(async (resolve) => {
-            this.matchCollection.doc((await this.auth.afireauth.currentUser).displayName).valueChanges()
-            .toPromise().then(data => {
-                console.log(data)
-                userData = data;
-                resolve(userData);
+    getAllUserMatchData(user?:string): Subject<UserMatches>{
+        if(user == undefined){
+            var userData = new Subject<UserMatches>();
+            var displayName = this.getUserDisplayName();
+            displayName.subscribe(data => {
+                this.matchSubjectConnection = this.matchCollection.doc(data).valueChanges().subscribe(data => {
+                    userData.next(data);
+                })
+                displayName.complete();
+            });
+            return userData;
+        }else{
+            var userData = new Subject<UserMatches>();
+            this.matchSubjectConnection = this.matchCollection.doc(user).valueChanges().subscribe(data => {
+                userData.next(data);
             })
-            .catch(err => console.log(err));
+            return userData;
+        }
+    }
 
-        })
+    getUsersMatchData(): Promise<UserMatches[]>{
+        return new Promise((resolve, reject) =>{
+            const usuarios: UserMatches[] = [];
+            const useri = this.matchCollection.get();
+            useri.toPromise().then(function(querySnapshot) {     
+              querySnapshot.forEach(function(doc) {
+                usuarios.push(doc.data());
+              });
+              resolve(usuarios);
+            }) 
+            .catch((error) =>
+              reject(console.log(error))
+            )
+          });
+    }
+    getDisplayName(id:string): Promise<string[]>{
+        return new Promise((resolve, reject) =>{
+            const usuarios: string[] = [];
+            const useri = this.matchCollection.get();
+            useri.toPromise().then(function(querySnapshot) {     
+              querySnapshot.forEach(function(doc) {
+                  if(id == doc.id){
+                    usuarios.push(doc.id);
+                  }
+              });
+              resolve(usuarios);
+            }) 
+            .catch((error) =>
+              reject(console.log(error))
+            )
+          });
+    }
+
+    getUserDisplayName(): Subject<string>{
+        var userData = new Subject<string>();
+        this.userService.getActualUser().then(data => data.subscribe(user => {
+            userData.next(user.displayName);
+            data.complete();
+        }))
+        return userData;
+    }
+    
+    checkForMatch(userName: string): Subject<UserMatches>{
+        var matchSubject = this.getAllUserMatchData(userName);
+        return matchSubject;
+    }
+    addLikeToUserBD(userName: string): void{
+        var likesSubject = this.getAllUserMatchData();
+        likesSubject.subscribe(data => {
+            let addToLikes = data.likes;
+            addToLikes.push(userName);
+            let updatedData: UserMatches = {
+                likes: addToLikes
+            }
+            this.matchCollection.doc(data.userName).update(updatedData);
+            likesSubject.complete();
+            
+        });  
+    }
+
+    addDislikeToUserBD(userName: string): void{
+        var dislikesSubject = this.getAllUserMatchData();
+        dislikesSubject.subscribe(data => {
+            let addToDislikes = data.dislikes;
+            addToDislikes.push(userName);
+            let updatedData: UserMatches = {
+                dislikes: addToDislikes
+            }
+            
+            this.matchCollection.doc(data.userName).update(updatedData);
+            dislikesSubject.complete();
+        });  
+    }
+
+    disconnectFromDB(){
+        this.matchSubjectConnection.unsubscribe();
     }
 
     addDocToDB(data: UserMatches){
         this.matchCollection.doc(data.userName).set(data);
     }
 
-    async addLikeToUserArray(userName: string){
-        let aux: string[] = [userName];
-        let match:UserMatches = {
-            likes: aux
-        }
-        this.matchCollection.doc((await (this.auth.afireauth.currentUser)).displayName).update(match);
-    }
-
-
+    //(await (this.auth.afireauth.currentUser)).displayName
 }

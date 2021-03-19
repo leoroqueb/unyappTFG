@@ -13,6 +13,7 @@ export class OrdenarJuegosPage implements OnInit {
   gamesSelected: Game[] = [];
   favoriteGames: Game[] = [];
   otherGames: Game[];
+
   constructor(
     private refactor: RegistroRefactor,
     private userProvider: UsuariosProvider,
