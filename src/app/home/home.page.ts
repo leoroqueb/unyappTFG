@@ -37,37 +37,36 @@ export class HomePage implements OnInit, AfterViewInit {
   ) {
     
   }
-
+  displayName:string;
   myself: UserMatches = null;
   async ngOnInit(){
-    
-    //VAMOS ENCAMINADOS. EL PROBLEMA ESTÁ EN QUE ESTÁ RECORRIENDO TANTO GAMES COMO MATCH, POR LO QUE SIEMPRE
-    //HAY COINCIDENCIA. HAY QUE CONSEGUIR OBTENER EL USERMATCH EXCLUSIVO DEL USUARIO ACTUAL Y HACER UN FILTER SOBRE ESO.
-    //YA VAMOS CERCANDO EL ERROR!!!!!
     this.user$ = await this.userService.getActualUser();
-    this.userService.getReformatedUsersData().then(games => {
-      games.forEach(async otherUserProfile => {
-        /* await this.matchService.getUsersMatchData().then(users => {
+    this.user$.subscribe(me =>{ 
+      //Obtenemos todos los perfiles a mostrar
+      this.userService.getReformatedUsersData().then(async games => {
+        //Obtenemos los datos de los likes/dislakes de los usuarios
+        await this.matchService.getUsersMatchData().then(users => {
+          //Me separo a mi mismo
+          this.myself = users.find(myself => myself.userName == me.displayName);
+          //Recorro. Añado a la variable que muestra las ion cards los perfiles que no son yo mismo, ni estén entre mis likes/dislikes
           users.forEach(userSearch => {
-            if(userSearch.userName == otherUserProfile.displayName){
-              this.myself = userSearch;
+            if(userSearch.userName != this.myself.userName){
+              if(!this.myself.likes.includes(userSearch.userName) && !this.myself.dislikes.includes(userSearch.userName)){
+                this.usersGameProfile.push(games.find(game => game.displayName == userSearch.userName));
+              }
             }
-          })
+          })  
         })
-        console.log("myself", this.myself); */
-        this.matchService.getDisplayName("leoroqueb").then(a => console.log(a))
-      })
-      
-      this.usersGameProfile = games;
-      
-    }); 
+      }); 
+    }) 
+   
+
+    
 
   }
 
   ngAfterViewInit(){
-    
     const cardArray = this.cards.changes;
-
     this.userConnection = cardArray.subscribe(item => {
       this.swipeGesture(item.toArray())
     })
@@ -108,18 +107,16 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   connection: Subscription;
-  addToUserLikes(user: string){
-    this.matchService.addLikeToUserBD(user);
-    var match = this.matchService.checkForMatch(user);
+  addToUserLikes(like: string){
+    this.matchService.addLikeToUserBD(like);
+    var match = this.matchService.checkForMatch(like);
     
-    match.subscribe(data => {
+    match.subscribe(user => {
       let myDisplayName = this.matchService.getUserDisplayName();
       
-      this.connection = myDisplayName.subscribe(dN => {
-        
-        if(data.likes.includes(dN)){
-          this.match(user);
-          
+      this.connection = myDisplayName.subscribe(displayName => {
+        if(user.likes.includes(displayName)){
+          this.match(like);
         }
       });
      

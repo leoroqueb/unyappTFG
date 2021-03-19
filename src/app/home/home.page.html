@@ -8,7 +8,7 @@
 
 <ion-content [fullscreen]="true">
   <h1 *ngIf="user$ | async as thisUser" id='myName'>Bienvenido, <b >{{thisUser.displayName}}</b></h1>
-  <ion-card onload='setVariables(usersGameProfile,aux)' #usercards class="userCard" *ngFor="let user of usersGameProfile | filtroIoncards: usersGameProfile:aux" >
+  <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile" >
     <ion-card-header id='{{ user.displayName }}'>
       <ion-card-title>{{user.displayName}}</ion-card-title>
       <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
