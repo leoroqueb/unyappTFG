@@ -6,17 +6,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content scroll-y="false">
   <h1 *ngIf="user$ | async as thisUser" id='myName'>Bienvenido, <b >{{thisUser.displayName}}</b></h1>
-  <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile" >
-    <ion-card-header id='{{ user.displayName }}'>
-      <ion-card-title>{{user.displayName}}</ion-card-title>
-      <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
-      <div>
-        <p>1: {{user.favGames[0]}}</p>
-        <p>2: {{user.favGames[1]}}</p>
-        <p>3: {{user.favGames[2]}}</p>
-      </div>
-    </ion-card-header>
-  </ion-card>
+  <ion-infinite-scroll threshold="25%" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile">
+        <ion-card-header id='{{ user.displayName }}'>
+          <ion-card-title>{{user.displayName}}</ion-card-title>
+          <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
+          <div>
+            <b>1: {{user.favGames[0]}}</b><br>
+            <b>2: {{user.favGames[1]}}</b><br>
+            <b>3: {{user.favGames[2]}}</b><br>
+          </div>
+          <div *ngFor="let game of user.otherGames">
+            <b>{{game}}</b>
+          </div>
+        </ion-card-header>
+      </ion-card>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

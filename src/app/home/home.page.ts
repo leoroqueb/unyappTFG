@@ -103,29 +103,31 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   addToUserDislikes(user:string){
-    this.matchService.addDislikeToUserBD(user);
+    this.matchService.addDislikeToUserDB(user);
   }
 
   connection: Subscription;
   addToUserLikes(like: string){
-    this.matchService.addLikeToUserBD(like);
+    this.matchService.addLikeToUserDB(like);
     var match = this.matchService.checkForMatch(like);
-    
+
     match.subscribe(user => {
       let myDisplayName = this.matchService.getUserDisplayName();
       
       this.connection = myDisplayName.subscribe(displayName => {
         if(user.likes.includes(displayName)){
-          this.match(like);
+          this.match(like, displayName);
+          match.complete();
         }
       });
      
-    });
+    }); 
     
   }
 
-  match(dN: string){
-    this.alerta.alerta("Hay match con "+dN+" !!", "MAATCHH!!");
+  match(match: string, myName: string){
+    this.alerta.alerta("Hay match con "+match+" !!", "MAATCHH!!");
+    this.matchService.addMatchToUserDB(match, myName);
     this.connection.unsubscribe();
   }
 

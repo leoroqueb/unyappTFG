@@ -57,5 +57,6 @@ export interface UserGameProfile{
 export interface UserMatches{
     userName?: string;
     likes?: string[];
+    matches?:string[];
     dislikes?: string[];
 }
