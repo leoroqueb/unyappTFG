@@ -18,6 +18,7 @@ export interface UsuariosI{
     email:string;
     favGames?: Game[];
     otherGames?: Game[];
+    typeOfPlayer?: string;
 }
 
 /**
@@ -52,6 +53,7 @@ export interface UserGameProfile{
     displayName: string;
     favGames: string[];
     otherGames: string[];
+    typeOfPlayer?: string;
 }
 
 export interface UserMatches{

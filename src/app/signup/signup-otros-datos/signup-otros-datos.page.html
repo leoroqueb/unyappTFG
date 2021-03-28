@@ -40,7 +40,7 @@
 
     <ion-item>
       <ion-label position="floating">Fecha de nacimiento<ion-text color="danger">*</ion-text></ion-label>
-      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthDate"></ion-datetime>
+      <ion-datetime displayFormat="DD-MM-YYYY" max="2007-01-01" formControlName="birthDate"></ion-datetime>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.birthDate">

@@ -38,7 +38,9 @@ export class UsuariosProvider{
 
   
   updateUsuario(usuario: UsuariosI) {
-    this.conection.unsubscribe();
+    if(this.conection != undefined){
+      this.conection.unsubscribe();
+    }
     return this.usersCollection.doc(usuario.email).update(usuario);
   }
 
