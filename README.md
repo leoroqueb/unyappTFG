@@ -45,9 +45,10 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
     - [ ] El usuario puede intercambiar mensajes con otros contactos.
     - [ ] El usuario puede eliminar chats y/o matches.
 - **Perfil**
-    - [ ] El usuario puede ver una previsualización de su perfil para otros usuarios.
-    - [ ] El usuario puede modificar datos de su perfil _(nickname, juegos, avatar?...)_
+    - [ ] El usuario puede ver una previsualización de su perfil para otros usuarios. _(Opcional)_
+    - [ ] El usuario puede modificar datos de su perfil _(fecha de nacimiento, tipo de jugador, juegos, avatar?...)_
+    - [ ] El cambio de datos va correctamente a la BD
 - **Ajustes**
     - [x] El usuario puede cerrar sesión de la app.
-    - [ ] El usuario puede eliminar definitivamente su cuenta.
-    - [ ] El usuario puede cambiar algunos ajustes de privacidad.
+    - [x] El usuario puede eliminar definitivamente su cuenta.
+    - [ ] El usuario puede cambiar algunos ajustes de privacidad. _(que se muestre la edad, el nombre real, distancia...)_
