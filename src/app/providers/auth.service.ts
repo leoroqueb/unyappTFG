@@ -83,7 +83,8 @@ export class AuthService {
       this.matchTemplate = {
         userName: user.displayName,
         likes: [],
-        dislikes: []
+        dislikes: [],
+        matches: []
       }
       this.matchService.addDocToDB(this.matchTemplate);
       this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
@@ -114,7 +115,6 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
-        
       };
       
       return userRef.set(userProfileDocument, {merge: true});

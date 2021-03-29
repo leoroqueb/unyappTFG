@@ -22,6 +22,7 @@ export class HomePage implements OnInit, AfterViewInit {
   profileToFilter: string = '';
   
   userConnection: Subscription;
+  dataConnection: Subscription;
   cardArrayConnection: Subscription;
 
   @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef<IonCard>>;
@@ -41,7 +42,7 @@ export class HomePage implements OnInit, AfterViewInit {
   myself: UserMatches = null;
   async ngOnInit(){
     this.user$ = await this.userService.getActualUser();
-    this.user$.subscribe(me =>{ 
+    this.dataConnection = this.user$.subscribe(me =>{ 
       //Obtenemos todos los perfiles a mostrar
       this.userService.getReformatedUsersData().then(async games => {
         //Obtenemos los datos de los likes/dislakes de los usuarios
@@ -131,8 +132,8 @@ export class HomePage implements OnInit, AfterViewInit {
     this.connection.unsubscribe();
   }
 
- 
   ionViewWillLeave(){
+    this.dataConnection.unsubscribe();
   }
   
   

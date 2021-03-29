@@ -1,11 +1,13 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
+import { CredencialesI, UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Game } from '../models/games.interface';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class UsuariosProvider{
 
   constructor(
     public db: AngularFirestore,
+    private router: Router,
     private afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       //REVISAR: PUEDE SER QUE NO HAGA FALTA
@@ -48,15 +51,32 @@ export class UsuariosProvider{
     return this.usersCollection.doc(usuario.email).set(usuario,{merge: true});
   }
 
-  async eliminaUsuario(){
+  credentialConnection: Subscription;
+  async deleteUser(){
+    const docs: string[] = ["users/","credencialesUsers/","userMatch/"];
     var user = this.afAuth.currentUser;
-    (await user).delete().then(function(){
-      console.log("Usuario eliminado correctamente");
+    await this.getActualUser().then(subject => this.credentialConnection = subject.subscribe(userDN =>{
+      for (let index = 0; index < docs.length; index++) {
+        user.then(user => {
+          if(index < 2){
+            this.db.doc(docs[index]+user.email).delete()
+          }else{
+            this.db.doc(docs[index]+userDN.displayName).delete()
+          }
+        })
+      }
+      this.disconectFromDB("credentialConnection");
+    }));
+    
+    (await user).delete().then(() => {
+      this.router.navigate(["login"]);
     })
     .catch(function(error){
       console.log("Error =>", error);
     })
+    
   }
+
 
   async getActualUser(): Promise<Subject<UsuariosI>>{
     var subject = new Subject<UsuariosI>();
@@ -205,7 +225,16 @@ export class UsuariosProvider{
     return this.usersCollection.doc(id).delete();
   }
 
-  disconectFromDB():void{
-    this.userConnection.unsubscribe();
+  disconectFromDB(connection: string):void{
+    switch (connection) {
+      case "userConnection":
+        this.userConnection.unsubscribe();
+        break;
+      case "credentialConnection":
+        this.credentialConnection.unsubscribe();
+      default:
+        break;
+    }
+    
   }
 }

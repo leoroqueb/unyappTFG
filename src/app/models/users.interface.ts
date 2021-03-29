@@ -35,7 +35,9 @@ export interface CredencialesI{
 }
 
 export interface PrivacyData{
-    //TODO
+    age?:boolean;
+    name?:boolean;
+    distance?:boolean;
 }
 
 /**

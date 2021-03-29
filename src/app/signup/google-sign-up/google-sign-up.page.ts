@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
+import { CredencialesI, UserMatches, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
 import { AlertasRefactor, RegistroRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from '../../providers/usuarios.service'
 import { Router } from '@angular/router';
+import { MatchService } from 'src/app/providers/match.service';
 
 @Component({
   selector: 'app-google-sign-up',
@@ -20,7 +21,8 @@ export class GoogleSignUpPage {
     private userProv: UsuariosProvider,
     private refactor: RegistroRefactor,
     private alerta: AlertasRefactor,
-    private router: Router
+    private router: Router,
+    private matchService: MatchService
   ) { }
 
   Form = new FormGroup({
@@ -56,16 +58,23 @@ export class GoogleSignUpPage {
       lastName: aux[1],
       birthDate: aux[2],
     }
+    const matchData: UserMatches = {
+      userName: displayName.value,
+      likes: [],
+      dislikes: [],
+      matches: [],
+    }
     let promiseDuplicated = this.userProv.duplicatedData(usuario.displayName, "displayName");
     promiseDuplicated.then((isDuplicated) =>{
       if(isDuplicated == true){
         this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
       }else{
         this.userProv.addUsuario(usuario);
+        this.matchService.addDocToDB(matchData);
         this.router.navigate(['/home']);
       }
     })
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error)) 
     
   }
   
