@@ -22,6 +22,7 @@ export class UsuariosProvider{
     private router: Router,
     private afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
+      
       //REVISAR: PUEDE SER QUE NO HAGA FALTA
       this.allUsersData = this.usersCollection.snapshotChanges().pipe(map(
         actions =>{
@@ -113,7 +114,8 @@ export class UsuariosProvider{
           lastName: user.lastName,
           email: user.email,
           favGames: favoriteGames,
-          otherGames: otherGames
+          otherGames: otherGames,
+          typeOfPlayer: user.typeOfPlayer
         } 
         this.updateUsuario(usuario);
       
@@ -127,6 +129,7 @@ export class UsuariosProvider{
           lastName: user.lastName,
           email: user.email,
           favGames: favoriteGames,
+          typeOfPlayer: user.typeOfPlayer
         } 
         this.updateUsuario(usuario);
       });
@@ -176,6 +179,7 @@ export class UsuariosProvider{
         users.forEach(user =>{
           let auxFavGamesReformatedString: string[] = [];
           let auxOtherGamesReformatedString: string[] = [];
+          let ageOfUser: number;
           user.favGames.forEach(game =>{
             auxFavGamesReformatedString.push(game.name);
           })
@@ -188,14 +192,32 @@ export class UsuariosProvider{
             name: user.name,
             displayName: user.displayName,
             favGames: auxFavGamesReformatedString,
-            otherGames: auxOtherGamesReformatedString
+            otherGames: auxOtherGamesReformatedString,
+            typeOfPlayer: user.typeOfPlayer,
+            age: ageOfUser = this.calculateAge(user.birthDate)
           }
           reformatedUser.push(auxUsersGamesArray);
         })
         resolve(reformatedUser);
       })
     });
- 
+  }
+
+  calculateAge(userDateOfBorn: string):number {
+    var reformatedDate = userDateOfBorn.split("-");
+    var actualDate = new Date();
+    var year = parseInt(reformatedDate[0]);
+    var month = parseInt(reformatedDate[1]);
+    var day = parseInt(reformatedDate[2]);
+    var age = actualDate.getFullYear() - year;
+    if (month > actualDate.getMonth()){
+      age--;
+    }else if (month == actualDate.getMonth()){
+      if(day < actualDate.getDay()){
+        age--;
+      }
+    }
+    return age;
   }
 
    /**
@@ -214,15 +236,9 @@ export class UsuariosProvider{
         }else{
           result = false;
         }
-          
         resolve(result);
       }).catch((error) => reject(error))
     })
-    
-  }
-  
-  removeUsuario(id: string) {
-    return this.usersCollection.doc(id).delete();
   }
 
   disconectFromDB(connection: string):void{

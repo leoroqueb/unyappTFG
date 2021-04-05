@@ -24,6 +24,7 @@ export class HomePage implements OnInit, AfterViewInit {
   userConnection: Subscription;
   dataConnection: Subscription;
   cardArrayConnection: Subscription;
+  
 
   @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef<IonCard>>;
   constructor(
@@ -60,10 +61,14 @@ export class HomePage implements OnInit, AfterViewInit {
         })
       }); 
     }) 
-   
+  }
 
-    
-
+  doRefresh(event){
+    location.reload();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 500);
   }
 
   ngAfterViewInit(){
@@ -76,7 +81,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
   swipeGesture(cards){   
     for (let index = 0; index < cards.length; index++) {
-      const card:ElementRef<any> = cards[index]//this.itemsArray[this.itemsArray.length-1];
+      const card:ElementRef<any> = cards[index];
       //Actualizamos ID de los titulos de las cartas
       const gesture: Gesture = this.gestureCtrl.create({
         el: card.nativeElement,
@@ -133,7 +138,8 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   ionViewWillLeave(){
-    this.dataConnection.unsubscribe();
+   
+    //this.dataConnection.unsubscribe();
   }
   
   

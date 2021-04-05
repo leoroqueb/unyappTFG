@@ -115,6 +115,7 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
+        typeOfPlayer: "",
       };
       
       return userRef.set(userProfileDocument, {merge: true});

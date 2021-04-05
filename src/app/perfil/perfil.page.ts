@@ -13,7 +13,6 @@ export class PerfilPage implements OnInit {
   birthDate: string = "";
   profileConnection: Subscription;
   constructor(
-    
     private userService: UsuariosProvider
   ) { }
 
@@ -49,7 +48,7 @@ export class PerfilPage implements OnInit {
           updatedData.birthDate = reformatedDate;
           this.userService.updateUsuario(updatedData);
         }
-        
+        this.disconnectFromDB();
       })
     )
   }
@@ -62,8 +61,9 @@ export class PerfilPage implements OnInit {
     //TODO
   }
  
-  ionViewDidLeave(){
+  disconnectFromDB(){
     this.profileConnection.unsubscribe();   
   }
+  ionViewDidLeave(){}
 
 }
