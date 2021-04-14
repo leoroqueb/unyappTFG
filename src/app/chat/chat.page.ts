@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as firebase from 'firebase';
+import { ChatService } from '../providers/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -6,10 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  userName: string = "";
+  message: string = "";
+  chat: string[] = [];
+  constructor(
+    private chatService: ChatService,
+  ) { 
+    this.userName = chatService.sendUserInfo();
   }
 
+  ngOnInit() {
+    this.getChatMessages();
+  }
+  
+  getChatMessages(){}
 }

@@ -22,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        loadChildren: () => import('../chat/chat.module').then( m => m.ChatPageModule),
+        loadChildren: () => import('../list-chat/list-chat.module').then( m => m.ListChatPageModule),
         canActivate: [AuthGuard]
       },
       {

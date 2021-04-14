@@ -1,4 +1,5 @@
 import { Game } from "./games.interface";
+import * as firebase from 'firebase';
 
  /** 
   * @interface UsuariosI
@@ -61,4 +62,13 @@ export interface UserMatches{
     likes?: string[];
     matches?:string[];
     dislikes?: string[];
+}
+
+export interface Message{
+    createdAt: firebase.default.firestore.FieldValue;
+    id:string;
+    from: string;
+    msg: string;
+    fromName: string;
+    myMsg: string;
 }

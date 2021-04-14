@@ -1,11 +1,12 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
+import {  UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Game } from '../models/games.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,20 +20,18 @@ export class UsuariosProvider{
     public db: AngularFirestore,
     private afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
-      //REVISAR: PUEDE SER QUE NO HAGA FALTA
-      this.allUsersData = this.usersCollection.snapshotChanges().pipe(map(
-        actions =>{
-          return actions.map( a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return {id, ...data};
-          });
-        }
-      ));
-      
   }
 
   getAllUsersData(): Observable<UsuariosI[]>{
+    this.allUsersData = this.usersCollection.snapshotChanges().pipe(
+      map(actions =>{
+        return actions.map( a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+      }
+    ));
     return this.allUsersData;
   }
 
