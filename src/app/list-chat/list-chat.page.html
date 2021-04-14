@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>list-chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let user of chatUsers | async" (click)="openChat(user.displayName)">
+      <ion-card>
+        <ion-card-header>
+          {{user.displayName}}
+        </ion-card-header>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
