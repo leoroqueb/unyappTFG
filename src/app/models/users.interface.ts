@@ -13,11 +13,12 @@ export interface UsuariosI{
     uid?:string;
     displayName:string;
     name:string;
-    lastName:string;
+    lastName?:string;
     birthDate?:string;   
     email:string;
     favGames?: Game[];
     otherGames?: Game[];
+    typeOfPlayer?: string;
 }
 
 /**
@@ -30,17 +31,20 @@ export interface UsuariosI{
 export interface CredencialesI{
     email:string;
     emailVerified:boolean;
+    //Only for Google Logins
     displayName:string;
 }
 
 export interface PrivacyData{
-    //TODO
+    age?:boolean;
+    name?:boolean;
+    distance?:boolean;
 }
 
 /**
  * @interface UserElements
  * @description
- * Esta interfaz sirve
+ * Esta interfaz sirve para separar el id de un doc de la BD al hacer un QuerySnapshot
  */
 export interface UserElements{
     id: string;
@@ -52,10 +56,13 @@ export interface UserGameProfile{
     displayName: string;
     favGames: string[];
     otherGames: string[];
+    typeOfPlayer?: string;
+    age?: number;
 }
 
 export interface UserMatches{
     userName?: string;
     likes?: string[];
+    matches?:string[];
     dislikes?: string[];
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../providers/auth.service';
+import { UsuariosProvider } from '../providers/usuarios.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,15 +11,21 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private userService: UsuariosProvider,
   ) { }
 
   ngOnInit() {
     
   }
 
-  cerrarSesion(){
-    
+  logOut(){
     this.auth.doLogout();  
   }
+
+  deleteAccount(){
+    this.userService.deleteUser();
+    
+  }
+
 
 }

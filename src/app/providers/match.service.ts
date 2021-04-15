@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
+import { AngularFirestore, AngularFirestoreCollection, QueryFn } from "@angular/fire/firestore";
 import { User } from "@codetrix-studio/capacitor-google-auth/dist/esm/user";
 import { Observable, Subject, Subscription } from "rxjs";
 import { UserElements, UserMatches, UsuariosI } from "../models/users.interface";
@@ -11,11 +11,14 @@ import { UsuariosProvider } from "./usuarios.service";
 export class MatchService {
     matchCollection: AngularFirestoreCollection<UserMatches>; 
     matchSubjectConnection: Subscription;
+    myMatchesSubscription: Subscription;
+    otherUserMatchesSubscription: Subscription;
     constructor(
         private db: AngularFirestore,
         private userService: UsuariosProvider
         
     ){
+        
         this.matchCollection = db.collection<UserMatches>(`userMatch`);
     }
 
@@ -85,7 +88,7 @@ export class MatchService {
         var matchSubject = this.getAllUserMatchData(userName);
         return matchSubject;
     }
-    addLikeToUserBD(userName: string): void{
+    addLikeToUserDB(userName: string): void{
         var likesSubject = this.getAllUserMatchData();
         likesSubject.subscribe(data => {
             let addToLikes = data.likes;
@@ -95,11 +98,36 @@ export class MatchService {
             }
             this.matchCollection.doc(data.userName).update(updatedData);
             likesSubject.complete();
-            
         });  
     }
 
-    addDislikeToUserBD(userName: string): void{
+    
+    addMatchToUserDB(match: string, myName: string): void{
+        this.getUsersMatchData().then(users => {
+            users.forEach(user => {
+                if(user.userName == myName){
+                    let matches = user.matches;
+                    matches.push(match);
+                    let updatedData: UserMatches = {
+                        matches: matches
+                    }
+                    this.matchCollection.doc(myName).update(updatedData);
+                }
+                if(user.userName == match){
+                    let matches = user.matches;
+                    matches.push(myName);
+                    let updatedData: UserMatches = {
+                        matches: matches
+                    }
+                    this.matchCollection.doc(match).update(updatedData);
+                }
+            })
+        })
+    }
+
+    
+
+    addDislikeToUserDB(userName: string): void{
         var dislikesSubject = this.getAllUserMatchData();
         dislikesSubject.subscribe(data => {
             let addToDislikes = data.dislikes;
