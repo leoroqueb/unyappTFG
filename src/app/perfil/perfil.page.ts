@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UsuariosI } from '../models/users.interface';
-import { AuthService } from '../providers/auth.service';
-import { MatchService } from '../providers/match.service';
 import { UsuariosProvider } from '../providers/usuarios.service';
 
 @Component({
@@ -15,7 +13,6 @@ export class PerfilPage implements OnInit {
   birthDate: string = "";
   profileConnection: Subscription;
   constructor(
-    private matchService: MatchService,
     private userService: UsuariosProvider
   ) { }
 
@@ -51,13 +48,22 @@ export class PerfilPage implements OnInit {
           updatedData.birthDate = reformatedDate;
           this.userService.updateUsuario(updatedData);
         }
-        
+        this.disconnectFromDB();
       })
     )
   }
+
+  changeFavGames(){
+    //TODO
+  }
+
+  changeOtherGames(){
+    //TODO
+  }
  
-  ionViewDidLeave(){
+  disconnectFromDB(){
     this.profileConnection.unsubscribe();   
   }
+  ionViewDidLeave(){}
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
+import { AngularFirestore, AngularFirestoreCollection, QueryFn } from "@angular/fire/firestore";
 import { User } from "@codetrix-studio/capacitor-google-auth/dist/esm/user";
 import { Observable, Subject, Subscription } from "rxjs";
 import { UserElements, UserMatches, UsuariosI } from "../models/users.interface";
@@ -18,6 +18,7 @@ export class MatchService {
         private userService: UsuariosProvider
         
     ){
+        
         this.matchCollection = db.collection<UserMatches>(`userMatch`);
     }
 

@@ -5,7 +5,29 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="cerrarSesion()" shape="round">
-    Cerrar sesion
-  </ion-button>
+  <ion-item>
+    <ion-label>Mostrar edad</ion-label>
+    <ion-toggle checked="true"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>Mostrar nombre</ion-label>
+    <ion-toggle checked></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>Mostrar distancia</ion-label>
+    <ion-toggle checked></ion-toggle>
+  </ion-item>
+  <br>
+  <br>
+  <ion-item>
+    <ion-buttons>
+      <ion-button (click)="logOut()" color="primary">
+        Cerrar sesion
+      </ion-button>
+      <ion-button (click)="deleteAccount()" color="danger">
+        <ion-icon ></ion-icon>
+        Eliminar cuenta
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
 </ion-content>

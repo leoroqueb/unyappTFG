@@ -1,29 +1,40 @@
-<ion-header [translucent]="true" class="ion-no-border">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>
-      Home
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content scroll-y="false">
-  <h1 *ngIf="user$ | async as thisUser" id='myName'>Bienvenido, <b >{{thisUser.displayName}}</b></h1>
+
+   <!-- REVISAR REFRESHER O BUSCAR OTRA SOLUCION -->
+
+  <!-- <ion-refresher *ngIf="i === 0 || usersGameProfile.length === 0" slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher> -->
+
   <ion-infinite-scroll threshold="25%" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-      <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile">
+      <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile; let i = index">
         <ion-card-header id='{{ user.displayName }}'>
-          <ion-card-title>{{user.displayName}}</ion-card-title>
-          <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
-          <div>
-            <b>1: {{user.favGames[0]}}</b><br>
-            <b>2: {{user.favGames[1]}}</b><br>
-            <b>3: {{user.favGames[2]}}</b><br>
-          </div>
-          <div *ngFor="let game of user.otherGames">
-            <b>{{game}}</b>
-          </div>
+          <ion-card-title><h1>{{user.displayName}}</h1></ion-card-title>
+          <ion-card-subtitle><h2>{{user.name}}</h2></ion-card-subtitle>
         </ion-card-header>
+        <ion-card-content scroll-y="true">
+          <h2><b>Edad</b></h2>
+            {{user.age}}<br>
+          <h2><b>Tipo de jugador</b></h2>
+            {{user.typeOfPlayer}}<br>
+          <h2><b>Juegos favoritos</b></h2>
+            1: {{user.favGames[0]}}<br>
+            2: {{user.favGames[1]}}<br>
+            3: {{user.favGames[2]}}<br>
+          <h2><b>Otros juegos</b></h2>
+          <div *ngFor="let game of user.otherGames">
+            {{game}}
+          </div>
+        </ion-card-content>
       </ion-card>
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  
 </ion-content>
