@@ -25,7 +25,7 @@ export class ListChatPage implements OnInit {
 
   openChat(user: string){
     this.router.navigate(['chat']);
-    this.chatService.getUserInfo(user);
+    this.chatService.setUserInfo(user);
   }
 
 }

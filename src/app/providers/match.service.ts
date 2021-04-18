@@ -57,6 +57,7 @@ export class MatchService {
             )
           });
     }
+
     getDisplayName(id:string): Promise<string[]>{
         return new Promise((resolve, reject) =>{
             const usuarios: string[] = [];
@@ -88,6 +89,7 @@ export class MatchService {
         var matchSubject = this.getAllUserMatchData(userName);
         return matchSubject;
     }
+
     addLikeToUserDB(userName: string): void{
         var likesSubject = this.getAllUserMatchData();
         likesSubject.subscribe(data => {
@@ -135,7 +137,6 @@ export class MatchService {
             let updatedData: UserMatches = {
                 dislikes: addToDislikes
             }
-            
             this.matchCollection.doc(data.userName).update(updatedData);
             dislikesSubject.complete();
         });  

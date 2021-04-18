@@ -69,10 +69,9 @@ export interface UserMatches{
 }
 
 export interface Message{
-    createdAt: firebase.default.firestore.FieldValue;
-    id:string;
+    createdAt ?: firebase.default.firestore.Timestamp;
+    id: firebase.default.firestore.Timestamp;
     from: string;
+    to: string;
     msg: string;
-    fromName: string;
-    myMsg: string;
 }
