@@ -32,11 +32,13 @@ export class SignupPage implements OnInit {
   matching_passwords_group = new FormGroup({
     email: new FormControl('',Validators.compose([
       Validators.required,
+      Validators.email
     ])),
     password: new FormControl('', Validators.compose([
        Validators.minLength(6),
        Validators.maxLength(30),
        Validators.required,
+       
     ])),
     confirm_password: new FormControl('', Validators.required)
   })
