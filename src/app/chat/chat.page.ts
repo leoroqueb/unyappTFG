@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { Observable, Subscription } from 'rxjs';
-import { UsuariosI } from '../models/users.interface';
+import { map, take } from 'rxjs/operators';
+import { Message, UsuariosI } from '../models/users.interface';
 import { ChatService } from '../providers/chat.service';
 import { UsuariosProvider } from '../providers/usuarios.service';
 
@@ -13,7 +14,7 @@ import { UsuariosProvider } from '../providers/usuarios.service';
 export class ChatPage implements OnInit {
   userName: string = "";
   message: string = "";
-  chat: string[] = [];
+  chat: Message[] = [];
   
   user$: Observable<UsuariosI>;
   sus: Subscription;
@@ -27,15 +28,24 @@ export class ChatPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.user$ = await this.userService.getActualUser();
+    this.user$ = (await this.userService.getActualUser()).asObservable();
     //this.getChatMessages();
     this.sus = this.user$.subscribe(user => {
-      this.chatService.createDBInfo(user.displayName, this.userName);
-      this.disconnectSuscription();
+      //this.chatService.createDBInfo(user.displayName, this.userName);
+      this.chatService.getChatFromDB(user.displayName, this.userName).subscribe(data => {
+        this.chat = data.sort((a, b) => a.timestamp.toDate().getTime() - b.timestamp.toDate().getTime()) ;
+      })
+      //  this.disconnectSuscription();
     })
   }
-  disconnectSuscription(){
-    this.sus.unsubscribe();
+  disconnectSuscription(suscription: Subscription){
+    suscription.unsubscribe();
+  }
+
+  //NECESITO ENCONTRAR LA MANERA DE OBTENER MI NOMBRE DE USUARIO (REFACTOR?????)
+  sendMessage(msg){
+    let messageSuscription: Subscription;
+    this.user$.subscribe(a => this.chatService.sendMessage(msg.value, this.userName, a.displayName))
   }
   getChatMessages(){}
 

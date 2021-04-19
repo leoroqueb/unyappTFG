@@ -9,19 +9,19 @@
 <ion-content>
   <ion-card *ngFor="let message of chat">
     <ion-card-header>
-      {{message.nombre}}
+      <strong>{{message.from}}</strong>
     </ion-card-header>
     <ion-card-content>
-      {{message.mensaje}}
+      {{message.msg}}
     </ion-card-content>
   </ion-card>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input type="text" placeholder="Escribe un mensaje..."></ion-input>
+    <ion-input type="text" #msg placeholder="Escribe un mensaje..."></ion-input>
     <ion-buttons slot="end">
-      <ion-button (click)="sendMessagegf()">
+      <ion-button (click)="sendMessage(msg)">
         Enviar
         <ion-icon slot="start" name="send"></ion-icon>
       </ion-button>
