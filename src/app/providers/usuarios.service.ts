@@ -263,4 +263,8 @@ export class UsuariosProvider{
     }
     
   }
+
+  getDisplayName(){
+    
+  }
 }

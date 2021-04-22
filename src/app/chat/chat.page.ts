@@ -15,6 +15,7 @@ export class ChatPage implements OnInit {
   userName: string = "";
   message: string = "";
   chat: Message[] = [];
+  myName: string;
   
   user$: Observable<UsuariosI>;
   sus: Subscription;
@@ -29,24 +30,27 @@ export class ChatPage implements OnInit {
 
   async ngOnInit() {
     this.user$ = (await this.userService.getActualUser()).asObservable();
-    //this.getChatMessages();
     this.sus = this.user$.subscribe(user => {
-      //this.chatService.createDBInfo(user.displayName, this.userName);
-      this.chatService.getChatFromDB(user.displayName, this.userName).subscribe(data => {
+      this.myName = user.displayName;
+      this.chatService.getChatFromDB(this.myName, this.userName).subscribe(data => {
+        //Sort Messages by last incoming
         this.chat = data.sort((a, b) => a.timestamp.toDate().getTime() - b.timestamp.toDate().getTime()) ;
       })
-      //  this.disconnectSuscription();
     })
   }
+
   disconnectSuscription(suscription: Subscription){
     suscription.unsubscribe();
   }
 
-  //NECESITO ENCONTRAR LA MANERA DE OBTENER MI NOMBRE DE USUARIO (REFACTOR?????)
   sendMessage(msg){
-    let messageSuscription: Subscription;
-    this.user$.subscribe(a => this.chatService.sendMessage(msg.value, this.userName, a.displayName))
+    this.chatService.sendMessage(msg.value, this.userName, this.myName);
   }
+
+  ionViewDidLeave(){
+   this.disconnectSuscription(this.sus);
+  }
+
   getChatMessages(){}
 
 }

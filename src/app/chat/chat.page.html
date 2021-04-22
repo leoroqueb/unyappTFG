@@ -6,10 +6,11 @@
     <ion-title>{{userName}}</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <ion-card *ngFor="let message of chat">
     <ion-card-header>
-      <strong>{{message.from}}</strong>
+      <strong #from>{{message.from}}</strong>
     </ion-card-header>
     <ion-card-content>
       {{message.msg}}
@@ -19,7 +20,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input type="text" #msg placeholder="Escribe un mensaje..."></ion-input>
+    <ion-input type="text" id="msg" #msg placeholder="Escribe un mensaje..."></ion-input>
     <ion-buttons slot="end">
       <ion-button (click)="sendMessage(msg)">
         Enviar
