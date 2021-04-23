@@ -1,7 +1,5 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>login</ion-title>    
-    
   </ion-toolbar>
 </ion-header>
 
@@ -21,20 +19,15 @@
       </ion-button>
     </form>
   </ion-item-divider>
-  <ion-item-divider>
-    <h2>¿Eres nuevo?</h2>
+  <br>
+    <h2>¿Eres nuevo?</h2><br>
     <ion-button routerLink="/signup" expand="block" color="danger" shape="round">
       ¡Regístrate!
-    </ion-button>
-    <span expand="block">or</span>
+    </ion-button><br>
     <ion-button (click)="googleLogIn()" expand="block" color="danger" shape="round">
       Inicia sesión con Google
-    </ion-button>
-    <ion-button routerLink="/juegos" expand="block" fill="clear" shape="round">
-      Click me
     </ion-button>
     <ion-col size="12">
       <p><a routerLink="/forgot-password">¿Olvidaste la contraseña?</a></p>
     </ion-col>
-  </ion-item-divider>
 </ion-content>

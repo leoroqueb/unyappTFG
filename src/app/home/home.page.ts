@@ -4,7 +4,7 @@ import { UserGameProfile, UserMatches, UsuariosI } from '../models/users.interfa
 import { UsuariosProvider } from '../providers/usuarios.service'
 import { AngularFirestore,  } from '@angular/fire/firestore';
 import { Gesture, GestureController, IonCard, Platform } from '@ionic/angular';
-import { AlertasRefactor } from '../refactors/refactor';
+import { AlertaRefactor } from '../refactors/refactor';
 import { MatchService } from '../providers/match.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class HomePage implements OnInit, AfterViewInit {
     
     public db: AngularFirestore,
     private userService: UsuariosProvider,
-    private alerta: AlertasRefactor,
+    private alerta: AlertaRefactor,
     private platform: Platform,
     private gestureCtrl: GestureController,
     private matchService: MatchService,

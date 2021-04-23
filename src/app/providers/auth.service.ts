@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth,  } from '@angular/fire/auth'
 import { CredencialesI, UserMatches, UsuariosI } from '../models/users.interface';
-import { AlertasRefactor } from '../refactors/refactor'
+import { AlertaRefactor } from '../refactors/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -33,7 +33,7 @@ export class AuthService {
     private afs: AngularFirestore,
     private platform: Platform,
     private googlePlus: GooglePlus,
-    private alerta: AlertasRefactor,
+    private alerta: AlertaRefactor,
     private router: Router,
     private matchService: MatchService
   ) { 

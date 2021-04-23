@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { Game } from '../models/games.interface';
 import { GamesService } from '../providers/games.service'
-import { AlertasRefactor, RegistroRefactor } from '../refactors/refactor';
+import { AlertaRefactor, RegistroRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-juegos',
@@ -73,7 +73,7 @@ export class JuegosPage implements OnInit, OnDestroy {
   private gameInfo:Subscription;
   constructor(
     private gameService:GamesService,
-    private alerta: AlertasRefactor,
+    private alerta: AlertaRefactor,
     private refactor: RegistroRefactor,
     private router: Router,
   ) {

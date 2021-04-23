@@ -60,6 +60,11 @@ const routes: Routes = [
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
   },
+  {
+    path: 'list-chat',
+    loadChildren: () => import('./list-chat/list-chat.module').then( m => m.ListChatPageModule)
+  },
+
 
 
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
-import { AlertasRefactor } from '../refactors/refactor';
+import { AlertaRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,7 +13,7 @@ export class ForgotPasswordPage implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private alerta: AlertasRefactor
+    private alerta: AlertaRefactor
   ) { }
 
   ngOnInit() {

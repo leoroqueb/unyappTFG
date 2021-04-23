@@ -2,11 +2,12 @@ import { AlertController } from '@ionic/angular'
 import { Injectable } from '@angular/core';
 import { Form, FormGroup } from '@angular/forms';
 import { Game } from '../models/games.interface';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AlertasRefactor {
+export class AlertaRefactor {
 
     constructor(
         public alertController: AlertController,
@@ -25,6 +26,17 @@ export class AlertasRefactor {
             ]
         });
         await alert.present();
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class DBRefactor{
+    constructor(){}
+
+    disconnectFromDB(suscription: Subscription): void{
+        suscription.unsubscribe();
     }
 }
 

@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire'
 import { firebaseConfig } from '../environments/environment'
 import { AngularFireAuthModule } from '@angular/fire/auth'
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { PipesModule } from './pipes/pipes.module';
 
@@ -22,6 +23,7 @@ import { PipesModule } from './pipes/pipes.module';
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig), 
     AngularFireAuthModule,
+    AngularFirestoreModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
     ComponentsModule,

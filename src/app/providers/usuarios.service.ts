@@ -9,6 +9,7 @@ import { Game } from '../models/games.interface';
 import { Router } from '@angular/router';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,6 +38,15 @@ export class UsuariosProvider{
   }
 
   getAllUsersData(): Observable<UsuariosI[]>{
+    this.allUsersData = this.usersCollection.snapshotChanges().pipe(
+      map(actions =>{
+        return actions.map( a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+      }
+    ));
     return this.allUsersData;
   }
 
@@ -251,6 +261,10 @@ export class UsuariosProvider{
       default:
         break;
     }
+    
+  }
+
+  getDisplayName(){
     
   }
 }

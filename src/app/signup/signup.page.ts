@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
 import { UsuariosProvider } from '../providers/usuarios.service';
-import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor';
+import { RegistroRefactor, AlertaRefactor } from '../refactors/refactor';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { RegistroRefactor, AlertasRefactor } from '../refactors/refactor';
 export class SignupPage implements OnInit {
   contraseñas: Array<string>;
   constructor(
-    public alerta: AlertasRefactor,
+    public alerta: AlertaRefactor,
     public userProvider: UsuariosProvider,
     public router: Router,
     public refactor: RegistroRefactor,

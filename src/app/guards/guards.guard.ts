@@ -4,7 +4,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../providers/auth.service'
-import { AlertasRefactor } from '../refactors/refactor'
+import { AlertaRefactor } from '../refactors/refactor'
 
 
 @Injectable({
@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private alert: AlertasRefactor
+    private alert: AlertaRefactor
     ){}
   canActivate(
     route: ActivatedRouteSnapshot,

@@ -4,7 +4,7 @@ import { RegistroRefactor } from '../../refactors/refactor';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
-import { AlertasRefactor } from '../../refactors/refactor'
+import { AlertaRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from 'src/app/providers/usuarios.service';
 import { App } from '@capacitor/core';
 
@@ -24,7 +24,7 @@ export class SignupOtrosDatosPage implements OnInit {
     public authService: AuthService,
     public router: Router,
     private userProvider: UsuariosProvider,
-    public alerta: AlertasRefactor,
+    public alerta: AlertaRefactor,
     
   ) { 
     
