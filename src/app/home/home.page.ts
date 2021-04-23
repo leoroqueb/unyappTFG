@@ -1,11 +1,12 @@
 import { AfterViewInit, Component,ElementRef,OnInit, QueryList, ViewChildren} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { UserGameProfile, UserMatches, UsuariosI } from '../models/users.interface'
+import { PrivacyData, UserGameProfile, UserMatches, UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios.service'
 import { AngularFirestore,  } from '@angular/fire/firestore';
 import { Gesture, GestureController, IonCard, Platform } from '@ionic/angular';
-import { AlertaRefactor } from '../refactors/refactor';
+import { AlertaRefactor, DBRefactor } from '../refactors/refactor';
 import { MatchService } from '../providers/match.service';
+import { SettingsService } from '../providers/settings.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,11 @@ export class HomePage implements OnInit, AfterViewInit {
   
   userConnection: Subscription;
   dataConnection: Subscription;
-  cardArrayConnection: Subscription;
+  privacyConnection: Subscription;
+  matchConnection: Subscription;
+
+  myself: UserMatches = null;
+  userPrivacy: PrivacyData;
   
 
   @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef<IonCard>>;
@@ -32,37 +37,56 @@ export class HomePage implements OnInit, AfterViewInit {
     public db: AngularFirestore,
     private userService: UsuariosProvider,
     private alerta: AlertaRefactor,
+    private dbRefactor: DBRefactor,
     private platform: Platform,
     private gestureCtrl: GestureController,
     private matchService: MatchService,
+    private settingService: SettingsService
     
   ) {
     
   }
-  displayName:string;
-  myself: UserMatches = null;
-  async ngOnInit(){
+  
+  
+  ngOnInit(){
+     this.showCardsInfo();
+     this.userPrivacy = {
+       age: true,
+       name: false
+     }
+  }
+
+  getPlayerSettings(user: string){
+    this.privacyConnection = this.settingService.connectToDB(user).subscribe(privacy => {
+      this.userPrivacy = privacy;
+    });
+  }
+
+  async showCardsInfo(){
     this.user$ = await this.userService.getActualUser();
     this.dataConnection = this.user$.subscribe(me =>{ 
-      //Obtenemos todos los perfiles a mostrar
+      //We get all profiles data from DB with reformated style
       this.userService.getReformatedUsersData().then(async games => {
-        //Obtenemos los datos de los likes/dislakes de los usuarios
+        //We get all likes/dislikes that I made
         await this.matchService.getUsersMatchData().then(users => {
-          //Me separo a mi mismo
+          //Please Uny, don't show myself
           this.myself = users.find(myself => myself.userName == me.displayName);
-          //Recorro. Añado a la variable que muestra las ion cards los perfiles que no son yo mismo, ni estén entre mis likes/dislikes
+          //Loop. This set ionCards profileData except myself, or any people I liked/disliked 
           users.forEach(userSearch => {
             if(userSearch.userName != this.myself.userName){
               if(!this.myself.likes.includes(userSearch.userName) && !this.myself.dislikes.includes(userSearch.userName)){
+                //Check privacy info of the user and what to show on the ionCard, then we add the ionCard to the users array
+                this.getPlayerSettings(userSearch.userName);
                 this.usersGameProfile.push(games.find(game => game.displayName == userSearch.userName));
               }
             }
           })  
         })
       }); 
-    }) 
+    })
   }
 
+  //ESTA FUNCIÓN NO ESTA SIENDO USADA
   doRefresh(event){
     location.reload();
     setTimeout(() => {
@@ -112,18 +136,18 @@ export class HomePage implements OnInit, AfterViewInit {
     this.matchService.addDislikeToUserDB(user);
   }
 
-  connection: Subscription;
+  
   addToUserLikes(like: string){
     this.matchService.addLikeToUserDB(like);
-    var match = this.matchService.checkForMatch(like);
+    var likes = this.matchService.getUsersDataLookingForMatch(like);
 
-    match.subscribe(user => {
+    likes.subscribe(user => {
       let myDisplayName = this.matchService.getUserDisplayName();
       
-      this.connection = myDisplayName.subscribe(displayName => {
+      this.matchConnection = myDisplayName.subscribe(displayName => {
         if(user.likes.includes(displayName)){
           this.match(like, displayName);
-          match.complete();
+          likes.complete();
         }
       });
      
@@ -134,12 +158,13 @@ export class HomePage implements OnInit, AfterViewInit {
   match(match: string, myName: string){
     this.alerta.alerta("Hay match con "+match+" !!", "MAATCHH!!");
     this.matchService.addMatchToUserDB(match, myName);
-    this.connection.unsubscribe();
+    this.dbRefactor.disconnectFromDB(this.matchConnection);
   }
 
-  ionViewWillLeave(){
-   
-    //this.dataConnection.unsubscribe();
+  ionViewDidLeave(){
+    this.dbRefactor.disconnectFromDB(this.dataConnection);
+    this.dbRefactor.disconnectFromDB(this.userConnection);
+    this.dbRefactor.disconnectFromDB(this.privacyConnection);
   }
   
   

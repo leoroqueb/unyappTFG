@@ -21,19 +21,9 @@ export class UsuariosProvider{
   constructor(
     public db: AngularFirestore,
     private router: Router,
-    private afAuth: AngularFireAuth) {     
+    public afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       
-      //REVISAR: PUEDE SER QUE NO HAGA FALTA
-      this.allUsersData = this.usersCollection.snapshotChanges().pipe(map(
-        actions =>{
-          return actions.map( a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return {id, ...data};
-          });
-        }
-      ));
       
   }
 

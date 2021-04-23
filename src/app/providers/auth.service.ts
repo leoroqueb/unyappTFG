@@ -11,6 +11,7 @@ import { Platform } from '@ionic/angular';
 import { UsuariosProvider } from './usuarios.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx'
 import { MatchService } from './match.service';
+import { SettingsService } from './settings.service';
 
 
 
@@ -35,7 +36,8 @@ export class AuthService {
     private googlePlus: GooglePlus,
     private alerta: AlertaRefactor,
     private router: Router,
-    private matchService: MatchService
+    private matchService: MatchService,
+    private settingsService:SettingsService
   ) { 
 
 
@@ -80,13 +82,8 @@ export class AuthService {
       await this.sendVerificationEmail();
       this.updateCredencialData(credential);
       this.createDataFirstTime(user, this.credentials);
-      this.matchTemplate = {
-        userName: user.displayName,
-        likes: [],
-        dislikes: [],
-        matches: []
-      }
-      this.matchService.addDocToDB(this.matchTemplate);
+      this.setMatchDoc(user.displayName);
+      this.setPrivacyDoc(user.displayName);
       this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
       this.router.navigateByUrl('/nonverify')
     } catch (error) {
@@ -95,6 +92,14 @@ export class AuthService {
     
   }
 
+  setMatchDoc(userName: string){
+    
+    this.matchService.addDocToDB(userName);
+  }
+
+  setPrivacyDoc(user: string){
+    this.settingsService.addPrivacyDoc(user);
+  }
   /**
    * 
    * @param user 

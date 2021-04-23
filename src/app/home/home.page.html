@@ -17,13 +17,17 @@
       <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile; let i = index">
         <ion-card-header id='{{ user.displayName }}'>
           <ion-card-title><h1>{{user.displayName}}</h1></ion-card-title>
-          <ion-card-subtitle><h2>{{user.name}}</h2></ion-card-subtitle>
+          <ion-card-subtitle *ngIf="userPrivacy.name"><h2>{{user.name}}</h2></ion-card-subtitle>
         </ion-card-header>
         <ion-card-content scroll-y="true">
-          <h2><b>Edad</b></h2>
-            {{user.age}}<br>
+          <div *ngIf="userPrivacy.age">
+            <h2><b>Edad</b></h2>
+              {{user.age}}<br>
+          </div>
+          <div #typeOfPlayer>
           <h2><b>Tipo de jugador</b></h2>
             {{user.typeOfPlayer}}<br>
+          </div>
           <h2><b>Juegos favoritos</b></h2>
             1: {{user.favGames[0]}}<br>
             2: {{user.favGames[1]}}<br>

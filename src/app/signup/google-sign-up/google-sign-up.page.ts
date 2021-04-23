@@ -7,6 +7,7 @@ import { AlertaRefactor, RegistroRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from '../../providers/usuarios.service'
 import { Router } from '@angular/router';
 import { MatchService } from 'src/app/providers/match.service';
+import { SettingsService } from 'src/app/providers/settings.service';
 
 @Component({
   selector: 'app-google-sign-up',
@@ -22,7 +23,8 @@ export class GoogleSignUpPage {
     private refactor: RegistroRefactor,
     private alerta: AlertaRefactor,
     private router: Router,
-    private matchService: MatchService
+    private matchService: MatchService,
+    private settingsService: SettingsService
   ) { }
 
   Form = new FormGroup({
@@ -58,19 +60,14 @@ export class GoogleSignUpPage {
       lastName: aux[1],
       birthDate: aux[2],
     }
-    const matchData: UserMatches = {
-      userName: displayName.value,
-      likes: [],
-      dislikes: [],
-      matches: [],
-    }
     let promiseDuplicated = this.userProv.duplicatedData(usuario.displayName, "displayName");
     promiseDuplicated.then((isDuplicated) =>{
       if(isDuplicated == true){
         this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
       }else{
         this.userProv.addUsuario(usuario);
-        this.matchService.addDocToDB(matchData);
+        this.matchService.addDocToDB(displayName.value);
+        this.settingsService.addPrivacyDoc(displayName.value);
         this.router.navigate(['/home']);
       }
     })
