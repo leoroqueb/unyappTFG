@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
 import { Observable, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
 import { Message, UsuariosI } from '../models/users.interface';
 import { ChatService } from '../providers/chat.service';
 import { UsuariosProvider } from '../providers/usuarios.service';
@@ -39,12 +37,15 @@ export class ChatPage implements OnInit {
     })
   }
 
+
+  //PASAR AL REFACTOR????
   disconnectSuscription(suscription: Subscription){
     suscription.unsubscribe();
   }
 
   sendMessage(msg){
     this.chatService.sendMessage(msg.value, this.userName, this.myName);
+    document.querySelector("input").value = "";
   }
 
   ionViewDidLeave(){

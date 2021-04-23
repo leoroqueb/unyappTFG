@@ -20,9 +20,9 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input type="text" id="msg" #msg placeholder="Escribe un mensaje..."></ion-input>
+    <ion-input type="text" #msg placeholder="Escribe un mensaje..."></ion-input>
     <ion-buttons slot="end">
-      <ion-button (click)="sendMessage(msg)">
+      <ion-button (click)="sendMessage(msg)" >
         Enviar
         <ion-icon slot="start" name="send"></ion-icon>
       </ion-button>

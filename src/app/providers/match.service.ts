@@ -19,7 +19,7 @@ export class MatchService {
         
     ){
         
-        this.matchCollection = db.collection<UserMatches>(`userMatch`);
+        this.matchCollection = this.db.collection<UserMatches>(`userMatch`);
     }
 
     getAllUserMatchData(user?:string): Subject<UserMatches>{
@@ -41,6 +41,7 @@ export class MatchService {
             return userData;
         }
     }
+
 
     getUsersMatchData(): Promise<UserMatches[]>{
         return new Promise((resolve, reject) =>{

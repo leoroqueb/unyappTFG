@@ -5,7 +5,7 @@ import { CredencialesI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios.service'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { AlertasRefactor } from '../refactors/refactor';
+import { AlertaRefactor } from '../refactors/refactor';
 import { AlertController, Platform } from '@ionic/angular';
 import { Game } from '../models/games.interface';
 import { GamesService } from '../providers/games.service';

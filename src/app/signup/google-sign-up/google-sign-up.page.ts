@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CredencialesI, UserMatches, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
-import { AlertasRefactor, RegistroRefactor } from '../../refactors/refactor'
+import { AlertaRefactor, RegistroRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from '../../providers/usuarios.service'
 import { Router } from '@angular/router';
 import { MatchService } from 'src/app/providers/match.service';
@@ -20,7 +20,7 @@ export class GoogleSignUpPage {
     private authService: AuthService,
     private userProv: UsuariosProvider,
     private refactor: RegistroRefactor,
-    private alerta: AlertasRefactor,
+    private alerta: AlertaRefactor,
     private router: Router,
     private matchService: MatchService
   ) { }
