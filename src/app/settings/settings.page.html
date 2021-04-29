@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content>
+  <span><strong>Ajustes de privacidad:</strong></span>
   <ion-item>
     <ion-label>Mostrar edad</ion-label>
     <ion-toggle [(ngModel)]="actualPrivacy.age" (ionChange)="setPrivacyAge($event)"></ion-toggle>
@@ -15,14 +16,17 @@
   </ion-item>
   <br>
   <br>
+  <span><strong>Ajustes de cuenta:</strong></span>
   <ion-item>
-    <ion-buttons>
+    <!-- <ion-buttons> -->
       <ion-button (click)="logOut()" color="primary">
         Cerrar sesion
       </ion-button>
+    </ion-item>
+  <ion-item>
       <ion-button (click)="deleteAccount()" color="danger">
         Eliminar cuenta
       </ion-button>
-    </ion-buttons>
+    <!-- </ion-buttons> -->
   </ion-item>
 </ion-content>

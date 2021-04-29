@@ -7,6 +7,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Game } from '../models/games.interface';
 import { Router } from '@angular/router';
+import { DBRefactor } from '../refactors/refactor';
 
 
 
@@ -21,6 +22,7 @@ export class UsuariosProvider{
   constructor(
     public db: AngularFirestore,
     private router: Router,
+    private dbRefactor: DBRefactor,
     public afAuth: AngularFireAuth) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       
@@ -54,23 +56,22 @@ export class UsuariosProvider{
 
   credentialConnection: Subscription;
   async deleteUser(){
-    const docs: string[] = ["users/","credencialesUsers/","userMatch/"];
+    const docs: string[] = ["users/","credencialesUsers/","userMatch/", "userPrivacy/", "chatMessages/"];
     var user = this.afAuth.currentUser;
-    await this.getActualUser().then(subject => this.credentialConnection = subject.subscribe(userDN =>{
-      for (let index = 0; index < docs.length; index++) {
-        user.then(user => {
-          if(index < 2){
-            this.db.doc(docs[index]+user.email).delete()
-          }else{
-            this.db.doc(docs[index]+userDN.displayName).delete()
-          }
-        })
-      }
-      this.disconectFromDB("credentialConnection");
-    }));
-    
-    (await user).delete().then(() => {
+    (await user).delete().then(async () => {
       this.router.navigate(["login"]);
+      await this.getActualUser().then(subject => this.credentialConnection = subject.subscribe(userDN =>{
+        for (let index = 0; index < docs.length; index++) {
+          user.then(user => {
+            if(index < 2){
+              this.db.doc(docs[index]+user.email).delete();
+            }else{
+              this.db.doc(docs[index]+userDN.displayName).delete();
+            }
+          })
+        }
+        this.dbRefactor.disconnectFromDB(this.credentialConnection);
+      }));
     })
     .catch(function(error){
       console.log("Error =>", error);
@@ -239,22 +240,5 @@ export class UsuariosProvider{
         resolve(result);
       }).catch((error) => reject(error))
     })
-  }
-
-  disconectFromDB(connection: string):void{
-    switch (connection) {
-      case "userConnection":
-        this.userConnection.unsubscribe();
-        break;
-      case "credentialConnection":
-        this.credentialConnection.unsubscribe();
-      default:
-        break;
-    }
-    
-  }
-
-  getDisplayName(){
-    
   }
 }
