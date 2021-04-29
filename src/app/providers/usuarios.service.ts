@@ -1,13 +1,11 @@
-//import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { CredencialesI, UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
+import { UserElements, UserGameProfile, UsuariosI } from '../models/users.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Game } from '../models/games.interface';
 import { Router } from '@angular/router';
-
 
 
 @Injectable({
