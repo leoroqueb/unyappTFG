@@ -1,6 +1,6 @@
-import { AlertController } from '@ionic/angular'
+import { AlertController, ToastController } from '@ionic/angular'
 import { Injectable } from '@angular/core';
-import { Form, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Game } from '../models/games.interface';
 import { Subscription } from 'rxjs';
 
@@ -27,6 +27,22 @@ export class AlertaRefactor {
         });
         await alert.present();
     }
+}
+
+@Injectable({
+    providedIn: 'root'
+  })
+export class ToastRefactor {
+    constructor(
+        private toastController: ToastController
+    ){}
+    async presentToast(msg: string) {
+        const toast = await this.toastController.create({
+          message: msg,
+          duration: 2000
+        });
+        toast.present();
+      }
 }
 
 @Injectable({

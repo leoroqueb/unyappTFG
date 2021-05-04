@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { GamesSelectionGuard } from './guards/games-selection.guard';
-import { AuthGuard } from './guards/guards.guard'
-import { LoggedUserGuard } from './guards/logged-user.guard';
 import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
@@ -34,14 +32,10 @@ const routes: Routes = [
   {
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule),
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToHome }
   },
   {
     path: 'nonverify',
     loadChildren: () => import('./nonverify/nonverify.module').then( m => m.NonverifyPageModule),
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectLoggedInToHome }
   },
   {
     path: 'forgot-password',
