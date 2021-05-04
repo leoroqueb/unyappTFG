@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection, QueryFn } from "@angular/fire/firestore";
-import { User } from "@codetrix-studio/capacitor-google-auth/dist/esm/user";
-import { Observable, Subject, Subscription } from "rxjs";
-import { UserElements, UserMatches, UsuariosI } from "../models/users.interface";
+import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
+import { Subject, Subscription } from "rxjs";
+import { UserMatches } from "../models/users.interface";
 import { UsuariosProvider } from "./usuarios.service";
 
 @Injectable({
@@ -86,7 +85,7 @@ export class MatchService {
         return userData;
     }
     
-    checkForMatch(userName: string): Subject<UserMatches>{
+    getUsersDataLookingForMatch(userName: string): Subject<UserMatches>{
         var matchSubject = this.getAllUserMatchData(userName);
         return matchSubject;
     }
@@ -147,8 +146,14 @@ export class MatchService {
         this.matchSubjectConnection.unsubscribe();
     }
 
-    addDocToDB(data: UserMatches){
-        this.matchCollection.doc(data.userName).set(data);
+    addDocToDB(userName: string){
+        let matchTemplate: UserMatches = {
+            userName: userName,
+            likes: [],
+            dislikes: [],
+            matches: []
+          }
+        this.matchCollection.doc(userName).set(matchTemplate);
     }
 
     //(await (this.auth.afireauth.currentUser)).displayName

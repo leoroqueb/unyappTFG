@@ -42,7 +42,6 @@ export class ListChatPage implements OnInit {
   ionViewDidLeave(){
    this.refactor.disconnectFromDB(this.listChatSus);
    this.refactor.disconnectFromDB(this.userSus);
-   console.log("disconnected");
   }
 
 }
