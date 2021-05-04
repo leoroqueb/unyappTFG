@@ -6,6 +6,7 @@ import { UsuariosProvider } from '../providers/usuarios.service';
 import { RegistroRefactor, AlertaRefactor } from '../refactors/refactor';
 
 
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -36,7 +37,7 @@ export class SignupPage implements OnInit {
     ])),
     password: new FormControl('', Validators.compose([
        Validators.minLength(6),
-       Validators.maxLength(30),
+       Validators.maxLength(30), 
        Validators.required,
        
     ])),

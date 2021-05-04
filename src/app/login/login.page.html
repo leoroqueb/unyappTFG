@@ -1,33 +1,24 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-item-divider> 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(email, password)" autocomplete="on">
-      <ion-item>
-        <ion-label position="floating">E-Mail </ion-label>
-        <ion-input required formControlName="email" #email type="text" autofocus="true"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Password</ion-label>
-        <ion-input required formControlName="password" #password type="password"></ion-input>
-      </ion-item>
-      <ion-button block color="primary" type="submit" [disabled]="loginForm.invalid">
-        Iniciar sesión
-      </ion-button>
-    </form>
-  </ion-item-divider>
-  <br>
-    <h2>¿Eres nuevo?</h2><br>
-    <ion-button routerLink="/signup" expand="block" color="danger" shape="round">
-      ¡Regístrate!
-    </ion-button><br>
-    <ion-button (click)="googleLogIn()" expand="block" color="danger" shape="round">
-      Inicia sesión con Google
-    </ion-button>
-    <ion-col size="12">
-      <p><a routerLink="/forgot-password">¿Olvidaste la contraseña?</a></p>
-    </ion-col>
-</ion-content>
+<ion-content scroll-y="false" class="align"> 
+    <div class="wrapper fadeInDown">
+      <div id="formContent">
+        <!-- Tabs Titles -->
+        <h2 class="active"> Login </h2>
+        <h2 class="inactive underlineHover" routerLink="/signup"> Regístrate </h2>
+
+        <!-- Login Form -->
+        <div class="form">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit(email, password)" autocomplete="on">
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Email" required formControlName="email" #email autocomplete="email">
+            <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" required formControlName="password" #password autocomplete="current-password">
+            <input type="submit" class="fadeIn fourth" [disabled]="loginForm.invalid" value="Inicia sesión">
+          </form>
+          
+          <input type="button" (click)="googleLogIn()" id="google" value="Inicia sesión con Google" class="fadeIn fifth">
+          
+        </div>
+        
+      </div>
+      <a class="forgotPassword underlineHover fadeIn fifth" routerLink="/forgot-password" >¿Olvidaste la contraseña?</a> 
+    </div>
+  </ion-content>

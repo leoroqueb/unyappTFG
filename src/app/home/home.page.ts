@@ -63,13 +63,6 @@ export class HomePage implements OnInit, AfterViewInit {
     }) 
   }
 
-  doRefresh(event){
-    location.reload();
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      event.target.complete();
-    }, 500);
-  }
 
   ngAfterViewInit(){
     const cardArray = this.cards.changes;
