@@ -54,7 +54,7 @@ export class SettingsPage implements OnInit {
   async ionViewWillLeave(){
     this.updateSettingsSus = (await this.userService.getActualUser()).subscribe(data => {
       this.settingsService.updateSettings(data.displayName, this.updatedPrivacy);
-    })
+    }) 
   }
 
   ionViewDidLeave(){

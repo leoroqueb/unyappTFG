@@ -21,7 +21,7 @@ export class AlertaRefactor {
             keyboardClose: true,
             buttons: [
                 { 
-                    text: 'Cerrar',
+                    text: 'Cerrar'
                 }
             ]
         });

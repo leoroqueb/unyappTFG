@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let message of chat">
+  <ion-card *ngFor="let message of chat" class="chat-thread">
     <ion-card-header>
       <strong #from>{{message.from}}</strong>
     </ion-card-header>

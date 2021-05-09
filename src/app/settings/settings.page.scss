@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+/* BASIC */
+
+ion-content {
+  background-color: #000000;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
+ion-item{
+    font-family: "Poppins", sans-serif;
+    
+}
+
+ion-toggle {
+    --background: #dd181859;
+    --background-checked:  rgba(34, 202, 34, 0.377);
+   
+    --handle-background: #830808;
+    --handle-background-checked: rgb(9, 136, 16);
+  }
+
+
+
+/* STRUCTURE */
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
+
+.ajustes{
+    
+    position: relative;
+   
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 15px 15px 15px 15px; 
+    //background: #0000003b;
+    //width: 70%;
+    align-items: flex-start;
+    margin: 10px 0px 0px 15%;
+}
+
+.span{
+  color: #000000;
+  margin: auto;
+}
+
+.form{
+    margin: 50px 0px 0px 0px;
+}
+
+#content {
+ -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 15px 15px 15px 15px; 
+  background: {
+    image:
+  //radial-gradient(rgba(red, 0.3), rgba(red, 0) 40vw),
+  radial-gradient(rgba(rgb(82, 221, 221), 0.4), rgba(rgb(128, 0, 0), 0) 40vw),
+  //radial-gradient(rgba(rgb(0, 0, 255), 0.3), rgba(blue, 0) 40vw),
+  radial-gradient(rgba(rgb(240, 79, 240), 0.3), rgba(yellow, 0) 40vw),
+  radial-gradient(rgba(red, 0.3), rgba(red, 0) 40vw);
+    position:
+      40vw 2rem,
+      20% 10rem,
+      60vw 14rem,
+      15vw calc(20rem + 10vw),
+      0vw calc(14rem + 20vw);
+    size: 80vw 80vw;
+    repeat:repeat repeat;
+  }
+  padding: 30px;
+  height: 90%;
+  width: 99%;
+  //max-width: 450px;
+  position: fixed;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(12, 39, 56, 0.3);
+  box-shadow: 0 30px 60px 0 rgba(12, 39, 56, 0.3);
+  text-align: center;
+}
+
+/* FORM TYPOGRAPHY*/
+#delete{
+    background-color: #DB4437;
+}
+
+#delete:hover{
+    background-color: #000000;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+#delete:active{
+    background-color: #000000;
+}
+
+input[type=button] {
+  //background-image: "../../assets/icon/googleLogo.png";
+  background-color: #56baed;
+  border: none;
+  color: white;
+  width: 68%;
+  padding: 5px 10px;
+  text-align: center;
+  box-sizing: content-box;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  //-webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  //box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 0px 0px 10px 0px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+
+input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
+  background-color: #39ace7;
+}
+
+input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+  -moz-transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+
+
+/* OTHERS */
+
+*:focus {
+    outline: none;
+} 
+
+
+* {
+  box-sizing: border-box;
+}
+  
