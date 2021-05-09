@@ -38,17 +38,17 @@ Esta aplicación se está desarrollando en **ionic**, y está basada en **Angula
     - [x] Menú en forma de tabs donde el usuario pueda desplazarse libremente entre pestañas
     - [x] El usuario puede ver "cartas" con datos de otros usuarios.
     - [x] El usuario puede desplazar a la derecha (like) o a la izquierda (dislike) las cartas según su preferencia.
-    - [ ] Al usuario le aparecerá una notificación cuando haya recibido un match.
-    - [ ] El usuario puede ser redirigido al chat para hablar con la persona con la que haya hecho match.
+    - [x] Al usuario le aparecerá una notificación cuando haya recibido un match.
+    - [ ] El usuario puede ser redirigido al chat para hablar con la persona con la que haya hecho match. _NO IMPLEMENTADA EN LA VERSIÓN FINAL_
 - **Chat**
-    - [ ] El usuario puede ver todos los usuarios con los que ha hecho match.
-    - [ ] El usuario puede intercambiar mensajes con otros contactos.
-    - [ ] El usuario puede eliminar chats y/o matches.
+    - [x] El usuario puede ver todos los usuarios con los que ha hecho match.
+    - [x] El usuario puede intercambiar mensajes con otros contactos.
+    - [ ] El usuario puede eliminar chats y/o matches. _NO IMPLEMENTADA EN LA VERSIÓN FINAL_
 - **Perfil**
-    - [ ] El usuario puede ver una previsualización de su perfil para otros usuarios. _(Opcional)_
-    - [ ] El usuario puede modificar datos de su perfil _(fecha de nacimiento, tipo de jugador, juegos, avatar?...)_
-    - [ ] El cambio de datos va correctamente a la BD
+    - [ ] El usuario puede ver una previsualización de su perfil para otros usuarios. _(NO IMPLEMENTADA EN LA VERSIÓN FINAL)_
+    - [x] El usuario puede modificar datos de su perfil _(fecha de nacimiento, tipo de jugador, juegos?, avatar?...)_
+    - [x] El cambio de datos va correctamente a la BD
 - **Ajustes**
     - [x] El usuario puede cerrar sesión de la app.
     - [x] El usuario puede eliminar definitivamente su cuenta.
-    - [ ] El usuario puede cambiar algunos ajustes de privacidad. _(que se muestre la edad, el nombre real, distancia...)_
+    - [x] El usuario puede cambiar algunos ajustes de privacidad. _(que se muestre la edad, el nombre real, distancia...)_
