@@ -43,7 +43,6 @@ export class OrdenarJuegosPage implements OnInit {
     let to = ev.detail.to ;
     let itemToReorder:Game;
     let realocateItem:Game;
-    console.log(from, to);
     //Si solo tenemos los juegos favoritos
     if(this.otherGames === undefined){
       itemToReorder = this.favoriteGames.splice(from,1)[0];

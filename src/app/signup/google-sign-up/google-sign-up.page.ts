@@ -68,7 +68,7 @@ export class GoogleSignUpPage {
         this.userProv.addUsuario(usuario);
         this.matchService.addDocToDB(displayName.value);
         this.settingsService.addPrivacyDoc(displayName.value);
-        this.router.navigate(['/home']);
+        this.router.navigate(['juegos']);
       }
     })
     .catch((error) => console.log(error)) 
