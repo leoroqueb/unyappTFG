@@ -62,7 +62,7 @@ export class GoogleSignUpPage {
     }
     let promiseDuplicated = this.userProv.duplicatedData(usuario.displayName, "displayName");
     promiseDuplicated.then((isDuplicated) =>{
-      if(isDuplicated == true){
+      if(isDuplicated){
         this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
       }else{
         this.userProv.addUsuario(usuario);
