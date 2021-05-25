@@ -11,6 +11,7 @@
   <ion-card *ngFor="let message of chat" class="chat-thread">
     <ion-card-header>
       <strong #from>{{message.from}}</strong>
+      
     </ion-card-header>
     <ion-card-content>
       {{message.msg}}

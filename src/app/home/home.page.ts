@@ -156,7 +156,7 @@ export class HomePage implements OnInit, AfterViewInit {
   ionViewDidLeave(){
     this.dbRefactor.disconnectFromDB(this.dataConnection);
     this.dbRefactor.disconnectFromDB(this.userConnection);
-    this.dbRefactor.disconnectFromDB(this.privacyConnection);
+    //this.dbRefactor.disconnectFromDB(this.privacyConnection);
   }
   
   

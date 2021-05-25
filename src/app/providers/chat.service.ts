@@ -39,11 +39,13 @@ export class ChatService {
   } */
 
   sendMessage(msg: string, to: string, from: string){
+    let timestamp = new Date().toUTCString();
+    
     let message: Message = {
       from: from,
       to: to,
       msg: msg,
-      timestamp: firebase.default.firestore.Timestamp.now()
+      timestamp: timestamp
     }
     this.chatCollection.doc(from).collection(to).doc().set(message);
     this.chatCollection.doc(to).collection(from).doc().set(message);
