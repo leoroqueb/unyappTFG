@@ -53,7 +53,7 @@ export class MatchService {
               resolve(usuarios);
             }) 
             .catch((error) =>
-              reject(console.log(error))
+              reject(error)
             )
           });
     }
@@ -71,7 +71,7 @@ export class MatchService {
               resolve(usuarios);
             }) 
             .catch((error) =>
-              reject(console.log(error))
+              reject(error)
             )
           });
     }

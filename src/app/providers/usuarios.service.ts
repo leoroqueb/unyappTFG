@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { Game } from '../models/games.interface';
 import { Router } from '@angular/router';
 import { DBRefactor } from '../refactors/refactor';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -21,7 +22,8 @@ export class UsuariosProvider{
     public db: AngularFirestore,
     private router: Router,
     private dbRefactor: DBRefactor,
-    public afAuth: AngularFireAuth) {     
+    public afAuth: AngularFireAuth,
+    private authService: AuthService) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       
       
@@ -68,7 +70,8 @@ export class UsuariosProvider{
       }
       this.dbRefactor.disconnectFromDB(this.credentialConnection);
     }));
-    (await user).delete().then(async () => {
+    this.authService.deleteGoogleAccount();
+    (await user).delete().then(() => {
       this.router.navigate(["login"]);
     });
   }

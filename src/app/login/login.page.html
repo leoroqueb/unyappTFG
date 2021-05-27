@@ -9,8 +9,10 @@
         <!-- Login Form -->
         <div class="form">
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit(email, password)" autocomplete="on">
-            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Email" required formControlName="email" #email autocomplete="email">
-            <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" required formControlName="password" #password autocomplete="current-password">
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Email" required formControlName="email" 
+              #email autocomplete="email">
+            <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" required formControlName="password" 
+              #password autocomplete="current-password">
             <input type="submit" class="fadeIn fourth" [disabled]="loginForm.invalid" value="Inicia sesión">
           </form>
           

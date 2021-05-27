@@ -68,6 +68,7 @@ export class SettingsPage implements OnInit {
   }
 
   deleteAccount(){
+    
     this.userService.deleteUser();
   }
 

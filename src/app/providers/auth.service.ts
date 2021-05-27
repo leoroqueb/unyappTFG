@@ -77,23 +77,34 @@ export class AuthService {
     }
   }
 
-  async registerDataForFirstTime(user:UsuariosI, credential: CredencialesI) {
+    //LOGIN USER CON EMAIL Y CONTRASEÑA
+  async loginUser(email: string, password: string): Promise<CredencialesI>{
     try {
-      await this.sendVerificationEmail();
-      this.updateCredencialData(credential);
-      this.createDataFirstTime(user, this.credentials);
-      this.setMatchDoc(user.displayName);
-      this.setPrivacyDoc(user.displayName);
-      this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
-      this.router.navigateByUrl('/nonverify')
+      //Obtenemos las credenciales del inicio de sesion
+      const {user} = await this.afireauth.signInWithEmailAndPassword(email, password);
+      if(user){
+        //Si todo ha ido bien, actualizamos las credenciales   
+        this.updateCredencialData(user);
+        return user;
+      }
     } catch (error) {
-      console.log(error)
+      this.alerta.alerta("Los datos introducidos no son correctos", "Error")
     }
-    
+  }
+
+  async registerDataForFirstTime(user:UsuariosI, credential: CredencialesI) {
+      await this.sendVerificationEmail().then(() => {
+        this.updateCredencialData(credential);
+        this.createDataFirstTime(user, this.credentials);
+        this.setMatchDoc(user.displayName);
+        this.setPrivacyDoc(user.displayName);
+        this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+        this.router.navigateByUrl('/nonverify')
+      })
+      .catch(error => this.alerta.alerta("Ha habido un error al enviar el correo de verificación "+ error, "Error"));  
   }
 
   setMatchDoc(userName: string){
-    
     this.matchService.addDocToDB(userName);
   }
 
@@ -137,45 +148,19 @@ export class AuthService {
     return userRef.set(userProfileDocument, {merge: true});
   }
 
-
-  //LOGIN USER CON EMAIL Y CONTRASEÑA
-  async loginUser(email: string, password: string): Promise<CredencialesI>{
-    try {
-      //Obtenemos las credenciales del inicio de sesion
-      const {user} = await this.afireauth.signInWithEmailAndPassword(email, password);
-      if(user){
-        //Si todo ha ido bien, actualizamos las credenciales   
-        this.updateCredencialData(user);
-        return user;
-      }
-    } catch (error) {
-      this.alerta.alerta("Los datos introducidos no son correctos", "Error")
-    }
-    
-    
-  }
-
   //Metodo firebase que envia correo de confirmacion
   async sendVerificationEmail(): Promise<void>{
-    try {
-      return (await this.afireauth.currentUser).sendEmailVerification();
-    } catch (error) {
-      
-    }
-  }
-
-  //Comprueba que el email esta verificado
-  isEmailVerified(user: CredencialesI){
-    return user.emailVerified === true ? true : false;
+    return (await this.afireauth.currentUser).sendEmailVerification();
   }
 
   //Reseteo Contraseña
-  async resetPassword(email:string): Promise<void>{
-    try {
-      return this.afireauth.sendPasswordResetEmail(email)
-    } catch (error) {
-      
-    }
+  resetPassword(email:string): Promise<void>{
+    return this.afireauth.sendPasswordResetEmail(email);
+  }
+
+  //Comprueba que el email esta verificado
+  isEmailVerified(user: CredencialesI): boolean{
+    return user.emailVerified === true ? true : false;
   }
 
   //Login con Google
@@ -252,25 +237,18 @@ export class AuthService {
 
   //CIERRE SESION CON EMAIL Y CONTRASEÑA
   async doLogout(): Promise<void>{
-    try {
-      if(this.platform.is('android')){
-        await this.afireauth.signOut();
-        await this.googlePlus.disconnect();
+    
+      await this.afireauth.signOut().then(async () => {
         this.redirectUserAfterLogOut();
-      
-      }else{
-        await this.afireauth.signOut().then(() =>
-          this.redirectUserAfterLogOut()
-        );
-      }
-    } catch (error) {
-      console.log("Error =>", error)
-    }
-     
+      })
+      .catch(err => console.log("Error", err));  
   }
   redirectUserAfterLogOut(){
     this.router.navigate(['login']);  
   }
 
+  async deleteGoogleAccount(){
+    await this.googlePlus.disconnect();
+  }
   
 }
