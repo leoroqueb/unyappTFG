@@ -86,7 +86,6 @@ export class SignupOtrosDatosPage implements OnInit {
   }
   
   signUp(user) {
-    try {
     //Sacamos todos los datos secundarios
       const datosSecun: UsuariosI = {
         name: user.name,
@@ -105,22 +104,16 @@ export class SignupOtrosDatosPage implements OnInit {
       }
 
       let promiseDuplicated = this.userProvider.duplicatedData(datosSecun.displayName, "displayName");
-      promiseDuplicated.then((isDuplicated) =>{
-        if(isDuplicated == true){
+      promiseDuplicated.then( isDuplicated =>{
+        if(isDuplicated){
           this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
         }else{
           this.authService.registerUser(user.email, user.password)
-            .then((completed) => {
-              if(completed){
-                this.authService.registerDataForFirstTime(datosSecun,credencial);
-              }
-            }) 
+            .then(() => {
+              this.authService.registerDataForFirstTime(datosSecun,credencial);
+            }).catch(error => console.log(error)) 
         }
       })
-      .catch((error) => console.log(error))
-      
-    } catch (error) {
-      console.log(error)
-    }
+      .catch(error => console.log(error))
   }
 }

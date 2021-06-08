@@ -23,10 +23,7 @@ import { SettingsService } from './settings.service';
 export class AuthService {
   public user$: Observable<UsuariosI>;
   public credencial$: Observable<CredencialesI>;
-  public credentials: firebase.auth.UserCredential | PromiseLike<firebase.auth.UserCredential>;
-  
-  private matchTemplate: UserMatches;
-  
+  public credentials: firebase.auth.UserCredential | PromiseLike<firebase.auth.UserCredential>;  
   
   constructor(
     private userProvider: UsuariosProvider,

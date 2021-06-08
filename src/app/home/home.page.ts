@@ -52,7 +52,7 @@ export class HomePage implements OnInit, AfterViewInit {
      this.showCardsInfo();
      this.userPrivacy = {
        age: true,
-       name: false
+       name: true
      }
   }
 
@@ -158,6 +158,4 @@ export class HomePage implements OnInit, AfterViewInit {
     this.dbRefactor.disconnectFromDB(this.userConnection);
     //this.dbRefactor.disconnectFromDB(this.privacyConnection);
   }
-  
-  
 }

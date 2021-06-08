@@ -44,7 +44,7 @@ export class ChatService {
     let message: Message = {
       from: from,
       to: to,
-      msg: msg,
+      msg: msg, 
       timestamp: timestamp
     }
     this.chatCollection.doc(from).collection(to).doc().set(message);
