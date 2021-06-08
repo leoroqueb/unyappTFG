@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { Game } from '../models/games.interface';
 import { Router } from '@angular/router';
 import { DBRefactor } from '../refactors/refactor';
-import { AuthService } from './auth.service';
+
 
 
 @Injectable({
@@ -23,7 +23,7 @@ export class UsuariosProvider{
     private router: Router,
     private dbRefactor: DBRefactor,
     public afAuth: AngularFireAuth,
-    private authService: AuthService) {     
+    ) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       
       
@@ -70,7 +70,7 @@ export class UsuariosProvider{
       }
       this.dbRefactor.disconnectFromDB(this.credentialConnection);
     }));
-    this.authService.deleteGoogleAccount();
+    /* this.authService.deleteGoogleAccount(); */
     (await user).delete().then(() => {
       this.router.navigate(["login"]);
     });
@@ -104,7 +104,7 @@ export class UsuariosProvider{
    */
   async addGamesToUser(favoriteGames: Game[], otherGames?: Game[]){
     
-    if(otherGames){
+    if(otherGames){ 
       this.conection = (await this.getActualUser()).subscribe(user =>{
         const usuario:UsuariosI = {
           name: user.name,
