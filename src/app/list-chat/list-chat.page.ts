@@ -38,7 +38,7 @@ export class ListChatPage implements OnInit {
     this.router.navigate(['chat']);
     this.chatService.setUserInfo(user);
   }
-
+ 
   ionViewDidLeave(){
    this.refactor.disconnectFromDB(this.listChatSus);
    this.refactor.disconnectFromDB(this.userSus);

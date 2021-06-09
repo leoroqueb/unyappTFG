@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar id="toolbar-header">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
@@ -7,16 +7,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card *ngFor="let message of chat" class="chat-thread">
-    <ion-card-header>
-      <strong #from>{{message.from}}</strong>
-      
-    </ion-card-header>
-    <ion-card-content>
-      {{message.msg}}
-    </ion-card-content>
-  </ion-card>
+<ion-content id="chat">
+  <div>
+    <div *ngFor="let message of chat" class="chat-thread mensaje" [ngClass]="message.from == userName ? 'mensaje-otro' : 'mensaje-yo'">
+      <ion-card>
+        <!-- <ion-card-header>
+          <strong #from>{{message.from}}</strong>
+          
+        </ion-card-header> -->
+        <ion-card-content class="mensaje-content">
+          {{message.msg}}
+        </ion-card-content>
+      </ion-card> 
+    </div>
+  </div>
 </ion-content>
 
 <ion-footer>

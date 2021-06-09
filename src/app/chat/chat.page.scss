@@ -22,11 +22,34 @@ ion-content {
 
 
 .chat-thread {
-	margin: 10px auto 0 auto;
 	height: auto;
-	padding: 0 20px 0 0;
 	list-style: none;
 	overflow-y: hidden;
  	overflow-x: hidden;
 }
 
+.mensaje{
+	max-width: 70%;
+	.mensaje-content{
+		margin: 0;
+		color: black;
+	}
+}
+
+.mensaje-yo{
+	display: flex;
+    justify-content: flex-end;
+    max-width: 100%;
+	
+	ion-card{
+		background-color: rgb(139, 247, 139);
+	}
+}
+
+#chat{
+	overflow: hidden;
+}
+
+#toolbar-header{
+	--background: #54d61c;
+}

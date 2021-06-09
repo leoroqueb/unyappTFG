@@ -60,7 +60,7 @@ export class HomePage implements OnInit, AfterViewInit {
     this.privacyConnection = this.settingService.connectToDB(user).subscribe(privacy => {
       this.userPrivacy = privacy;
     });
-  }
+  } 
 
   async showCardsInfo(){
     this.user$ = await this.userService.getActualUser();

@@ -50,7 +50,7 @@ export class ChatPage implements OnInit {
         if(element.timestamp == sortedTimestamps[index]){
           sortedData.push(element);
         } 
-      })
+      }) 
     }
     return sortedData;
   }
@@ -63,10 +63,16 @@ export class ChatPage implements OnInit {
   sendMessage(msg){
     this.chatService.sendMessage(msg.value, this.userName, this.myName);
     document.querySelector("input").value = "";
+    this.scrollToEnd();
   }
 
   ionViewDidLeave(){
    this.disconnectSuscription(this.sus);
+  }
+
+  scrollToEnd(){
+    const main = document.getElementsByTagName('main')[1];
+    main.scrollTop = main.scrollHeight;
   }
 
 }

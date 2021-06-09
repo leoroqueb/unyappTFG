@@ -45,6 +45,7 @@ export class ToastRefactor {
       }
 }
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -55,6 +56,7 @@ export class DBRefactor{
         suscription.unsubscribe();
     }
 }
+
 
 @Injectable({
     providedIn: 'root'
@@ -106,6 +108,8 @@ export class RegistroRefactor{
         return this.gamesData;
     }
 }
+
+
 @Injectable({
     providedIn: 'root'
   })

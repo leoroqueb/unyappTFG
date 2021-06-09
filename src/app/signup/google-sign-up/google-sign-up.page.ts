@@ -75,8 +75,4 @@ export class GoogleSignUpPage {
     
   }
   
-  cancel(){
-    this.authService.doLogout();
-  }
-  
 }

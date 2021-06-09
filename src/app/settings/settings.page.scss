@@ -36,20 +36,18 @@ ion-toggle {
 }
 
 .ajustes{
-    
     position: relative;
-   
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 15px 15px 15px 15px; 
-    //background: #0000003b;
-    //width: 70%;
-    align-items: flex-start;
     margin: 10px 0px 0px 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .span{
   color: #000000;
-  margin: auto;
+  
 }
 
 .form{
