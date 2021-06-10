@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth,  } from '@angular/fire/auth'
-import { CredencialesI, UserMatches, UsuariosI } from '../models/users.interface';
-import { AlertaRefactor } from '../refactors/refactor'
+import { CredencialesI, UsuariosI } from '../models/users.interface';
+import { ToastRefactor } from '../refactors/refactor'
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class AuthService {
     private afs: AngularFirestore,
     private platform: Platform,
     private googlePlus: GooglePlus,
-    private alerta: AlertaRefactor,
+    private alerta: ToastRefactor,
     private router: Router,
     private matchService: MatchService,
     private settingsService:SettingsService
@@ -70,7 +70,7 @@ export class AuthService {
         .createUserWithEmailAndPassword(email, password);  
       return this.credentials;
     } catch (error) {
-      this.alerta.alerta(error, "Error");      
+      this.alerta.presentToast("ha ocurrido un error: " + error);      
     }
   }
 
@@ -85,7 +85,7 @@ export class AuthService {
         return user;
       }
     } catch (error) {
-      this.alerta.alerta("Los datos introducidos no son correctos", "Error")
+      this.alerta.presentToast("Los datos introducidos no son correctos")
     }
   }
 
@@ -95,10 +95,10 @@ export class AuthService {
         this.createDataFirstTime(user, this.credentials);
         this.setMatchDoc(user.displayName);
         this.setPrivacyDoc(user.displayName);
-        this.alerta.alerta("Cuenta registrada correctamente", "Éxito");
+        this.alerta.presentToast("¡Bienvenido/a a la tripulación!");
         this.router.navigateByUrl('/nonverify')
       })
-      .catch(error => this.alerta.alerta("Ha habido un error al enviar el correo de verificación "+ error, "Error"));  
+      .catch(error => this.alerta.presentToast("Ha habido un error al enviar el correo de verificación "+ error));  
   }
 
   setMatchDoc(userName: string){
@@ -182,12 +182,12 @@ export class AuthService {
       })
       .catch(err => {
         if(err != `${JSON.stringify(12501)}`){
-          this.alerta.alerta(`${JSON.stringify(err)}`, "Error") 
+          this.alerta.presentToast("Error al conectar con Google: "+ `${JSON.stringify(err)}`) 
         }
         
       }); 
     } catch (error) {
-      this.alerta.alerta(error, "Error");
+      this.alerta.presentToast("Ha habido un error desconocido: " + error);
     }
     
   }
@@ -228,7 +228,7 @@ export class AuthService {
         } 
       })
     } catch (error) {
-      this.alerta.alerta("Ha habido un fallo al contactar con los servidores de Google. Inténtalo de nuevo", "Error");
+      this.alerta.presentToast("Ha habido un fallo al contactar con los servidores de Google. Inténtalo de nuevo. Error " + error);
     }
   }
 

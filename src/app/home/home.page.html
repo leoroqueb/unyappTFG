@@ -1,4 +1,5 @@
 <ion-content scroll-y="false">
+  
   <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile">
     <ion-card-header class="card-header" id='{{ user.displayName }}' >
       <ion-card-title class="user-displayName"><h1>{{user.displayName}}</h1></ion-card-title>
@@ -28,4 +29,8 @@
       </div>
     </ion-card-content>
   </ion-card> 
+  <div class="pyro" *ngIf="thereIsMatch">
+    <div class="before"></div>
+    <div class="after"></div>
+  </div>
 </ion-content>

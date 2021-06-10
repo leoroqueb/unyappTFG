@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Raleway:wght@300&display=swap');
 .searchbar-input.sc-ion-searchbar-md {
   border-radius: 25px;
   background-position: left 8px center;
@@ -10,6 +11,47 @@
   box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1) !important;
 }
 
+.title{
+  background-color: aquamarine;
+  border-radius: 50px;
+  max-width: 82%;
+  margin: 20px auto;
+}
+.title-header{
+  display: flex;
+ /*  margin: 20px;*/
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+}
+
+.title-category{
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  margin: auto;
+}
+
+.filters{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px auto auto 5px;
+  background-color: bisque;
+  border-radius: 15px;
+}
+
+#category-filter{
+  display: table-cell;
+}
+
+#platform-filter{
+  display: table-cell;
+}
+ion-select{
+  font-family: 'Nunito', sans-serif;
+  .item-options{
+    font-family: 'Nunito', sans-serif;
+  }
+  
+}
 
 
 

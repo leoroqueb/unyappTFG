@@ -14,7 +14,6 @@ export class TabsPage implements OnInit {
     private platform: Platform,
     private alertController: AlertController,
     private router: Router,
-    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -32,7 +31,7 @@ export class TabsPage implements OnInit {
       
       if(this.router.url === '/tabs/home'){
         await this.alertController.create({
-          cssClass: 'my-custom-class',
+          //cssClass: 'my-custom-class',
           header: 'Salir de Uny',
           message: '¿Ya me abandonas? :(',
           buttons: [
@@ -50,9 +49,7 @@ export class TabsPage implements OnInit {
             } 
           ]
         }).then((alerta) => alerta.present());
-      }/* else{
-        this.navCtrl.navigateRoot('home');
-      } */
+      }
     });   
       
         

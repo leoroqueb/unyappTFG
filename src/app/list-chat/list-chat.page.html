@@ -5,6 +5,13 @@
 </ion-header>
 
 <ion-content>
+  
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+  
+  <p *ngIf="chatUsers === undefined || chatUsers.length === 0" class="no-matches">Todavía no tienes ningún match, ¡sigue buscando!</p>
   <ion-list>
     <ion-item *ngFor="let user of chatUsers" (click)="openChat(user)">
       <ion-icon class="user-icon" name="person-circle-outline"></ion-icon>

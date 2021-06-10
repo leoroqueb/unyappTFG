@@ -18,6 +18,7 @@ export class AlertaRefactor {
         
             header: header,
             message: msg,
+            
             keyboardClose: true,
             buttons: [
                 { 

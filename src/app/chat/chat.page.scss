@@ -20,6 +20,9 @@ ion-content {
   background-attachment: fixed;
 }
 
+.background{
+	background-color: azure;
+}
 
 .chat-thread {
 	height: auto;
@@ -30,26 +33,44 @@ ion-content {
 
 .mensaje{
 	max-width: 70%;
+	display: flex;
 	.mensaje-content{
 		margin: 0;
 		color: black;
 	}
 }
 
+.mensaje-otro{
+	ion-card{
+		background-color: rgb(21, 156, 21);
+	}
+	.mensaje-content{
+		color: white;
+	}
+}
+
+#send-icon{
+	color: #2e5c1b;
+}
 .mensaje-yo{
-	display: flex;
+	
     justify-content: flex-end;
     max-width: 100%;
 	
-	ion-card{
-		background-color: rgb(139, 247, 139);
-	}
+	
 }
 
 #chat{
 	overflow: hidden;
 }
 
+ion-back-button{
+	color: whitesmoke;
+}
+
+#header-name{
+	color: whitesmoke;
+}
 #toolbar-header{
-	--background: #54d61c;
+	--background: #37ca8d;
 }

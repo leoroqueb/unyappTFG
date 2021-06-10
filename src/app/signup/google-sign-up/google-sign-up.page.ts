@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CredencialesI, UserMatches, UsuariosI } from 'src/app/models/users.interface';
 import { AuthService } from '../../providers/auth.service'
-import { AlertaRefactor, RegistroRefactor } from '../../refactors/refactor'
+import { AlertaRefactor, RegistroRefactor, ToastRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from '../../providers/usuarios.service'
 import { Router } from '@angular/router';
 import { MatchService } from 'src/app/providers/match.service';
@@ -21,7 +21,7 @@ export class GoogleSignUpPage {
     private authService: AuthService,
     private userProv: UsuariosProvider,
     private refactor: RegistroRefactor,
-    private alerta: AlertaRefactor,
+    private alerta: ToastRefactor,
     private router: Router,
     private matchService: MatchService,
     private settingsService: SettingsService
@@ -63,7 +63,7 @@ export class GoogleSignUpPage {
     let promiseDuplicated = this.userProv.duplicatedData(usuario.displayName, "displayName");
     promiseDuplicated.then((isDuplicated) =>{
       if(isDuplicated){
-        this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
+        this.alerta.presentToast("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)");
       }else{
         this.userProv.addUsuario(usuario);
         this.matchService.addDocToDB(displayName.value);

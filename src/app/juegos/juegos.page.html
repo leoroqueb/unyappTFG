@@ -1,57 +1,54 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-row >
-      <ion-col size="12">
-        <ion-toolbar >
-          <!-- searchbar -->
-          <ion-item-divider>
-            <ion-item>
-              <ion-searchbar
-              placeholder="Buscar juegos" 
-              (ionChange)="onSearchChange($event)" 
-              [debounce]="250" 
-              inputmode="text"
-              clearIcon="trash-outline"
-              slot="start">
-            </ion-searchbar>
-            </ion-item>
-           <ion-item>
-            <ion-button disabled id="submitButton" shape="round" (click)="getChosenGamesByUser()" slot="end">
-              Siguiente
-            </ion-button>
-           </ion-item>
-          </ion-item-divider>
-          <!-- filtros -->
-          <ion-item-divider (ionChange)="applyFilters(platformSelect.value, categorySelect.value)">
-            <ion-item slot="start">
-              <ion-label position="floating">Plataforma</ion-label>
-              <ion-select value="Todas" multiple="false" #platformSelect interface="action-sheet">
-                <ion-select-option *ngFor="let platform of platformFilters">{{platform}}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Categorías</ion-label>
-              <ion-select value="Todas" multiple="false" #categorySelect interface="action-sheet">
-                <ion-select-option *ngFor="let category of categoryFilters">{{category}}</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-item-divider>
-
-        </ion-toolbar>
-      </ion-col>
-    </ion-row>
-    <ion-item>
-      <ion-label>Elige un mínimo de 3 juegos y un máximo de 13</ion-label>
-    </ion-item>
-    
+<ion-header class="ion-no-border">
+  <ion-toolbar >
+    <div class="title">
+      <p class="title-header">Elige un mínimo de 3 juegos y un máximo de 13</p>
+    </div>
+    <!-- searchbar -->
+    <div class="searchbar-div">
+      <div>
+        <ion-searchbar
+          placeholder="Buscar juegos" 
+          (ionChange)="onSearchChange($event)" 
+          [debounce]="250" 
+          inputmode="text"
+          clearIcon="trash-outline"
+          slot="start">
+        </ion-searchbar>
+        <!-- <ion-button disabled id="submitButton" shape="round" (click)="getChosenGamesByUser()" slot="end">
+          Siguiente
+        </ion-button> -->
+      </div>
+    </div>
+    <!-- filtros -->
+    <div (ionChange)="applyFilters(platformSelect.value, categorySelect.value)" class="filters">
+      <div id="platform-filter">
+        <p class="title-category"><b>Plataforma</b></p>
+        <ion-select value="Todas" multiple="false" #platformSelect interface="action-sheet">
+            <ion-select-option *ngFor="let platform of platformFilters">{{platform}}</ion-select-option>
+        </ion-select>
+      </div>
+      <div id="category-filter">
+        <p class="title-category"><b>Categorías</b></p>
+        <ion-select value="Todas" multiple="false" #categorySelect interface="action-sheet">
+          <ion-select-option *ngFor="let category of categoryFilters" class="item-options">{{category}}</ion-select-option>
+        </ion-select>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list lines="inset" *ngFor="let game of game$ | searchFilter: searchText | listFilter: platFilters:catFilters">
-    <ion-item class="game-item">
-      <ion-checkbox slot="start" (ionChange)="selectGamesFromList(game, $event)" id="game-selector"></ion-checkbox>
-      <p>{{game.name}}</p>
-    </ion-item>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed"   (click)="getChosenGamesByUser()" >
+    <ion-fab-button disabled="true" id="submitButton">
+      <ion-icon name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div>
+  <ion-list *ngFor="let game of game$ | searchFilter: searchText | listFilter: platFilters:catFilters">
+      <ion-item class="game-item">
+        <ion-checkbox slot="start" (ionChange)="selectGamesFromList(game, $event)" class="game-selector"></ion-checkbox>
+        <p class="title-category">{{game.name}}</p>
+      </ion-item>
   </ion-list>
-</ion-content>
+</div>
+</ion-content> 

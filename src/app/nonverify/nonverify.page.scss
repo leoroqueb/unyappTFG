@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Raleway:wght@300&display=swap');
+.text{
+    margin: 150px 10px 10px 10px;
+    font-family: 'Nunito', sans-serif;
+    h2{
+        text-align: center;
+        text-shadow: 1px 1px #04040494;
+    }
+}
+/* ion-content.background{
+    position: relative; 
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+} */
+.background{
+    --background: url(../../assets/confeti.jpg) 0 0/100% 50% no-repeat;
+
+}  
+
+.info-button{
+    display: flex;
+    align-items: center;
+}

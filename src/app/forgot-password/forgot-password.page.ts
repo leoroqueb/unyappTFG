@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
-import { AlertaRefactor, ToastRefactor } from '../refactors/refactor';
+import { ToastRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-forgot-password',

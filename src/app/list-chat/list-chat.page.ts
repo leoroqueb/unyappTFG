@@ -39,9 +39,16 @@ export class ListChatPage implements OnInit {
     this.chatService.setUserInfo(user);
   }
  
-  ionViewDidLeave(){
+  ionViewDidLeave(){ 
    this.refactor.disconnectFromDB(this.listChatSus);
    this.refactor.disconnectFromDB(this.userSus);
+  }
+
+  doRefresh(ev){
+    document.location.reload();
+    setTimeout(() => {
+      ev.target.complete();
+    }, 2000);
   }
 
 }
