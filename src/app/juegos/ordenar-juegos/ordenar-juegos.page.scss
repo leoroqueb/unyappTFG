@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Raleway:wght@300&display=swap');
+
+.title-header{
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+}
+ion-item{
+    border-radius: 30px;
+    margin: 5px;
+}
+.game-0{
+    --background:#ffd700;
+}
+.game-1{
+   --background:#c0c0c0;
+}
+.game-2{
+    --background:#cd7f32;
+}
+.other-games{
+    --background: cadetblue;
+}
+
+.title-fav{
+    background: linear-gradient(to right, #ffd700, #c0c0c0 80%,#cd7f32);
+    border-radius: 30px;
+    margin: 5px auto 10px auto;
+    max-width: 52%;
+    display: flex;
+}
+.title-other{
+    background: linear-gradient(to right, cadetblue, white);
+    border-radius: 30px;
+    margin: 30px auto 10px auto;
+    max-width: 52%;
+    display: flex;
+}

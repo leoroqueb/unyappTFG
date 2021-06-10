@@ -1,0 +1,35 @@
+
+
+<ion-content [fullscreen]="true"  class="align">
+  <div class="wrapper">
+    <div id="formContent">
+      <h2 class="inactive underlineHover" routerLink="/login"> Login </h2>
+      <h2 class="active" > Regístrate </h2>
+
+      <div class="form">
+        <p style="font-size: small;" class="fadeIn second">Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
+        <p style="font-size: small;" class="fadeIn second">La contraseña debe contener 6 caracteres como mínimo.</p>
+        <form [formGroup]="matching_passwords_group" (ngSubmit)="importantDetailsUser(matching_passwords_group)">
+            <div class="fadeIn third">
+              <ion-icon name="mail" item-start> </ion-icon>
+              <ion-label style="font-size: small;"> Correo electronico:<ion-text color="danger">*</ion-text></ion-label>
+              <input type="text" formControlName="email" placeholder="Email">
+            </div>
+            <div  class="fadeIn fourth">
+              <ion-icon name="eye-off-outline"> </ion-icon>
+              <ion-label style="font-size: small;"> Contraseña:<ion-text color="danger">*</ion-text></ion-label>
+              <input type="password" formControlName="password" placeholder="Contraseña">
+            </div>
+            <div  class="fadeIn fifth">
+              <ion-icon name="eye-off-outline"> </ion-icon>
+              <ion-label style="font-size: small;"> Confirmar contraseña:<ion-text color="danger">*</ion-text></ion-label>
+              <input type="password" formControlName="confirm_password"  placeholder=" Confirmar contraseña">
+            </div>
+
+          <input type="submit" [disabled]="matching_passwords_group.invalid" value="Siguiente"  class="fadeIn fifth">
+            
+        </form>
+      </div>
+    </div>
+  </div>
+</ion-content>

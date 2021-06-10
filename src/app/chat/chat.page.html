@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar id="toolbar-header">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title id="header-name">{{userName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="chat">
+  <div class="background">
+    <div *ngFor="let message of chat" class="chat-thread mensaje" [ngClass]="message.from == userName ? 'mensaje-otro' : 'mensaje-yo'">
+      <ion-card>
+        <ion-card-content class="mensaje-content">
+          {{message.msg}}
+        </ion-card-content>
+      </ion-card> 
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input type="text" #msg placeholder="Escribe un mensaje..."></ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="sendMessage(msg)" >
+        <ion-icon slot="start" name="send" id="send-icon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
