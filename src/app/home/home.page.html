@@ -7,7 +7,7 @@
     <ion-card-content class="card-content" scroll-y="true">
       <h2 class="card-section"><b>Edad</b></h2>
         <p class="centrar">{{user.age}}</p>
-      <h2 class="card-section"><b>Tipo de jugador</b></h2>
+      <h2 class="card-section" *ngIf="user.typeOfPlayer"><b>Tipo de jugador</b></h2>
         <p class="centrar">{{user.typeOfPlayer}}</p>
       <h2 class="card-section"><b>Juegos favoritos</b></h2>
       <div class="centrar">
@@ -18,7 +18,7 @@
         </div>
       </div>
         
-      <h2 class="card-section"><b>Otros juegos</b></h2>
+      <h2 class="card-section" *ngIf="user.otherGames.length != 0"><b>Otros juegos</b></h2>
       <div class="centrar">
         <div>
           <div class="user-content" *ngFor="let game of user.otherGames">

@@ -48,17 +48,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngFor="let chosenGame of chosenGamesByUser " class="ion-padding">
-    <ion-item button (click)="deleteGamesFromList(chosenGame)">
-      <ion-label>{{chosenGame.name}}</ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-list-header>
-    <ion-label><h2><b>Juegos a elegir:</b></h2></ion-label>
-  </ion-list-header>
   <ion-list lines="inset" *ngFor="let game of game$ | searchFilter: searchText | listFilter: platFilters:catFilters">
-    <ion-item button (click)="selectGamesFromList(game)" id={{game.name}}>
-      {{game.name}}
+    <ion-item class="game-item">
+      <ion-checkbox slot="start" (ionChange)="selectGamesFromList(game, $event)" id="game-selector"></ion-checkbox>
+      <p>{{game.name}}</p>
     </ion-item>
   </ion-list>
 </ion-content>

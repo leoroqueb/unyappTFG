@@ -11,13 +11,13 @@
   <ion-list>
     <ion-list-header>Juegos favoritos:</ion-list-header>
     <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
-      <ion-item *ngFor="let a of favoriteGames" >
+      <ion-item *ngFor="let favGames of favoriteGames" >
         <ion-label>
-          {{a.name}}
+          {{favGames.name}}
         </ion-label>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>
-      <ion-list-header>Otros juegos:</ion-list-header>
+      <ion-list-header *ngIf="otherGames">Otros juegos:</ion-list-header>
       <ion-item *ngFor="let game of otherGames">
         <ion-label>
           {{game.name}}
