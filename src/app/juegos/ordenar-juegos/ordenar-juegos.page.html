@@ -1,26 +1,29 @@
-<ion-header no-border>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Ordena los juegos</ion-title>
-    <ion-button (click)="sendGamesToDB()" expand="block" shape="round" slot="end">
-      Terminar
-    </ion-button>
+    <ion-title class="title-header"><b>Ordena los juegos</b></ion-title>
+    
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="sendGamesToDB()" >
+    <ion-fab-button>
+      <ion-icon name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <ion-list>
-    <ion-list-header>Juegos favoritos:</ion-list-header>
+    <ion-list-header class="title-header title-fav" style="font-size:large;"><b>Juegos favoritos:</b></ion-list-header>
     <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
-      <ion-item *ngFor="let a of favoriteGames" >
+      <ion-item *ngFor="let favGames of favoriteGames; index as i" class="game-{{i}}">
         <ion-label>
-          {{a.name}}
+          {{favGames.name}}
         </ion-label>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>
-      <ion-list-header>Otros juegos:</ion-list-header>
-      <ion-item *ngFor="let game of otherGames">
+      <ion-list-header *ngIf="otherGames" class="title-header title-other" style="font-size:large;"><b>Otros juegos:</b></ion-list-header>
+      <ion-item *ngFor="let game of otherGames" class="other-games">
         <ion-label>
-          {{game.name}}
+          {{game.name}} 
         </ion-label>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>

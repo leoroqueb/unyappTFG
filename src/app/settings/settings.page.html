@@ -1,32 +1,23 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <span><strong>Ajustes de privacidad:</strong></span>
-  <ion-item>
-    <ion-label>Mostrar edad</ion-label>
-    <ion-toggle [(ngModel)]="actualPrivacy.age" (ionChange)="setPrivacyAge($event)"></ion-toggle>
-  </ion-item>
-  <ion-item>
-    <ion-label>Mostrar nombre</ion-label>
-    <ion-toggle [(ngModel)]="actualPrivacy.name" (ionChange)="setPrivacyName($event)"></ion-toggle>
-  </ion-item>
-  <br>
-  <br>
-  <span><strong>Ajustes de cuenta:</strong></span>
-  <ion-item>
-    <!-- <ion-buttons> -->
-      <ion-button (click)="logOut()" color="primary">
-        Cerrar sesion
-      </ion-button>
-    </ion-item>
-  <ion-item>
-      <ion-button (click)="deleteAccount()" color="danger">
-        Eliminar cuenta
-      </ion-button>
-    <!-- </ion-buttons> -->
-  </ion-item>
+  <div class="wrapper">
+    <div id="content">
+      <div class="form">
+        <span style="font-size: larger;"><strong>Ajustes de privacidad:</strong></span>
+        <div class="ajustes">
+          <span class="span">Mostrar edad</span>
+          <ion-toggle [(ngModel)]="actualPrivacy.age" (ionChange)="setPrivacyAge($event)"></ion-toggle>
+        </div>
+        <div class="ajustes">
+          <span class="span">Mostrar nombre</span>
+          <ion-toggle [(ngModel)]="actualPrivacy.name" (ionChange)="setPrivacyName($event)"></ion-toggle>
+        </div>
+        <br>
+        <br>
+        <span style="font-size: larger;"><strong>Ajustes de cuenta:</strong></span>
+        <br><br>
+        <input type="button" value="Cerrar Sesion" (click)="logOut()">
+        <input type="button" value="Eliminar cuenta" (click)="deleteAccount()" id="delete">
+      </div>
+    </div>
+  </div>
 </ion-content>

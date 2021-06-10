@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
 import { UsuariosProvider } from '../providers/usuarios.service';
-import { RegistroRefactor, AlertaRefactor } from '../refactors/refactor';
+import { RegistroRefactor, AlertaRefactor, ToastRefactor } from '../refactors/refactor';
 
 
 
@@ -22,7 +22,7 @@ export class SignupPage implements OnInit {
     public userProvider: UsuariosProvider,
     public router: Router,
     public refactor: RegistroRefactor,
-    private authService: AuthService,
+    public toast: ToastRefactor,
     
   ) { }
     
@@ -74,7 +74,7 @@ export class SignupPage implements OnInit {
             }
           })   
       }else{
-        this.alerta.alerta("Las contraseñas no coinciden.", "ERROR");    
+        this.toast.presentToast("Las contraseñas no coinciden.");    
       }
     } catch (error) {
       

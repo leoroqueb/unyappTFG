@@ -1,17 +1,21 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>list-chat</ion-title>
+    <ion-title>Matches</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+  
+  <p *ngIf="chatUsers === undefined || chatUsers.length === 0" class="no-matches">Todavía no tienes ningún match, ¡sigue buscando!</p>
   <ion-list>
     <ion-item *ngFor="let user of chatUsers" (click)="openChat(user)">
-      <ion-card>
-        <ion-card-header>
-          {{user}}
-        </ion-card-header>
-      </ion-card>
+      <ion-icon class="user-icon" name="person-circle-outline"></ion-icon>
+      <ion-label>{{user}}</ion-label>
     </ion-item>
   </ion-list>
 

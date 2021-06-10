@@ -1,12 +1,11 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RegistroRefactor } from '../../refactors/refactor';
+import { RegistroRefactor, ToastRefactor } from '../../refactors/refactor';
 import { AuthService } from '../../providers/auth.service';
 import { Router } from '@angular/router';
 import { CredencialesI, UsuariosI } from 'src/app/models/users.interface';
 import { AlertaRefactor } from '../../refactors/refactor'
 import { UsuariosProvider } from 'src/app/providers/usuarios.service';
-import { App } from '@capacitor/core';
 
 @Component({
   selector: 'app-signup-otros-datos',
@@ -20,11 +19,11 @@ export class SignupOtrosDatosPage implements OnInit {
   public users: Array<string>;
   static userStatic: Array<string>;
   constructor(
-    public refactor: RegistroRefactor,
-    public authService: AuthService,
+    private refactor: RegistroRefactor,
+    private authService: AuthService,
     public router: Router,
     private userProvider: UsuariosProvider,
-    public alerta: AlertaRefactor,
+    private alerta: ToastRefactor,
     
   ) { 
     
@@ -32,9 +31,7 @@ export class SignupOtrosDatosPage implements OnInit {
 
   ngOnInit() {
     
-    //console.log(this.users)
     SignupOtrosDatosPage.userStatic = this.users;
-    //console.log(SignupOtrosDatosPage.userStatic);
     
   }
 
@@ -86,7 +83,6 @@ export class SignupOtrosDatosPage implements OnInit {
   }
   
   signUp(user) {
-    try {
     //Sacamos todos los datos secundarios
       const datosSecun: UsuariosI = {
         name: user.name,
@@ -105,22 +101,16 @@ export class SignupOtrosDatosPage implements OnInit {
       }
 
       let promiseDuplicated = this.userProvider.duplicatedData(datosSecun.displayName, "displayName");
-      promiseDuplicated.then((isDuplicated) =>{
-        if(isDuplicated == true){
-          this.alerta.alerta("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)", "Error");
+      promiseDuplicated.then( isDuplicated =>{
+        if(isDuplicated){
+          this.alerta.presentToast("Lo sentimos, ese nombre de usuario ya está cogido. ¡Dale al coco! ;)");
         }else{
           this.authService.registerUser(user.email, user.password)
-            .then((completed) => {
-              if(completed){
-                this.authService.registerDataForFirstTime(datosSecun,credencial);
-              }
-            }) 
+            .then(() => {
+              this.authService.registerDataForFirstTime(datosSecun,credencial);
+            }).catch(error => console.log(error)) 
         }
       })
-      .catch((error) => console.log(error))
-      
-    } catch (error) {
-      console.log(error)
-    }
+      .catch(error => console.log(error))
   }
 }

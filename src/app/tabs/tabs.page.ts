@@ -14,31 +14,10 @@ export class TabsPage implements OnInit {
     private platform: Platform,
     private alertController: AlertController,
     private router: Router,
-    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
-    var tabs = $('.tabs');
-    var selector = $('.tabs').find('a').length;
-    //var selector = $(".tabs").find(".selector");
-    var activeItem = tabs.find('.active');
-    var activeWidth = activeItem.innerWidth();
-    $(".selector").css({
-      "left": activeItem.position + "px", 
-      "width": activeWidth + "px"
-    });
 
-    $(".tabs").on("click","a",function(e){
-      e.preventDefault();
-      $('.tabs a').removeClass("active");
-      $(this).addClass('active');
-      var activeWidth = $(this).innerWidth();
-      var itemPos = $(this).position();
-      $(".selector").css({
-        "left":itemPos.left + "px", 
-        "width": activeWidth + "px"
-      });
-    });
   }
 
   ionViewWillLeave(){
@@ -52,7 +31,7 @@ export class TabsPage implements OnInit {
       
       if(this.router.url === '/tabs/home'){
         await this.alertController.create({
-          cssClass: 'my-custom-class',
+          //cssClass: 'my-custom-class',
           header: 'Salir de Uny',
           message: '¿Ya me abandonas? :(',
           buttons: [
@@ -70,9 +49,7 @@ export class TabsPage implements OnInit {
             } 
           ]
         }).then((alerta) => alerta.present());
-      }/* else{
-        this.navCtrl.navigateRoot('home');
-      } */
+      }
     });   
       
         

@@ -1,36 +1,24 @@
-<ion-header>
-  <ion-toolbar>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <ion-title>nonverify</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button routerLink="/login"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content *ngIf="user$ | async as usuario">
+
+<ion-content *ngIf="user$ | async as usuario" class="background">
   <ng-template #popContent>
     El equipo de <b>Uny</b> se toma muy enserio que no se introduzcan en el sistema
     <b>droides del Imperio</b> que puedan robarnos información o ejecutar la <b>orden 66</b> sin nuestro permiso.
     Por esto, mediante el sistema de verificación de email nos aseguramos que solo entren a nuestra página 
     <b>simpatizantes de la República</b>.
   </ng-template>
-  <ion-row>
-    <ion-col size="12">
-      <h2 >¡Gracias por unirte a nuestra comunidad, <strong>{{usuario.displayName}}</strong>!</h2>
-      <p>Hemos enviado un email de confirmación a <strong>{{usuario.email}}</strong></p>
-      <p>Por favor, comprueba tu correo y pulsa en el link de confirmación para poder acceder a Uny</p>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <button [ngbPopover]="popContent" popoverTitle="Protección contra bots" placement="bottom-left" container="body">
-      <ion-icon name="help-circle-outline"></ion-icon>¿Por qué hacemos esto?
-    </button>
-    <ion-col size="12">
-      <ion-button (click)="resendVerificationEmail()" expand="block" fill="clear" shape="round">
-        Reenvíame el correo
-      </ion-button>
-    </ion-col>
-  </ion-row>
+  <div class="text">
+    <h2>¡Gracias por unirte a nuestra comunidad, <strong>{{usuario.displayName}}</strong>!</h2>
+    <p>Hemos enviado un email de confirmación a <strong>{{usuario.email}}</strong></p>
+    <p>Por favor, comprueba tu correo y pulsa en el link de confirmación para poder acceder a Uny</p>
+  </div>
+
+  <button class="info-button" [ngbPopover]="popContent" popoverTitle="Protección contra bots" placement="top-left" container="body">
+    <ion-icon name="help-circle-outline"></ion-icon>¿Por qué hacemos esto?
+  </button>
+
+  <ion-button (click)="resendVerificationEmail()" expand="block" fill="clear" shape="round">
+    Reenvíame el correo
+  </ion-button>
+
 </ion-content>

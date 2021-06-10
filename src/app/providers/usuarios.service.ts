@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { DBRefactor } from '../refactors/refactor';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +22,8 @@ export class UsuariosProvider{
     public db: AngularFirestore,
     private router: Router,
     private dbRefactor: DBRefactor,
-    public afAuth: AngularFireAuth) {     
+    public afAuth: AngularFireAuth,
+    ) {     
       this.usersCollection = db.collection<UsuariosI>(`users`);
       
       
@@ -56,25 +58,22 @@ export class UsuariosProvider{
   async deleteUser(){
     const docs: string[] = ["users/","credencialesUsers/","userMatch/", "userPrivacy/", "chatMessages/"];
     var user = this.afAuth.currentUser;
-    (await user).delete().then(async () => {
+    await this.getActualUser().then(subject => this.credentialConnection = subject.subscribe(userDN =>{
+      for (let index = 0; index < docs.length; index++) {
+        user.then(user => {
+          if(index < 2){
+            this.db.doc(docs[index]+user.email).delete();
+          }else{
+            this.db.doc(docs[index]+userDN.displayName).delete();
+          }
+        })
+      }
+      this.dbRefactor.disconnectFromDB(this.credentialConnection);
+    }));
+    /* this.authService.deleteGoogleAccount(); */
+    (await user).delete().then(() => {
       this.router.navigate(["login"]);
-      await this.getActualUser().then(subject => this.credentialConnection = subject.subscribe(userDN =>{
-        for (let index = 0; index < docs.length; index++) {
-          user.then(user => {
-            if(index < 2){
-              this.db.doc(docs[index]+user.email).delete();
-            }else{
-              this.db.doc(docs[index]+userDN.displayName).delete();
-            }
-          })
-        }
-        this.dbRefactor.disconnectFromDB(this.credentialConnection);
-      }));
-    })
-    .catch(function(error){
-      console.log("Error =>", error);
-    })
-    
+    });
   }
 
 
@@ -105,7 +104,7 @@ export class UsuariosProvider{
    */
   async addGamesToUser(favoriteGames: Game[], otherGames?: Game[]){
     
-    if(otherGames){
+    if(otherGames){ 
       this.conection = (await this.getActualUser()).subscribe(user =>{
         const usuario:UsuariosI = {
           name: user.name,
@@ -114,8 +113,13 @@ export class UsuariosProvider{
           email: user.email,
           favGames: favoriteGames,
           otherGames: otherGames,
-          typeOfPlayer: user.typeOfPlayer
+          
         } 
+        if(user.typeOfPlayer != undefined){
+          usuario.typeOfPlayer = user.typeOfPlayer;
+        }else{
+          usuario.typeOfPlayer = "Casual";
+        }
         this.updateUsuario(usuario);
       
       });
@@ -128,8 +132,12 @@ export class UsuariosProvider{
           lastName: user.lastName,
           email: user.email,
           favGames: favoriteGames,
-          typeOfPlayer: user.typeOfPlayer
         } 
+        if(user.typeOfPlayer != undefined){
+          usuario.typeOfPlayer = user.typeOfPlayer;
+        }else{
+          usuario.typeOfPlayer = "Casual";
+        }
         this.updateUsuario(usuario);
       });
       
@@ -182,7 +190,7 @@ export class UsuariosProvider{
           user.favGames.forEach(game =>{
             auxFavGamesReformatedString.push(game.name);
           })
-          if(user.otherGames !== undefined){
+          if(user.otherGames != undefined){
             user.otherGames.forEach(game => {
               auxOtherGamesReformatedString.push(game.name);
             })

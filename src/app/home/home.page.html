@@ -1,22 +1,36 @@
 <ion-content scroll-y="false">
+  
   <ion-card #usercards class="userCard" *ngFor="let user of usersGameProfile">
-    <ion-card-header id='{{ user.displayName }}' >
-      <ion-card-title><h1>{{user.displayName}}</h1></ion-card-title>
-      <ion-card-subtitle><h2>{{user.name}}</h2></ion-card-subtitle>
+    <ion-card-header class="card-header" id='{{ user.displayName }}' >
+      <ion-card-title class="user-displayName"><h1>{{user.displayName}}</h1></ion-card-title>
+      <ion-card-subtitle class="user-name"><h2>{{user.name}}</h2></ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content scroll-y="true">
-      <h2><b>Edad</b></h2>
-        {{user.age}}<br>
-      <h2><b>Tipo de jugador</b></h2>
-        {{user.typeOfPlayer}}<br>
-      <h2><b>Juegos favoritos</b></h2>
-        1: {{user.favGames[0]}}<br>
-        2: {{user.favGames[1]}}<br>
-        3: {{user.favGames[2]}}<br>
-      <h2><b>Otros juegos</b></h2>
-      <div *ngFor="let game of user.otherGames">
-        {{game}}
+    <ion-card-content class="card-content" scroll-y="true">
+      <h2 class="card-section"><b>Edad</b></h2>
+        <p class="centrar">{{user.age}}</p>
+      <h2 class="card-section" *ngIf="user.typeOfPlayer"><b>Tipo de jugador</b></h2>
+        <p class="centrar">{{user.typeOfPlayer}}</p>
+      <h2 class="card-section"><b>Juegos favoritos</b></h2>
+      <div class="centrar">
+        <div>
+          <p><b>1:</b> {{user.favGames[0]}}</p>
+          <p><b>2:</b> {{user.favGames[1]}}</p>
+          <p><b>3:</b> {{user.favGames[2]}}</p>
+        </div>
+      </div>
+        
+      <h2 class="card-section" *ngIf="user.otherGames.length != 0"><b>Otros juegos</b></h2>
+      <div class="centrar">
+        <div>
+          <div class="user-content" *ngFor="let game of user.otherGames">
+            <p>{{game}}</p>
+          </div>
+        </div>
       </div>
     </ion-card-content>
-  </ion-card>
+  </ion-card> 
+  <div class="pyro" *ngIf="thereIsMatch">
+    <div class="before"></div>
+    <div class="after"></div>
+  </div>
 </ion-content>

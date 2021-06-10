@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Message, UsuariosI } from '../models/users.interface';
 import { ChatService } from '../providers/chat.service';
 import { UsuariosProvider } from '../providers/usuarios.service';
+import { SortRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +21,8 @@ export class ChatPage implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private userService: UsuariosProvider
+    private userService: UsuariosProvider,
+    private sortRefactor: SortRefactor
   ) { 
     
     this.userName = this.chatService.getUserInfo();
@@ -32,11 +34,26 @@ export class ChatPage implements OnInit {
       this.myName = user.displayName;
       this.chatService.getChatFromDB(this.myName, this.userName).subscribe(data => {
         //Sort Messages by last incoming
-        this.chat = data.sort((a, b) => a.timestamp.toDate().getTime() - b.timestamp.toDate().getTime()) ;
+        this.chat = this.sortMessages(data);
       })
     })
   }
 
+  sortMessages(data: Message[]): Message[]{
+    let sortedData: Message[] = [];
+    let datesArray: string[] = [];
+    data.forEach(element => datesArray.push(element.timestamp));
+    let sortedTimestamps: string[] = this.sortRefactor.quickSort(datesArray);
+    console.log(sortedTimestamps);
+    for (let index = 0; index < sortedTimestamps.length; index++) {
+      data.forEach(element => {
+        if(element.timestamp == sortedTimestamps[index]){
+          sortedData.push(element);
+        } 
+      }) 
+    }
+    return sortedData;
+  }
 
   //PASAR AL REFACTOR????
   disconnectSuscription(suscription: Subscription){
@@ -46,12 +63,16 @@ export class ChatPage implements OnInit {
   sendMessage(msg){
     this.chatService.sendMessage(msg.value, this.userName, this.myName);
     document.querySelector("input").value = "";
+    this.scrollToEnd();
   }
 
   ionViewDidLeave(){
    this.disconnectSuscription(this.sus);
   }
 
-  getChatMessages(){}
+  scrollToEnd(){
+    const main = document.getElementsByTagName('main')[1];
+    main.scrollTop = main.scrollHeight;
+  }
 
 }

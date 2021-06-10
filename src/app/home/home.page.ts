@@ -3,8 +3,8 @@ import { Observable, Subscription } from 'rxjs';
 import { PrivacyData, UserGameProfile, UserMatches, UsuariosI } from '../models/users.interface'
 import { UsuariosProvider } from '../providers/usuarios.service'
 import { AngularFirestore,  } from '@angular/fire/firestore';
-import { Gesture, GestureController, IonCard, Platform } from '@ionic/angular';
-import { AlertaRefactor, DBRefactor } from '../refactors/refactor';
+import { AlertController, Gesture, GestureController, IonCard, Platform } from '@ionic/angular';
+import { DBRefactor } from '../refactors/refactor';
 import { MatchService } from '../providers/match.service';
 import { SettingsService } from '../providers/settings.service';
 
@@ -29,6 +29,8 @@ export class HomePage implements OnInit, AfterViewInit {
 
   myself: UserMatches = null;
   userPrivacy: PrivacyData;
+
+  thereIsMatch:boolean = false;
   
 
   @ViewChildren(IonCard, {read: ElementRef}) cards: QueryList<ElementRef<IonCard>>;
@@ -36,7 +38,7 @@ export class HomePage implements OnInit, AfterViewInit {
     
     public db: AngularFirestore,
     private userService: UsuariosProvider,
-    private alerta: AlertaRefactor,
+    public alertController: AlertController,
     private dbRefactor: DBRefactor,
     private platform: Platform,
     private gestureCtrl: GestureController,
@@ -52,15 +54,16 @@ export class HomePage implements OnInit, AfterViewInit {
      this.showCardsInfo();
      this.userPrivacy = {
        age: true,
-       name: false
+       name: true
      }
+     
   }
 
   getPlayerSettings(user: string){
     this.privacyConnection = this.settingService.connectToDB(user).subscribe(privacy => {
       this.userPrivacy = privacy;
     });
-  }
+  } 
 
   async showCardsInfo(){
     this.user$ = await this.userService.getActualUser();
@@ -144,11 +147,12 @@ export class HomePage implements OnInit, AfterViewInit {
       });
      
     }); 
-    
+     
   }
 
   match(match: string, myName: string){
-    this.alerta.alerta("Hay match con "+match+" !!", "MAATCHH!!");
+    this.thereIsMatch = true;
+    this.matchAlert(match);
     this.matchService.addMatchToUserDB(match, myName);
     this.dbRefactor.disconnectFromDB(this.matchConnection);
   }
@@ -156,8 +160,26 @@ export class HomePage implements OnInit, AfterViewInit {
   ionViewDidLeave(){
     this.dbRefactor.disconnectFromDB(this.dataConnection);
     this.dbRefactor.disconnectFromDB(this.userConnection);
-    this.dbRefactor.disconnectFromDB(this.privacyConnection);
+    //this.dbRefactor.disconnectFromDB(this.privacyConnection);
   }
-  
+
+  async matchAlert(user: string){
+    const alert = await this.alertController.create({
+        
+      header: "FELICIDADES",
+      message: "Has hecho match con " + user + "!!",
+      cssClass:'fireworks',
+      keyboardClose: true,
+      buttons: [
+          { 
+              text: 'Cerrar',
+              handler: () =>{
+                this.thereIsMatch = false;
+              }
+          }
+      ]
+    });
+    await alert.present();
+  }
   
 }

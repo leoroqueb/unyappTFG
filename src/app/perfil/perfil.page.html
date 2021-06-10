@@ -1,29 +1,21 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-title>perfil</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-list>
-    <ion-list-header>
-      <ion-label><b>Personalización</b></ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label>Tipo de jugador </ion-label>
-      <ion-select #player placeholder="Elige" multiple="false" (ionChange)="changeTypeOfPlayer($event)">
-        <ion-select-option value="Casual">Casual</ion-select-option>
-        <ion-select-option value="Competitivo">Competitivo</ion-select-option>
-        <ion-select-option value="Trophy Hunter">Trophy Hunter</ion-select-option>
-        <ion-select-option value="Multiplayer">Multiplayer</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-  <ion-item>
-    <ion-label position="floating">Fecha de nacimiento</ion-label>
-    <ion-datetime #date displayFormat="DD-MM-YYYY" max="2007-01-01" (ionChange)="changeBirthDate($event)"></ion-datetime>
-  </ion-item>
-  <ion-button (click)="saveChanges()" shape="round">
-    Guardar cambios
-  </ion-button>
+  <div class="wrapper">
+    <div id="content">
+      <div class="form">
+        <span style="font-size: larger;"><strong>Personalización</strong></span>
+        <br><br>
+        <ion-label>Tipo de jugador </ion-label>
+        <ion-select #player placeholder="Elige" multiple="false" (ionChange)="changeTypeOfPlayer($event)">
+          <ion-select-option value="Casual">Casual</ion-select-option>
+          <ion-select-option value="Competitivo">Competitivo</ion-select-option>
+          <ion-select-option value="Trophy Hunter">Trophy Hunter</ion-select-option>
+          <ion-select-option value="Multiplayer">Multiplayer</ion-select-option>
+        </ion-select>
+        <ion-label position="floating">Fecha de nacimiento</ion-label>
+        <ion-datetime #date displayFormat="DD-MM-YYYY" max="2007-01-01" (ionChange)="changeBirthDate($event)" placeholder="DD-MM-YYYY"></ion-datetime>
+        <br><br>
+    </div>
+      <input type="button" (click)="saveChanges()" value="Guardar cambios">
+    </div>
+  </div>
 </ion-content>

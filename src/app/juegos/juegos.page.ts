@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { Game } from '../models/games.interface';
 import { GamesService } from '../providers/games.service'
-import { AlertaRefactor, RegistroRefactor } from '../refactors/refactor';
+import { AlertaRefactor, RegistroRefactor, ToastRefactor } from '../refactors/refactor';
 
 @Component({
   selector: 'app-juegos',
@@ -20,6 +20,7 @@ export class JuegosPage implements OnInit, OnDestroy {
   catFilters = 'Todas'
   selectedGame: Game = undefined;
   delete = false;
+
 
   //Plataformas
   platformFilters:string[] = [
@@ -73,7 +74,7 @@ export class JuegosPage implements OnInit, OnDestroy {
   private gameInfo:Subscription;
   constructor(
     private gameService:GamesService,
-    private alerta: AlertaRefactor,
+    private alerta: ToastRefactor,
     private refactor: RegistroRefactor,
     private router: Router,
   ) {
@@ -106,30 +107,60 @@ export class JuegosPage implements OnInit, OnDestroy {
 
   chosenGamesByUser:Game[] = [];
   
-  selectGamesFromList(chosenGame: Game){
-    let submitButton = document.getElementById('submitButton');
-    if(!this.chosenGamesByUser.includes(chosenGame)){
-      if(this.chosenGamesByUser.length < 13){
-        this.chosenGamesByUser.push(chosenGame);
-        this.selectedGame = chosenGame;
-        if(this.chosenGamesByUser.length >= 3){
-          submitButton.setAttribute("disabled","false")
+  selectGamesFromList(chosenGame: Game, ev: any){
+    if(this.chosenGamesByUser.length+1 <= 12){
+      if(ev.detail.checked){
+        let submitButton = document.getElementById('submitButton');
+        if(!this.chosenGamesByUser.includes(chosenGame)){
+         // console.log(this.chosenGamesByUser.length);
+          this.chosenGamesByUser.push(chosenGame);
+          this.selectedGame = chosenGame;
+          if(this.chosenGamesByUser.length >= 3){
+            submitButton.setAttribute("disabled","false")
+          }
         }
       }else{
-        this.alerta.alerta("Si añades un juego más, la RAM te va a explotar","Tranquilo");
+        this.deleteGamesFromList(chosenGame);
+      }
+    }else{
+      //We add last game
+      if(ev.detail.checked){
+        if(!this.chosenGamesByUser.includes(chosenGame)){
+          this.chosenGamesByUser.push(chosenGame);
+          this.selectedGame = chosenGame;
+        }
+        var checkpoints = document.getElementsByTagName('ion-checkbox');
+        for (let index = 0; index < checkpoints.length; index++) {
+          if(!checkpoints[index].checked){
+            checkpoints[index].disabled = true;
+          }
+        }
+        this.alerta.presentToast("Si añades un juego más, la RAM te va a explotar");
+      }else{
+        this.deleteGamesFromList(chosenGame);
       }
     }
+    
   }
+
+  
 
   deleteGamesFromList(chosenGame: Game){
     let submitButton = document.getElementById('submitButton');
     let index = this.chosenGamesByUser.indexOf(chosenGame);
     this.chosenGamesByUser.splice(index,1);
     this.selectedGame = chosenGame;
+    //this.gameListComplete();
+    var checkpoints = document.getElementsByTagName('ion-checkbox');
+          for (let index = 0; index < checkpoints.length; index++) {
+            if(!checkpoints[index].checked){
+              checkpoints[index].disabled = false;
+            }
+          }
     if(this.chosenGamesByUser.length < 3){
       submitButton.setAttribute("disabled","true");
-    }
-
+    } 
+    console.log(this.chosenGamesByUser);
   }
 
   getChosenGamesByUser(){

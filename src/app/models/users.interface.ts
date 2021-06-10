@@ -68,7 +68,7 @@ export interface UserMatches{
 }
 
 export interface Message{
-    timestamp: firebase.default.firestore.Timestamp;
+    timestamp: string;
     from: string;
     to: string;
     msg: string;

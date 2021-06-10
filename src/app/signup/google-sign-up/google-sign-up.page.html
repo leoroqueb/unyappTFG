@@ -1,53 +1,50 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>google-sign-up</ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content *ngIf="credencial$ | async as user">
-  <ion-input type="text" #email disabled type="hidden" value={{user.email}}></ion-input>
-  <ion-input type="text" #uid disabled type="hidden" value={{user.uid}}></ion-input>
-  <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
-  <form [formGroup]="Form" (ngSubmit)="getDataFromForm(Form, email, display, uid)">
-    <ion-item>
-      <ion-label position="floating">Nombre de usuario<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input type="text" #display required value={{user.displayName}}></ion-input>
-    </ion-item>
-    <!-- <ng-container *ngFor="let validation of validation_messages.displayName">
-      <div class="error-message" *ngIf="signUpForm.get('displayName').hasError(validation.type) && (signUpForm.get('displayName').dirty || signUpForm.get('displayName').touched)">
-        {{ validation.message }}
-      </div>
-    </ng-container> -->
+  <div class="wrapper">
+    <div id="formContent">
+        <input type="text" #email disabled type="hidden" value={{user.email}}>
+        <input type="text" #uid disabled type="hidden" value={{user.uid}}>
+        <div class="form">
+        <p>Los datos marcados con un <ion-text color="danger">*</ion-text> son obligatorios</p>
+        
+        <form [formGroup]="Form" (ngSubmit)="getDataFromForm(Form, email, display, uid)">
+          <div>
+            <ion-label position="floating">Nombre de usuario <ion-text color="danger">*</ion-text></ion-label>
+            <input type="text" #display required value={{user.displayName}}>
+          </div>
+          <!-- <ng-container *ngFor="let validation of validation_messages.displayName">
+            <div class="error-message" *ngIf="signUpForm.get('displayName').hasError(validation.type) && (signUpForm.get('displayName').dirty || signUpForm.get('displayName').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container> -->
 
-    <ion-item>
-      <ion-label position="floating">Nombre<ion-text color="danger">*</ion-text></ion-label>
-      <ion-input type="text" formControlName="name"></ion-input>
-    </ion-item>
-    <!-- <ng-container *ngFor="let validation of validation_messages.name">
-      <div class="error-message" *ngIf="signUpForm.get('name').hasError(validation.type) && (signUpForm.get('name').dirty || signUpForm.get('name').touched)">
-        {{ validation.message }}
-      </div>
-    </ng-container> -->
+          <div>
+            <ion-label position="floating">Nombre <ion-text color="danger">*</ion-text></ion-label>
+            <input type="text" formControlName="name">
+          </div>
+          <!-- <ng-container *ngFor="let validation of validation_messages.name">
+            <div class="error-message" *ngIf="signUpForm.get('name').hasError(validation.type) && (signUpForm.get('name').dirty || signUpForm.get('name').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container> -->
 
-    <ion-item>
-      <ion-label position="floating">Apellidos</ion-label>
-      <ion-input type="text" formControlName="lastName"></ion-input>
-    </ion-item>
+          <div>
+            <ion-label position="floating">Apellidos</ion-label>
+            <input type="text" formControlName="lastName">
+          </div>
 
-    <ion-item>
-      <ion-label position="floating">Fecha de nacimiento<ion-text color="danger">*</ion-text></ion-label>
-      <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthDate"></ion-datetime>
-    </ion-item>
-    <!-- <ng-container *ngFor="let validation of validation_messages.birthDate">
-      <div class="error-message" *ngIf="signUpForm.get('birthDate').hasError(validation.type) && (signUpForm.get('birthDate').dirty || signUpForm.get('birthDate').touched)">
-        {{ validation.message }}
+          <div>
+            <ion-label position="floating">Fecha de nacimiento <ion-text color="danger">*</ion-text></ion-label>
+            <ion-datetime displayFormat="DD-MM-YYYY" formControlName="birthDate" placeholder="Selecciona una fecha"></ion-datetime>
+          </div>
+          <!-- <ng-container *ngFor="let validation of validation_messages.birthDate">
+            <div class="error-message" *ngIf="signUpForm.get('birthDate').hasError(validation.type) && (signUpForm.get('birthDate').dirty || signUpForm.get('birthDate').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container> -->
+          <input type="submit" [disabled]="Form.invalid" value="Crear cuenta">
+        </form>
       </div>
-    </ng-container> -->
-    <ion-button block color="primary" type="submit" [disabled]="Form.invalid">
-      Completar registro
-    </ion-button>
-    <ion-button block color="danger" type="button" (click)="cancel()">
-      Cancelar
-    </ion-button>
-  </form>
+    </div>
+  </div>
 </ion-content>
